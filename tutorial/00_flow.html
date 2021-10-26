@@ -1,0 +1,57 @@
+<html>
+   <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+      <div class="titlepage">
+         <h2 class="title">Lab 1. UART</h2>
+         <p>In this Lab you will run eshell and get basic knowledge on how to use tool. Follow instruction step-by-step.</p>
+
+         <h4>You will learn:</h4>
+         <li>Start eshell from command-line;</li>
+         <li>Read in (compile) Verilog files;</li>
+         <li>Write simple scripts;</li>
+         <li>Work with databases;</li>
+         <li>Run system commands from tool;</li>
+         <li>Lint modules.</li>
+
+         <h4>Activity:</h4>
+         <li>Open console. Move into this tutorial directory (<b>00_flow</b>).</li>
+         <li>
+            Add eshell path into system variable path, ex.:
+            <p><b>a. Windows: set path=%path%;E:\tools\eshell</b></p>
+            <p><b>b. Linux: Bash export PATH=$PATH:/CAD/eshell</b></p>
+         </li>
+         <li>Check Lab directory: UART.v + run_01.cmd + run_02.cmd files.</li>
+         <li>Check <b>run_01.cmd</b> content. It just reads UART.v.</li>
+         <li>Launch tool by typing <b>eshell</b> from command prompt.</li>
+         <li>Execute <b>source run_01.cmd</b></li>
+         <li>Alternatively execute <b>read UART.v</b>. Note that Linux is case sensitive.</li>
+         <li>Try both commands in any sequence. Check disk content into directory where you launched from. There are some additional files eshell*.</li>
+         <li>Check that eshell.edb* files created on launch directory. Eshell.edb keeps information about compiled modules. Eshell.edb00001 keeps compiled module. Eshell.log is log file for current session.</li>
+         <li>Type <b>set_workspace lab1</b>. This will change workspace name from default eshell to lab1. Now log information written to lab1.log and files will be compiled into log.edb*.</li>
+         <li>Read UART.v once again.</li>
+         <li>Clear database lab1 typing <b>clear_db</b>. Return to default database <b>set_workspace eshell</b>. Note that previously created file eshell.log is overwritten when database changed.</li>
+         <li>
+            <p>Remove lab1.log using OS command:</p>
+            <p><b>a. Windows: system del lab1.log</b></p>
+            <p><b>b. Linux: system rm lab1.log</b></p>
+         </li>
+         <li>Now execute <b>message NOT</b>. Tool will issue an error. Fix it by typing <b>message NOTE</b>. This command changes level of messages issued by tool. You can run help to get brief information about eshell.</li>
+         <li>Read UART.v file again and check that number of messages increased.</li>
+         <li>To get detailed description about Note/Warning type man ADV-N. Where N – is a number of note.</li>
+         <li>Close tool typing exit</li>
+         <li>Check eshell.log file. It contains information about number of read files and session time.</li>
+         <li>Previous steps were made in interactive mode. To allow batch mode run script can be used. Always on startup eshell executes autosetup.tcl file. Create this one and write following commands:
+            <p><b>message NOTE</b></p>
+            <p><b>read UART.v</b></p>
+            <p><b>exit</b></p>
+         </li>
+         <li>Type eshell from command line and check that tool were startup execute script and exited as specified in autosetup.tcl.</li>
+
+         <h4>What is next:</h4>
+         <p>Example on how incremental compilation works.</p>
+         <p>In the next labs you will learn how to work with hierarchical design, how to mask some HDL errors on runtime and how to elaborate design. Also you will use simple GUI to work with eshell.</p>
+<!--          <p>Reading libraries and VCD files. And check supported constructs limitations.</p> -->
+<!--          <p>Read VCD and annotate design for toggle activity. Report generic power for this case?</p> -->
+
+      </div>
+   </body>
+</html>
