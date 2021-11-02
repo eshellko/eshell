@@ -54,7 +54,12 @@ array set button_cfg [ list \
                                VCD     EventOnBtnReadVCD \
                    ] \
    2  [ list 0 "Build"         EventOnBtnBuild        disabled ] \
-   3  [ list 0 "Optimize"      EventOnBtnOptimize     disabled ] \
+   3  [ list 1 "Optimize"      {tk_popup .pMenuOptimize [expr [winfo rootx .f1.myButtonOptimize]+[winfo width .f1.myButtonOptimize]] [expr [winfo rooty .f1.myButtonOptimize]]}       disabled \
+                               Area           "opt -area" \
+                               Timing         "opt -time" \
+                               Logic          "opt" \
+                               Exit           "" \
+                   ] \
    4  [ list 0 "Techmap"       EventOnBtnTechmap      disabled ] \
    5  [ list 1 "Report"        {tk_popup .pMenuReport [expr [winfo rootx .f1.myButtonReport]+[winfo width .f1.myButtonReport]] [expr [winfo rooty .f1.myButtonReport]]}       disabled \
                                Hierarchy      "report_hierarchy -resources -depth 4" \

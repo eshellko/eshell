@@ -40,7 +40,16 @@ if $eshell_tool==1 {
    ################################
    # set handler for IO channel
    ################################
-   fileevent $io readable [list ToolLogHndlr $io]
+# A channel is considered to be readable if there is unread data available on the underlying device.
+# A channel is also considered to be readable if there is unread data in an input buffer, except in
+#   the special case where the most recent attempt to read from the channel was a gets call that           -- GETS call could not find EOL
+#   could not find a complete line in the input buffer. This feature allows a file to be read a line
+#   at a time in nonblocking mode using events. A channel is also considered to be readable if an
+#   end of file or error condition is present on the underlying file or device. It is important
+#   for script to check for these conditions and handle them appropriately; for example, if there          -- check EOF
+#   is no special check for end of file, an infinite loop may occur where script reads no data,            -- channel $io closed
+#   returns, and is immediately invoked again. 
+   fileevent $io readable "ToolLogHndlr $io"
 }
 set mutex 0
 
@@ -94,7 +103,8 @@ proc ToolLogHndlr {chan} {
             .outer.f4.text see end
             .outer.f4.text configure -state disabled
          }
-      }
+        # Note: closed on EOF from tool
+      } else { close $chan; }
    }
 }
 # Note: start command execution:

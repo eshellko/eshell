@@ -23,7 +23,7 @@ proc EventOnBtnReadLiberty {} {
           set last_idx [ string last "/" $r ]
           set dir [ string range $r 0 $last_idx ]
           set currentDir $dir
-          read_lib "-append $r"
+          read_lib " $r"
        }
    }
 }
@@ -162,6 +162,8 @@ proc EventOnBtnClear {} {
    clear_db
 }
 
+proc EventOnBtnWriteNetlist_PressOK  {} { write ${WorkSpace}.v ; destroy .writer }
+proc EventOnBtnWriteNetlist_PressEsc {} { "destroy .writer" }
 proc EventOnBtnWriteNetlist {} {
    global last_command WorkSpace
    variable filename ${WorkSpace}.v
@@ -170,13 +172,13 @@ proc EventOnBtnWriteNetlist {} {
    wm title .writer "Write netlist"
    pack [label .writer.label1 -text "Specify output file name" -font efont ] -fill both -pady 3 -padx 3
    pack [entry .writer.entryWS -text ${WorkSpace}.v -font efont -textvariable filename -width 32] -fill both -pady 3 -padx 3
-   pack [button .writer.myButton01 -font efont -width 7 -text "OK"     -command { write $filename ; destroy .writer } ] -padx 3 -pady 3 -side left
-   pack [button .writer.myButton02 -font efont -width 7 -text "Cancel" -command "destroy .writer"                     ] -padx 3 -pady 3 -side left
+   pack [button .writer.myButton01 -font efont -width 7 -text "OK"     -command EventOnBtnWriteNetlist_PressOK  ] -padx 3 -pady 3 -side left
+   pack [button .writer.myButton02 -font efont -width 7 -text "Cancel" -command EventOnBtnWriteNetlist_PressEsc ] -padx 3 -pady 3 -side left
 
    focus .writer.entryWS
-   # Note: ENTER became same as OK (todo: create proc to use same code for ENTER and OK-button)
-   bind .writer <Return> { write $filename ; destroy .writer }
-   bind .writer <Escape> { destroy .writer }
+   # Note: ENTER became same as OK
+   bind .writer <Return> { EventOnBtnWriteNetlist_PressOK  }
+   bind .writer <Escape> { EventOnBtnWriteNetlist_PressEsc }
 }
 
 proc EventOnBtnReadVCD {} {
@@ -294,7 +296,7 @@ proc EventOnBtnEditHdl {} {
       fconfigure $fd -translation crlf
       set data [read $fd ]
       # Note: read single piece of data
-        .hdleditor.text insert 1.0 "$data"
+      .hdleditor.text insert 1.0 "$data"
       close $fd
    }
 # command menu
