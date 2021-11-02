@@ -1,0 +1,12 @@
+category=Amba;
+category=Interconnect;
+ip_i2c~i2c~EHL~1.0~FP~Inter-IC~CDC_SYNC_STAGE:A:2:0 1 2 3:Number of Synchronization Stages%TX_FIFO_DEPTH:A:4:2 3 4 5 6 7 8 9 10 11 12 13 14 15 16:Number of bytes in command(transmit) FIFO%RX_FIFO_DEPTH:A:4:2 3 4 5 6 7 8 9 10 11 12 13 14 15 16:Number of bytes in receive FIFO~i2c/doc/ehl_i2c.html
+ip_ethernet~eth_mac~EHL~1.0~~Ethernet MAC Core~TX_BUFFER_SIZE:A:8192:256 512 1024 2048 4096 8192 16384 32768 65536:Number of DWORDS in Tx buffer%RX_BUFFER_SIZE:A:8192:256 512 1024 2048 4096 8192 16384 32768 65536:Number of DWORDS in Rx buffer%MIIM_ENA:A:1:0 1:Enable Media Independent Interface Management(MIIM)%DEFAULT_MAC:A:0x000000000000:0x000000000000:Default MAC Address(not supported in GUI)~ethernet/doc/ehl_ethernet.html
+category=Memory;
+ip_ddr~ehl_ddr~EHL~1.0~~Synchronous DDR4-3-2 Controller~AXI_WIDTH:A:32:32 64 128:AXI bus width%AXI_ID_WIDTH:A:4:1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16:Width of AXI ID signals%SDRAM_WIDTH:A:16:8 16 32 64:SDRAM bus width%ECC_ENA:A:0:0 1:Using Hamming code%RANK_CNT:A:4:1 2 4:Number of DDR ICs%AXI_QUEUE_DEPTH:A:2:2 4:Number of AXI transactions%ERROR_FIFO_DEPTH:A:4:0 1 2 4 8:Depth of Error addresses FIFO%RAM_TECHNOLOGY:A:0:0 5:Target technology%CDC_SYNC_STAGE:A:2:0 1 2 3:Number of CDC flops%SYNCHRONIZE_RESETS:A:0:0 1:Using internal reset synchronizers%RAM_MODES:A:1:1 2 3:Supported RAM protocols%PHY_TYPE:A:0:0 1 2 3 4 5:PHY selection~ddr/doc/ehl_ddr.html
+category=Video;
+ip_scaler~ehl_video_scale~EHL~1.0~FP~Uncompressed Video Scaler~DATA_WIDTH:A:8:8 10 12 14 16:Pixel bit width%X_WIDTH:A:12:8 9 10 11 12 13 14 15 16:Bit width of Horizontal resolution%Y_WIDTH:A:12:8 9 10 11 12 13 14 15 16:Bit width of vertical resolution%SCALE_FRAC_WIDTH:A:16:12 13 14 15 16 17 18 19 20:Bit width of fractional part of scaling factors%FIFO_DEPTH:A:16:16 32 64:Pixel size of output FIFO~share/doc/todo.html
+ip_csc~ehl_color_space_converter~EHL~1.0~~RGB-YCrCb Color Space Converter~PIXEL_WIDTH:A:8:8:Bit width of pixel%PIPE_STAGE:A:0:0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15:Pipeline registers mask~vpu/doc/ehl_csc.html
+ip_chroma_resample~ehl_chroma_resampler~EHL~1.0~~YCrCb Chroma Resampler~PIXEL_WIDTH:A:8:8:Bit width of pixel~share/doc/todo.html
+ip_sdi~ehl_sdi~EHL~1.0~~SDI SMPTE 259/292/425~~sdi/doc/ehl_sdi.html
+ip_vpu~ehl_vpu~EHL~1.0~~Video Processing Unit (VPU)~~vpu/doc/ehl_vpu.html
