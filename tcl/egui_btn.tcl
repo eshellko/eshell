@@ -319,6 +319,7 @@ proc EventOnBtnViewHdl {} {
    scrollbar .hdleditor.scroll -command {.hdleditor.text yview}
    pack .hdleditor.scroll -side right -fill y
    pack .hdleditor.text -side left -fill both -expand true
+# TODO: add SV keywords and highlight them with little different keyword color...
    set verilog_keywords { "always" "and" "assign" "automatic" "begin" "buf" "bufif0" "bufif1" "case" "casex"\
    "casez" "cell" "cmos" "config" "deassign" "default" "defparam" "design" "disable" "edge"\
    "else" "end" "endcase" "endconfig" "endfunction" "endgenerate" "endmodule" "endprimitive" "endspecify" "endtable"\
@@ -346,124 +347,152 @@ proc EventOnBtnViewHdl {} {
    "\$sqrt" "\$sscanf" "\$stime" "\$stop" "\$strobe" "\$strobeb" "\$strobeh" "\$strobeo" "\$swrite" "\$swriteb"\
    "\$swriteh" "\$swriteo" "\$sync\$and\$array" "\$sync\$and\$plane" "\$sync\$nand\$array" "\$sync\$nand\$plane" "\$sync\$nor\$array" "\$sync\$nor\$plane" "\$sync\$or\$array" "\$sync\$or\$plane"\
    "\$tan" "\$tanh" "\$test\$plusargs" "\$time" "\$timeformat" "\$ungetc" "\$unsigned" "\$value\$plusargs" "\$write" "\$writeb" "\$writeh" "\$writeo" }
-
+#
 # read file in
+#
    set ex [ file exists $filename ]
    set r 1
    set first 1
    if { $ex == 1 } {
       set fd [open $filename rb]
       fconfigure $fd -translation crlf
-      set data [read $fd ]
+      set data [read $fd]
+
+	  set block_comment 0
+      set bc_init "0.0"
+      set bc_fini "0.0"
+
       # Note: read line-by-line and highlight (Note: this is initial only highlight, ideally create function that will be called every time text changed)
-         foreach x [ split $data "\n"] {
+      foreach x [ split $data "\n"] {
 # todo: drop \r
-            if $first==0 {.hdleditor.text insert end "\n"}
-#               .hdleditor.text insert end "$line_idx: $x"
-            .hdleditor.text insert end "$x"
-            set first 0
-            set type_of_textR [string range $x 0 1]
-            if [string match "//" $type_of_textR] { ; # Note: check for lines started with '//'
-               set len [string length $x ]
+         if $first==0 {.hdleditor.text insert end "\n"}
+         .hdleditor.text insert end "$x"
+         set first 0
+         set type_of_textR [string range $x 0 1]
+         if [string match "//" $type_of_textR] { ; # Note: check for lines started with '//'
+            set len [string length $x ]
+            set fini "${r}.${len}"
+            .hdleditor.text tag add highlightG ${r}.0 $fini
+            # Note: #007000 relates to dark green - more readable than just green
+            .hdleditor.text tag configure highlightG -foreground "#007000"
+         } else {
+            #
+            # Note: this part highlights line commnets in the middle of source code line, like:
+            #       wire a; // line for buffering
+		    #
+            set len [string length $x]
+            set lc_start $len
+            set idx_kw [string first "//" $x]
+            set idx_bl [string first "/*" $x]
+            set idx_ebl [string first "*/" $x]
+            #
+            # Note: define which one (line or block) comment is earlier
+            # TODO: if inside block, then line comment is ignored -- but can be after leaving block -- *///
+		    #
+            if { $idx_kw!=-1 && $idx_bl!=-1 } {
+		       if { $idx_kw < $idx_bl } {
+			      set idx_bl -1
+			   } else {
+			      set idx_kw -1
+			   }
+		    }
+		    #
+		    # color line comment
+		    #
+            if $idx_kw!=-1 {
+               set lc_start $idx_kw
+               set init "${r}.${idx_kw}"
                set fini "${r}.${len}"
-               .hdleditor.text tag add highlightG ${r}.0 $fini
-               # Note: #007000 relates to dark green - more readable than just green
+               .hdleditor.text tag add highlightG $init $fini
                .hdleditor.text tag configure highlightG -foreground "#007000"
-           } else {
-           #
-           # Note: this part highlights line commnets in the middle of source code line, like:
-           #       wire a; // line for buffering
-              set line_comment 0
-              set len [string length $x ]
-              set lc_start $len
-              set idx_kw [string first "//" $x]
-              if $idx_kw!=-1 {
-                 set line_comment 1
-                 set lc_start $idx_kw
-                 set init "${r}.${idx_kw}"
-                 set fini "${r}.${len}"
-                 .hdleditor.text tag add highlightG $init $fini
-                 .hdleditor.text tag configure highlightG -foreground "#007000"
-              }
-# Note: highlight module keywords: todo: use regexp for that
-              foreach tkw $verilog_keywords {
-                 set idx_kw [string first $tkw $x]
-                 if $idx_kw!=-1 {
-                 # Note: keywords inside line comments filtered away if they located righter than comment start
-                    if {$idx_kw > $lc_start} {
-                       set idx_kw 0
-                    }
-                 }
-                 if $idx_kw!=-1 {
-                    set len_kw [ string length $tkw ]
-#                        set len_idx [ string length $line_idx ]
-                    set init "${r}.${idx_kw}"
-                    set fini "${r}.[expr $idx_kw + $len_kw]"
-                    # Note: skip highlighting of partially matched words, like "use" from "user"
-                    set skip_as_part_of_another_word 0
-                    set pre_init [expr $idx_kw - 1]
-                    set before [string index $x $pre_init]
-                    foreach tch {a b c d e f g h i j k l m n o p q r s t u v w x y z _ A B C D E F G H I J K L M N O P Q R S T U V W X Y Z 0 1 2 3 4 5 6 7 8 9 } {
-                       if {$before eq $tch} {
-                          set skip_as_part_of_another_word 1
-                       }
-                    }
-                    set post_fini [expr $idx_kw + $len_kw ]
-                    set after [string index $x $post_fini]
-                    foreach tch {a b c d e f g h i j k l m n o p q r s t u v w x y z _ A B C D E F G H I J K L M N O P Q R S T U V W X Y Z 0 1 2 3 4 5 6 7 8 9 } {
-                       if {$after eq $tch} {
-                          set skip_as_part_of_another_word 1
-                       }
-                    }
-                    if $skip_as_part_of_another_word==0 {
-                       switch -exact $tkw {
-                          "`define"              { .hdleditor.text tag add highlightO $init $fini }
-                          "`ifdef"               { .hdleditor.text tag add highlightO $init $fini }
-                          "`endif"               { .hdleditor.text tag add highlightO $init $fini }
-                          "`else"                { .hdleditor.text tag add highlightO $init $fini }
-                          "`ifndef"              { .hdleditor.text tag add highlightO $init $fini }
-                          "`include"             { .hdleditor.text tag add highlightO $init $fini }
-                          "`elsif"               { .hdleditor.text tag add highlightO $init $fini }
-                          "`undef"               { .hdleditor.text tag add highlightO $init $fini }
-                          "`timescale"           { .hdleditor.text tag add highlightO $init $fini }
-                          "`celldefine"          { .hdleditor.text tag add highlightO $init $fini }
-                          "`default_nettype"     { .hdleditor.text tag add highlightO $init $fini }
-                          "`endcelldefine"       { .hdleditor.text tag add highlightO $init $fini }
-                          "`line"                { .hdleditor.text tag add highlightO $init $fini }
-                          "`nounconnected_drive" { .hdleditor.text tag add highlightO $init $fini }
-                          "`resetall"            { .hdleditor.text tag add highlightO $init $fini }
-                          "`unconnected_drive"   { .hdleditor.text tag add highlightO $init $fini }
-                          default                { .hdleditor.text tag add highlightB $init $fini }
-                       }
-#                           .hdleditor.text tag add highlightB $init $fini ; # Note: 0.24 + 0.2 = 0.44, not 0.26   0.A+0.B  !== 0.[A+B]
-#puts "$tkw = $len_kw (@ $r   ${idx_kw}  = $init -> $fini)"
-#puts "highlight $tkw [expr ${r}.${idx_kw}] : [expr ${r}.[expr $idx_kw + $len_kw]]"
-                    }
-                    .hdleditor.text tag configure highlightB -foreground blue
-                    .hdleditor.text tag configure highlightO -foreground orange
-                 }
-              }
-#                   #
-#                   # Note: this part highlights line commnets in the middle of source code line, like:
-#                   #       wire a; // line for buffering
-#                   # Note: word 'for' in the above example will still be highlighted as that process made without knowledge about this one
-#                   # todo: fix this issue
-#                   set idx_kw [string first "//" $x]
-#                   if $idx_kw!=-1 {
-#                      set len [string length $x ]
-#                      set init "${r}.${idx_kw}"
-#                      set fini "${r}.${len}"
-#                      .hdleditor.text tag add highlightG $init $fini
-#                      .hdleditor.text tag configure highlightG -foreground "#007000"
-#                   }
             }
-            incr r
+		    #
+		    # color block comment
+		    #
+            if { $idx_bl!=-1 && $block_comment==0 } {
+               set bc_init "${r}.${idx_bl}"
+               set block_comment 1
+			}
+            if { $idx_ebl!=-1 && $block_comment==1 } {
+               set block_comment 0
+               set bc_fini "${r}.${len}" ; # Q: actual value
+               .hdleditor.text tag add highlightY $bc_init $bc_fini
+               .hdleditor.text tag configure highlightY -foreground "#006000"
+            }
+		    #
+            # Note: highlight module keywords: todo: use regexp for that
+            #
+            foreach tkw $verilog_keywords {
+               set idx_kw [string first $tkw $x]
+               if $idx_kw!=-1 {
+               # Note: keywords inside line comments filtered away if they located righter than comment start
+                  if {$idx_kw > $lc_start} {
+                     set idx_kw 0
+                  }
+               }
+               if $idx_kw!=-1 {
+                  set len_kw [ string length $tkw ]
+                  set init "${r}.${idx_kw}"
+                  set fini "${r}.[expr $idx_kw + $len_kw]"
+                  # Note: skip highlighting of partially matched words, like "use" from "user"
+                  set skip_as_part_of_another_word 0
+                  set pre_init [expr $idx_kw - 1]
+                  set before [string index $x $pre_init]
+                  foreach tch {a b c d e f g h i j k l m n o p q r s t u v w x y z _ A B C D E F G H I J K L M N O P Q R S T U V W X Y Z 0 1 2 3 4 5 6 7 8 9 } {
+                     if {$before eq $tch} {
+                        set skip_as_part_of_another_word 1
+                     }
+                  }
+                  set post_fini [expr $idx_kw + $len_kw ]
+                  set after [string index $x $post_fini]
+                  foreach tch {a b c d e f g h i j k l m n o p q r s t u v w x y z _ A B C D E F G H I J K L M N O P Q R S T U V W X Y Z 0 1 2 3 4 5 6 7 8 9 } {
+                     if {$after eq $tch} {
+                        set skip_as_part_of_another_word 1
+                     }
+                  }
+                  if $skip_as_part_of_another_word==0 {
+                     switch -exact $tkw {
+                        "`define"              { .hdleditor.text tag add highlightO $init $fini }
+                        "`ifdef"               { .hdleditor.text tag add highlightO $init $fini }
+                        "`endif"               { .hdleditor.text tag add highlightO $init $fini }
+                        "`else"                { .hdleditor.text tag add highlightO $init $fini }
+                        "`ifndef"              { .hdleditor.text tag add highlightO $init $fini }
+                        "`include"             { .hdleditor.text tag add highlightO $init $fini }
+                        "`elsif"               { .hdleditor.text tag add highlightO $init $fini }
+                        "`undef"               { .hdleditor.text tag add highlightO $init $fini }
+                        "`timescale"           { .hdleditor.text tag add highlightO $init $fini }
+                        "`celldefine"          { .hdleditor.text tag add highlightO $init $fini }
+                        "`default_nettype"     { .hdleditor.text tag add highlightO $init $fini }
+                        "`endcelldefine"       { .hdleditor.text tag add highlightO $init $fini }
+                        "`line"                { .hdleditor.text tag add highlightO $init $fini }
+                        "`nounconnected_drive" { .hdleditor.text tag add highlightO $init $fini }
+                        "`resetall"            { .hdleditor.text tag add highlightO $init $fini }
+                        "`unconnected_drive"   { .hdleditor.text tag add highlightO $init $fini }
+                        default                { .hdleditor.text tag add highlightB $init $fini }
+                     }
+                  }
+                  .hdleditor.text tag configure highlightB -foreground blue
+                  .hdleditor.text tag configure highlightO -foreground orange
+               }
+            }
          }
-         ###################
+         incr r
+      }
+	  #
+	  # Note: color EOF block comment
+	  #
+      if $block_comment==1 {
+         set bc_fini "${r}.${len}" ; # Q: set to EOF? Q: 'r-1' ?
+         .hdleditor.text tag add highlightY $bc_init $bc_fini
+         .hdleditor.text tag configure highlightY -foreground "#006000"
+      }
+      ###################
       close $fd
    }
    .hdleditor.text configure -state disabled
+#
 # command menu
+#
    menu .hdleditor.popupMenu
    .hdleditor.popupMenu configure -tearoff 0
    .hdleditor.popupMenu add command -label "Exit" -command "ExitHdl"
