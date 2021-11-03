@@ -321,7 +321,6 @@ proc EventOnBtnViewHdl {} {
    scrollbar .hdleditor.scroll -command {.hdleditor.text yview}
    pack .hdleditor.scroll -side right -fill y
    pack .hdleditor.text -side left -fill both -expand true
-# TODO: add SV keywords and highlight them with little different keyword color...
    set verilog_keywords { "always" "and" "assign" "automatic" "begin" "buf" "bufif0" "bufif1" "case" "casex"\
    "casez" "cell" "cmos" "config" "deassign" "default" "defparam" "design" "disable" "edge"\
    "else" "end" "endcase" "endconfig" "endfunction" "endgenerate" "endmodule" "endprimitive" "endspecify" "endtable"\
@@ -335,6 +334,25 @@ proc EventOnBtnViewHdl {} {
    "task" "time" "tran" "tranif0" "tranif1" "tri" "tri0" "tri1" "triand" "trior"\
    "trireg" "unsigned" "use" "uwire" "vectored" "wait" "wand" "weak0" "weak1" "while"\
    "wire" "wor" "xnor" "xor"\
+   accept_on alias always_comb always_ff always_latch assert assume \
+   before bind bins binsof bit break byte \
+   chandle checker class clocking const constraint context continue cover covergroup coverpoint cross \
+   dist do \
+   endchecker endclass endclocking endgroup endinterface endpackage endprogram endproperty endsequence enum eventually expect export extends extern \
+   final first_match foreach forkjoin \
+   global \
+   iff ignore_bins illegal_bins implements implies import inside int interconnect interface intersect \
+   join_any join_none \
+   let local logic longint \
+   matches modport \
+   nettype new nexttime null \
+   package packed priority program property protected pure \
+   rand randc randcase randsequence ref reject_on restrict return \
+   s_always s_eventually s_nexttime s_until s_until_with sequence shortint shortreal soft solve static string strong struct super sync_accept_on sync_reject_on \
+   tagged this throughout timeprecision timeunit type typedef \
+   union unique unique0 until until_with untyped \
+   var virtual void \
+   wait_order weak wildcard    "with" "within" \
    "`define" "`ifdef" "`endif" "`else" "`ifndef" "`include" "`elsif" "`undef" "`timescale" "`celldefine" "`default_nettype"\
    "`endcelldefine" "`line" "`nounconnected_drive" "`resetall" "`unconnected_drive"\
    "\$acos" "\$acosh" "\$asin" "\$asinh" "\$async\$and\$array" "\$async\$and\$plane" "\$async\$nand\$array" "\$async\$nand\$plane" "\$async\$nor\$array" "\$async\$nor\$plane"\
@@ -360,7 +378,7 @@ proc EventOnBtnViewHdl {} {
       fconfigure $fd -translation crlf
       set data [read $fd]
 
-	  set block_comment 0
+      set block_comment 0
       set bc_init "0.0"
       set bc_fini "0.0"
 
@@ -381,7 +399,7 @@ proc EventOnBtnViewHdl {} {
             #
             # Note: this part highlights line commnets in the middle of source code line, like:
             #       wire a; // line for buffering
-		    #
+            #
             set len [string length $x]
             set lc_start $len
             set idx_kw [string first "//" $x]
@@ -390,17 +408,17 @@ proc EventOnBtnViewHdl {} {
             #
             # Note: define which one (line or block) comment is earlier
             # TODO: if inside block, then line comment is ignored -- but can be after leaving block -- *///
-		    #
+            #
             if { $idx_kw!=-1 && $idx_bl!=-1 } {
-		       if { $idx_kw < $idx_bl } {
-			      set idx_bl -1
-			   } else {
-			      set idx_kw -1
-			   }
-		    }
-		    #
-		    # color line comment
-		    #
+               if { $idx_kw < $idx_bl } {
+                  set idx_bl -1
+               } else {
+                  set idx_kw -1
+               }
+            }
+            #
+            # color line comment
+            #
             if $idx_kw!=-1 {
                set lc_start $idx_kw
                set init "${r}.${idx_kw}"
@@ -408,28 +426,28 @@ proc EventOnBtnViewHdl {} {
                .hdleditor.text tag add highlightG $init $fini
                .hdleditor.text tag configure highlightG -foreground "#007000"
             }
-		    #
-		    # color block comment
-		    #
+            #
+            # color block comment
+            #
             if { $idx_bl!=-1 && $block_comment==0 } {
                set bc_init "${r}.${idx_bl}"
                set block_comment 1
-			}
+            }
             if { $idx_ebl!=-1 && $block_comment==1 } {
                set block_comment 0
                set bc_fini "${r}.${len}" ; # Q: actual value
                .hdleditor.text tag add highlightY $bc_init $bc_fini
                .hdleditor.text tag configure highlightY -foreground "#006000"
             }
-		    #
+            #
             # Note: highlight module keywords: todo: use regexp for that
             #
             foreach tkw $verilog_keywords {
                set idx_kw [string first $tkw $x]
                if $idx_kw!=-1 {
-               # Note: keywords inside line comments filtered away if they located righter than comment start
+               # Note: keywords inside line comments filtered away if they located at the right of comment start
                   if {$idx_kw > $lc_start} {
-                     set idx_kw 0
+                     set idx_kw -1
                   }
                }
                if $idx_kw!=-1 {
@@ -480,9 +498,9 @@ proc EventOnBtnViewHdl {} {
          }
          incr r
       }
-	  #
-	  # Note: color EOF block comment
-	  #
+      #
+      # Note: color EOF block comment
+      #
       if $block_comment==1 {
          set bc_fini "${r}.${len}" ; # Q: set to EOF? Q: 'r-1' ?
          .hdleditor.text tag add highlightY $bc_init $bc_fini
