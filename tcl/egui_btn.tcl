@@ -162,8 +162,8 @@ proc EventOnBtnClear {} {
    clear_db
 }
 
-proc EventOnBtnWriteNetlist_PressOK  {} { write ${WorkSpace}.v ; destroy .writer }
-proc EventOnBtnWriteNetlist_PressEsc {} { "destroy .writer" }
+proc EventOnBtnWriteNetlist_PressOK  {} { global WorkSpace ; write ${WorkSpace}.v ; destroy .writer }
+proc EventOnBtnWriteNetlist_PressEsc {} { catch [destroy .writer] }
 proc EventOnBtnWriteNetlist {} {
    global last_command WorkSpace
    variable filename ${WorkSpace}.v

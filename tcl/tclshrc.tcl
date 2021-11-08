@@ -137,7 +137,7 @@ set command_set { build \
 				  _help _history lec man message mif2rom \
 				  opt techmap \
 				  _read read_lib _read_sdc read_vcd \
-				  report_hierarchy report_blackbox report_libs report_lint report_resources report_settings report_timing report_uninitialized report_vcd report_workspace   report_d_flops \
+				  report_hierarchy report_blackbox report_design report_libs report_lint report_resources report_settings report_timing report_uninitialized report_vcd report_workspace   report_d_flops \
 				  set_workspace _source system \
 				  write \
 				  skip endskip \

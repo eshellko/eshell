@@ -64,6 +64,7 @@ array set button_cfg [ list \
    5  [ list 1 "Report"        {tk_popup .pMenuReport [expr [winfo rootx .f1.myButtonReport]+[winfo width .f1.myButtonReport]] [expr [winfo rooty .f1.myButtonReport]]}       disabled \
                                Hierarchy      "report_hierarchy -resources -depth 4" \
                                BlackBox       "report_blackbox" \
+                               Design         "report_design" \
                                Library        "report_libs" \
                                Lint           "report_lint -clear" \
                                Settings       "report_settings" \
@@ -214,9 +215,9 @@ proc proc_break { var e op rr } {
    }
 }   
 
-set vlog_set { break_vlog_on_undirected_port break_vlog_on_tri01 break_vlog_on_verilog_xl_compiler_directive break_vlog_on_zero_width_constants }
-set vlog_text { "Break Vlog On Undirected Port" "Break Vlog On Tri Port" "Break Vlog On VerilogXL Compiler Directive" "Break Vlog On Zero Width Constants"}
-set vlog_init {1 1 1 1}
+set vlog_set { break_vlog_on_undirected_port break_vlog_on_tri01 break_vlog_on_verilog_xl_compiler_directive break_vlog_on_zero_width_constants break_vlog_on_systemverilog }
+set vlog_text { "Break Vlog On Undirected Port" "Break Vlog On Tri Port" "Break Vlog On VerilogXL Compiler Directive" "Break Vlog On Zero Width Constants" "Break Vlog on SystemVerilog"}
+set vlog_init {1 1 1 1 1}
 set elab_set { break_elab_on_extra_parameter break_elab_on_extra_port break_elab_on_unreferenced_instance break_elab_on_missed_timescale}
 set elab_text { "Break Elab On Extra Parameter" "Break Elab On Extra Port" "Break Elab On Unreferenced Instance" "Break Elab On Missed Timescale" }
 set elab_init {1 1 1 1}
