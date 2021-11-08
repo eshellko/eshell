@@ -1,0 +1,7 @@
+##########################
+ COMMAND
+      mif2rom
+ DESCRIPTION
+      Mif to RTL and HEX conversion utility
+ ARGUMENTS
+

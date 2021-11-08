@@ -1,0 +1,7 @@
+##########################
+ COMMAND
+      read_vcd
+ DESCRIPTION
+      Read-in Value Change Dump (VCD) file
+ ARGUMENTS
+

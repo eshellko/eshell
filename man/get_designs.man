@@ -1,0 +1,8 @@
+##########################
+ COMMAND
+      get_designs <a>
+ DESCRIPTION
+      Lists modules of elaborated top level with specified names,
+	  including wildcard (?*) symbols.
+ ARGUMENTS
+

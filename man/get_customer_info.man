@@ -1,0 +1,7 @@
+##########################
+ COMMAND
+      get_customer_info
+ DESCRIPTION
+      Prints information about current software copy customer
+ ARGUMENTS
+

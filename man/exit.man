@@ -1,0 +1,7 @@
+##########################
+ COMMAND
+      exit
+ DESCRIPTION
+      Exit tool
+ ARGUMENTS
+

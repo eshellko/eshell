@@ -1,0 +1,7 @@
+##########################
+ COMMAND
+      report_uninitialized
+ DESCRIPTION
+
+ ARGUMENTS
+

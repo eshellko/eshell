@@ -1,0 +1,15 @@
+##########################
+ COMMAND
+      report_design
+ DESCRIPTION
+      Writes information about current elaborated design.
+      This includes:
+      * output ports driven by constants;
+      * undriven output ports;
+      * unloaded input ports;
+      * presence of combinatorial timing loops in design;
+      * flip-flops with undriven data and clock pins;
+      * presence of black boxes in original design (although they can be completely removed during optimizations);
+      * presence of multidriven nets.
+ ARGUMENTS
+      None

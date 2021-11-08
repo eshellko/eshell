@@ -1,0 +1,7 @@
+##########################
+ COMMAND
+      read_sdc
+ DESCRIPTION
+
+ ARGUMENTS
+

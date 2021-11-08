@@ -1,0 +1,7 @@
+##########################
+ COMMAND
+      clear_db
+ DESCRIPTION
+      Clears design database
+ ARGUMENTS
+

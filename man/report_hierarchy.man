@@ -1,0 +1,8 @@
+##########################
+ COMMAND
+      report_hierarchy [-depth N]
+ DESCRIPTION
+      Prints hierarchy of currently elaborated design.
+ ARGUMENTS
+      -depth N    Specifies logic hierarchy depth to report.
+                  N should be from 0 (top-level only) up to 65535.

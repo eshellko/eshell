@@ -1,0 +1,8 @@
+##########################
+ COMMAND
+      get_ports <a>
+ DESCRIPTION
+      Lists ports of elaborated top level with specified names,
+	  including wildcard (?*) symbols.
+ ARGUMENTS
+

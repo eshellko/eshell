@@ -1,0 +1,9 @@
+##########################
+ COMMAND
+      cpu N
+ DESCRIPTION
+      Specifies number of CPU for threading.
+	  Some algorithms may benefit from using parallel computation.
+	  Do not set value higher than number of CPU on machine. Recommended not to set higher than (TOTAL_CPU_NUM-1).
+ ARGUMENTS
+      N - number of CPUs; must be in range [1:15]

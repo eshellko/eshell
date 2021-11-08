@@ -1,0 +1,7 @@
+##########################
+ COMMAND
+      write [filename]
+ DESCRIPTION
+      Writes netlist of the current state of design (if successful 'build' was).
+	  If no 'filename' specified '${WORKSPACE_NAME}_netlist.v' is used.
+ ARGUMENTS

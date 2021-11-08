@@ -1,0 +1,7 @@
+##########################
+ COMMAND
+      init
+ DESCRIPTION
+      equivalent to 'source autosetup.tcl'
+ ARGUMENTS
+

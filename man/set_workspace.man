@@ -1,0 +1,7 @@
+##########################
+ COMMAND
+      set_workspace
+ DESCRIPTION
+      Sets current database name
+ ARGUMENTS
+

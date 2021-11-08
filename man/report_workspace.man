@@ -1,0 +1,7 @@
+##########################
+ COMMAND
+      report_workspace
+ DESCRIPTION
+      lists all modules from current_workspace
+ ARGUMENTS
+

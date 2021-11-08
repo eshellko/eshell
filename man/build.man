@@ -1,0 +1,11 @@
+##########################
+ COMMAND
+      build
+ DESCRIPTION
+      Builds design with specified or default parameters values
+         build top_level param_1 10 param_2 20
+      Note that if parameter has escaped name (one starting with '\\'
+      symbol and containing non-standard symbols) it should be used
+      without this leading '\\' symbol.
+ ARGUMENTS
+

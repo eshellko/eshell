@@ -1,0 +1,7 @@
+##########################
+ COMMAND
+      man
+ DESCRIPTION
+
+ ARGUMENTS
+

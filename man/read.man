@@ -1,0 +1,19 @@
+##########################
+ COMMAND
+      read
+ DESCRIPTION
+
+ ARGUMENTS
+##########################
+      <b>read Command</b>
+SYNTAX
+
+   <b>read <-Dmacros> files</b>
+
+See also
+
+Examples
+
+   Read file ehl_crc.v with defined macro ENDIAN before reading:
+
+   <b>read -DENDIAN ehl_crc.v</b>

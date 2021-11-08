@@ -1,0 +1,7 @@
+##########################
+ COMMAND
+      system <a>
+ DESCRIPTION
+      Executes OS shell command specified after 'system'.
+ ARGUMENTS
+
