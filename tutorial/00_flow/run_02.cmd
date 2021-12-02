@@ -1,5 +1,5 @@
 # clean existing databases
-clear_edb
+clear_db
 
 # Lint mode
 # message NOTE
