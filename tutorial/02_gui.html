@@ -1,0 +1,57 @@
+<html>
+   <style> pre.small {line-height: 0.5; color: #0000FF; } </style>
+   <style> CMD {line-height: 0.5; color: #0000FF; } </style>
+   <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+      <div class="titlepage">
+         <h2 class="title">Lab 3. Graphical User Interface (GUI)</h2>
+         <p>In this Lab you will get basic knowledge about GUI features that can be used for small projects management.</p>
+         <hr>
+         <h4>You will learn:</h4>
+         <li>Eshell Graphical User Interface (EGUI);</li>
+         <li>EGUI project files syntax;</li>
+         <li>Interaction between GUI and console.</li>
+<!--
+ctrl + r
+-->
+         <hr>
+         <h4>Activity:</h4>
+         <span style="color: #FF0000"><h4>SETUP</h4></span>
+         <p>Before one can use EGUI it should be correctly setup. EGUI is just a set of TCL/TK scripts to simplify <b.eshell</b> usage for those who prefer GUI over console. One of the possible ways to configure EGUI is to set similar to the following lines into <b>~/.bashrc</b> file. After such setup user can type <b>egui</b> to run EGUI.</p>
+         <pre><CMD>export ESHELL_HOME=/home/lab_user/tools/eshell/</CMD></pre>
+         <pre><CMD>export PATH=$PATH:$ESHELL_HOME</CMD></pre>
+         <pre><CMD>alias egui='wish $ESHELL_HOME/tcl/egui.tcl'</CMD></pre>
+
+         <span style="color: #FF0000"><h4>LAB</h4></span>
+         <li>Open console. Move into this tutorial directory (<b>02_gui</b>).</li>
+         <li>Find <b>ethernet.csv</b> file located there. It is project configuration file that cotains list of Verilog sources that can be separated by ';' or by new line. When separated by ';' they are provided to <b>eshell</b> as a single argument for <b>read</b> command.</li>
+         <li>Type <b>egui</b>.</li>
+		 <br>
+		 <image src="02_main01.png"></image>
+		 
+		 <br>
+		 <br>
+         <li>EGUI uses .csv files from launch directory to be configured. With default name is eshell.csv. No project is opened, as there is no such file. To select required project point to <b>Workspace</b> button and type project name - "ethernet" (popup lists available options). Press "Enter" or push OK button which will be equivalent to <CMD>set_workspace ethernet</CMD>.</li>
+		 <br>
+		 <image src="02_main02.png"></image>
+		 <br>
+
+<!--
+resources -gui
+settings
+editing, or viewing with highlights
+compile / all
+data base / workspace name
+order of compilation
+dependencies...
+error -in list of files, stops on first? or on all!?
+egui - setup and configuration
+-->
+         <hr>
+
+         <h4>What is next:</h4>
+<!--
+         <p>In the next lab you will learn how to run technology mapping using selected technology.</p>
+-->
+      </div>
+   </body>
+</html>

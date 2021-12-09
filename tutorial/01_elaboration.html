@@ -1,18 +1,19 @@
 <html>
-   <style> pre.small {line-height: 0.5; color: #0000FF; }</style>
+   <style> pre.small {line-height: 0.5; color: #0000FF; } </style>
+   <style> CMD {line-height: 0.5; color: #0000FF; } </style>
    <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
       <div class="titlepage">
-         <h2 class="title">Lab 2. Design compilation</h2>
+         <h2 class="title">Lab 2. Design elaboration</h2>
          <p>In this Lab you will get recommendations for design compilation and resources estimation RTL flow.</p>
          <hr>
          <h4>You will learn:</h4>
          <li>Eshell command-line arguments;</li>
          <li>Configure and analyze lint messages;</li>
-         <li>Analyze compilation reports - resources and timing.</li>
+         <li>Analyze compilation reports: resources and timing.</li>
          <hr>
          <h4>Activity:</h4>
          <span style="color: #FF0000"><h4>COMPILATION</h4></span>
-         <li>Open console. Move into this tutorial directory (<b>01_compilation</b>).</li>
+         <li>Open console. Move into this tutorial directory (<b>01_elaboration</b>).</li>
          <li>Run eshell with list of available options: <b>eshell.exe -help</b></li>
          <p>Tool output shows list of available command-line arguments.</p>
          <pre class="small"></pre>
@@ -36,38 +37,39 @@
 
          <p>Specified options can be used to customize tool for specific user's requirements.</p>
          <p>For example, to run design compilation (with exception of SystemVerilog packages) <b>-nodb</b> option can be specified for faster runtime.</p>
-         <li>Open tool (<b>eshell.exe -nodb</b>), set verbosity to NOTE level (<b>message NOTE</b>) and source provided script (<b>source read.tcl</b>).</li>
-         <li>Check overall messages count with <b>report_lint -clear</b>.</li>
-         <li>Briefly examine report. There are messages marked with N (note) and W (warning). Set <b>message WARN</b> to exclude less important messages.</li>
+         <li>Open tool (<b>eshell.exe -nodb</b>), set verbosity to NOTE level (<CMD>message NOTE</CMD>) and source provided script (<CMD>source read.tcl</CMD>).</li>
+         <li>Check overall messages count with <CMD>report_lint -clear</CMD>.</li>
+         <li>Briefly examine report. There are messages marked with N (note) and W (warning). Set <CMD>message WARN</CMD> to exclude less important messages.</li>
          <li>Source script again and check lint statistics.</li>
          <li>There are 3 types of warnings left: ADV-63, ADV-68, ADV-71.</li>
-         <li>Assume we know that ADV-63 and ADV-68 messages do not impact current design, so we can freely turn them off using <b>unset ADV-63</b> and <b>unset ADV-68</b>.</li>
+         <li>Assume we know that ADV-63 and ADV-68 messages do not impact current design, so we can freely turn them off using <CMD>unset ADV-63</CMD> and <CMD>unset ADV-68</CMD>.</li>
          <li>Source script again and notice ADV-71 message. Find it in the log and define issue location.</li>
          <li>Fix an issues (see solution in <b>ehl_sdram.v.FIXED</b>) associated with usage of <b>defparam</b> statement. It creates error-prone behavior of Verilog models, as it allows to redefine module parameters from several places without pre-defined order rules. This statement marked as potentially deprecated in latest SystemVerilog standard.</li>
          <li>Rerun compilation and lint report. Notice that log is empty, RTL design is clean of selected issues.</li>
 
          <span style="color: #FF0000"><h4>ELABORATION</h4></span>
          <p>Compiled design can be further checked for synthesizeability. As not all parts of design can be readily during initial design debug, eshell supports design elaboration with missed instance's description.</p>
-         <li>Try to elaborate design with <b>build ehl_sdram</b>. Error happen, as there is no such design in database. Tool were launched with <b>-nodb</b> option. Re-open tool without this option.</li>
-         <li>Read and elaborate design. Elaboration failed due to missed modules. To allow black-box flow make <b>unset break_elab_on_unreferenced_instance</b>.</li>
+         <li>Try to elaborate design with <CMD>build ehl_sdram</CMD>. Error happen, as there is no such design in database. Tool were launched with <b>-nodb</b> option. Re-open tool without this option.</li>
+         <li>Read and elaborate design. Elaboration failed due to missed modules. To allow black-box flow make <CMD>unset break_elab_on_unreferenced_instance</CMD>.</li>
          <li>Elaborate again and notice that design is elaborated. Also note that there is a list of ADV-108 and ADV-146 warnings.</li>
          <p>ADV-108 reports instances in a design that have no functional description. Eshell instantiates them into netlist but does not create their description. If tool guess ports connectivity correctly, then netlist can be used with blackbox modules defined in separate files. But it is not recommended to use black-box flow for signoff.</p>
          <p>ADV-146 points that some signals in design has no assignment, but has reference. Examine code and notice that part of the signals assigned only when parameter <b>FT_ENA</b> set to 1, while default value is 0.</p>
-         <li>Fix and ADV-146 issue by adding 0 assignment to undriven signals when <b>FT_ENA</b> = 1. Answer can be seen in <b>ehl_sdram.v.FIXED2</b>.</li>
-         <li>Recompile and re-elaborate design. Analyze resource estimation using <b>report_hierarchy -resources</b>. This statistics shows initial resources. Write gates and flops count for further comparison.</li>
+         <li>Fix ADV-146 by adding 0 assignment to undriven signals when <b>FT_ENA</b> = 1. Possible solution can be seen in <b>ehl_sdram.v.FIXED2</b>.</li>
+         <li>Recompile and re-elaborate design. Analyze resource estimation using <CMD>report_hierarchy -resources</CMD>. This statistics shows initial resources. Write gates and flops count for further comparison.</li>
          <p>At this point design has all the flops and hierarchical modules present in original RTL. This is made to allow constraining with less errors.</p>
-         <li>Estimate design timing issuing <b>report_timing</b> that print longest path in design. Note that there is difference in signal arrival time for most of the nodes in critical path.</li>
-         <li>Optimize design (tool will make some timing-related optimizations as <b>report_timing</b> were applied before optimization) - <b>opt</b>. See that overall resources reduced. Run optimizations recursively with <b>opt -recursive</b>.</li>
+         <li>Estimate design timing issuing <CMD>report_timing</CMD> that print longest path in design. Note that there is difference in signal arrival time for most of the nodes in critical path.</li>
+		 <p>&nbsp; &nbsp; &nbsp; &nbsp; <b> eshell> <CMD>report_timing</CMD></b></p>
+         <li>Optimize design (tool will make some timing-related optimizations as <CMD>report_timing</CMD> were applied before optimization) - <CMD>opt</CMD>. See that overall resources reduced. Run optimizations recursively with <CMD>opt -recursive</CMD>.</li>
          <p>During optimization tool tries to reduce gates count. Timing considered for same gate count reduction algorithms.</p>
-         <li>Check timing after optimization. It should not be reduced significantly. To optimize design for timing use <b>opt -time</b>.</li>
+         <li>Check timing after optimization. It should not be reduced significantly. To optimize design for timing use <CMD>opt -time</CMD>.</li>
          <li>Check timing again. Notice that arrival time for most of the gates balanced and critical path significantly reduced.</li>
          <li>Run optimization to remove unnecessary logic created during timing optimization step. Notice that initial gate count before optimization (written into "()") increased comparative with pre-timing optimization ones. This is due to timing optimization nature, which creates additional logic.</li>
-         <li>Run final check with <b>report_design</b> to see list of design artifacts.</li>
+         <li>Run final check with <CMD>report_design</CMD> to see list of design artifacts.</li>
          <p>At this point we have optimized design built from RTL that gives initial estimation of required design resources and achievable timings.</p>
          <hr>
 
          <h4>What is next:</h4>
-         <p>In the next labs you will learn how to run technology mapping using selected technology.</p>
+         <p>In the <a href="02_gui.html" target="Frame_data" class="olink">next lab</a> you will learn how to use Eshell Graphical Interface.</p>
       </div>
    </body>
 </html>
