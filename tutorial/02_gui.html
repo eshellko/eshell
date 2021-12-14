@@ -10,13 +10,10 @@
          <li>Eshell Graphical User Interface (EGUI);</li>
          <li>EGUI project files syntax;</li>
          <li>Interaction between GUI and console.</li>
-<!--
-ctrl + r
--->
          <hr>
          <h4>Activity:</h4>
          <span style="color: #FF0000"><h4>SETUP</h4></span>
-         <p>Before one can use EGUI it should be correctly setup. EGUI is just a set of TCL/TK scripts to simplify <b.eshell</b> usage for those who prefer GUI over console. One of the possible ways to configure EGUI is to set similar to the following lines into <b>~/.bashrc</b> file. After such setup user can type <b>egui</b> to run EGUI.</p>
+         <p>EGUI should be correctly setup before it can be used. EGUI is just a set of TCL/TK scripts to simplify <b>eshell</b> usage for those who prefer GUI over console. One of the possible ways to configure EGUI is to set similar to the following lines into <b>~/.bashrc</b> file. After such setup user can type <b>egui</b> to run EGUI.</p>
          <pre><CMD>export ESHELL_HOME=/home/lab_user/tools/eshell/</CMD></pre>
          <pre><CMD>export PATH=$PATH:$ESHELL_HOME</CMD></pre>
          <pre><CMD>alias egui='wish $ESHELL_HOME/tcl/egui.tcl'</CMD></pre>
@@ -25,27 +22,40 @@ ctrl + r
          <li>Open console. Move into this tutorial directory (<b>02_gui</b>).</li>
          <li>Find <b>ethernet.csv</b> file located there. It is project configuration file that cotains list of Verilog sources that can be separated by ';' or by new line. When separated by ';' they are provided to <b>eshell</b> as a single argument for <b>read</b> command.</li>
          <li>Type <b>egui</b>.</li>
-		 <br>
-		 <image src="02_main01.png"></image>
-		 
-		 <br>
-		 <br>
-         <li>EGUI uses .csv files from launch directory to be configured. With default name is eshell.csv. No project is opened, as there is no such file. To select required project point to <b>Workspace</b> button and type project name - "ethernet" (popup lists available options). Press "Enter" or push OK button which will be equivalent to <CMD>set_workspace ethernet</CMD>.</li>
-		 <br>
-		 <image src="02_main02.png"></image>
-		 <br>
+         <br>
+         <image src="02_main01.png"></image>
 
-<!--
-resources -gui
-settings
-editing, or viewing with highlights
-compile / all
-data base / workspace name
-order of compilation
-dependencies...
-error -in list of files, stops on first? or on all!?
-egui - setup and configuration
--->
+         <br>
+         <br>
+         <li>EGUI uses .csv files from launch directory to be configured. With default name is eshell.csv. No project is opened, as there is no such file. To select required project point to <b>Workspace</b> button and type project name - "ethernet" (popup list will shows available options). Press "Enter" or push OK button which will be equivalent to <CMD>set_workspace ethernet</CMD>.</li>
+         <br>
+         <image src="02_main02.png"></image>
+         <br>
+
+         <li>Before running elaboration let's compile technology library. Use "Read->Liberty" menu on the left panel. Select "lib/ehl.lib" file. Library should be compiled before elaboration started as libraries loaded into memory on design elaboration start.</li>
+         <li>Combobox "Current design" contains list of available compiled designs for "ethernet" workspace. Initiailly there is no any designs and combobox is empty. Select 'eth_miim.v' file list of design sources. Right Mouse Button (RMB) lists available actions for selected file:</li>
+         <ul><li>Edit HDL</li></ul>
+         <ul><li>View HDL</li></ul>
+         <ul><li>Compile</li></ul>
+         <ul><li>Compile All</li></ul>
+         <br>
+         <image src="02_main03.png"></image>
+         <br>
+         <li>Select "View HDL" and run through design file. It has syntax highlight. To leave viewer click RMB - only available option is 'Exit'. Make same for "Edit HDL" and notice that there is no highlighting in this mode. This is due to fact that edited code need to be recolored when edited which requires additional computational resources. Click RMB and see available options. There are compilation related optiona available in this mode.</li>
+         <li>Return to main window and compile "eth_miim.v". Check that combobox updated with 'eth_miim' design.</li>
+         <li>Compile all design sources using RMB click and "Compile All" command.</li>
+         <li>Select 'eth_mac' design inside combobox. Press 'build' button on left panel. Elaboration started and takes some time due to memory intensive design. RAMs inside design implemented using registers, causing approximately 525K flops. To simplify further Lab lets elaborate design with smaller buffer RAM size.</li>
+         <li>To do so use direct command interface. There is command line located at the bottom at the main window. Press 'ctrl+r' to directly execute command written there. Write <CMD>build eth_mac TX_BUFFER_SIZE 4096 RX_BUFFER_SIZE 4096</CMD> and push ctrl+r. There are approximately 132K registers in design.</li>
+         <br>
+         <image src="02_main04.png"></image>
+         <br>
+         <li>Select Report->Hierarchy to print overall design resources. Notice that there <b>mem_rx</b> and <b>mem_tx</b> instances each having 65K flops.</li>
+         <li>Run <CMD>Optimize->Logic</CMD> to remove post-elaboration structures.</li>
+         <li>Run <CMD>Report->Timing</CMD> to estimate worst path length.</li>
+         <li>Try out other reports and optimizations available to user.</li>
+         <li>Write netlist for current design state using "write netlist" left panel button.</li>
+         <li>Run technology mapping with left panel "techmap" button. Tool prints information about cells used during mapping and overal design area.</li>
+         <li>Write mapped design netlist.</li>
          <hr>
 
          <h4>What is next:</h4>

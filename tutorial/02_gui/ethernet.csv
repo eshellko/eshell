@@ -1,0 +1,9 @@
+rtl/cdc_sync.v
+rtl/eth_mac.v
+rtl/eth_miim.v
+rtl/eth_rx_dma.v;rtl/eth_rx_integrity.v;rtl/eth_rx_get.v;rtl/eth_rx.v
+rtl/eth_tx_jam.v;rtl/eth_tx_dma.v;rtl/eth_tx_send.v;rtl/eth_tx.v
+rtl/eth_crc.v
+rtl/eth_mem.v
+rtl/eth_regs.v
+rtl/eth_sync_buffer.v;rtl/eth_sync_buffer_update.v;rtl/eth_sync.v
