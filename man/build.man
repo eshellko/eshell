@@ -1,6 +1,6 @@
 ##########################
  COMMAND
-      build
+      build name [parameter value...]
  DESCRIPTION
       Builds design with specified or default parameters values
          build top_level param_1 10 param_2 20
@@ -8,4 +8,6 @@
       symbol and containing non-standard symbols) it should be used
       without this leading '\\' symbol.
  ARGUMENTS
-
+      name      - top level module name
+      parameter - top level parameter name to be redefined
+      value     - value associated with preceeding parameter

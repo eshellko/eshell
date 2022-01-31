@@ -1,7 +1,30 @@
 ##########################
  COMMAND
-      unset
+      unset ARG
  DESCRIPTION
-
+      Clears tool variable, specified by ARG to false.
  ARGUMENTS
-
+      break_elab_on_extra_parameter               - Ignores extra parameters used during module instantiation. Not recommended for signoff run.
+      break_elab_on_extra_port                    - Ignores extra module port connection used during module instantiation. Not recommended for signoff run.
+      break_vlog_on_initial_reg_assignment        - Keeps initiail variable assignment value. Use it if no other assignments to this variable.
+      break_vlog_on_undirected_port               - Accepts module ports without specified directions (TODO: write which direction is used in this case).
+      break_vlog_on_tri01                         - Treat tri0 / tri1 nets as wire type.
+      break_vlog_on_verilog_xl_compiler_directive - Ignores Verilog-XL compiler directives detected in source code (TODO: list them).
+      allow_incremental_compilation               - Disables incremental compilation.
+      break_vlog_on_zero_width_constants          - 
+      break_elab_on_missed_timescale              - Reports an error if one of the modules in design has timescale, and other one is not. IEEE 1364-2005 assumed to be legacy for synthesis and also became warning in IEEE 1800.
+      prune_unused_hierarchies                    - 
+      break_vlog_on_case_operator                 - 
+      break_vlog_on_systemverilog                 - Supports limited set of SystemVerilog constructs.
+      detect_xs_in_unary_plus                     - 
+      console_color                               - Disables console messages highlighting.
+      append_parameters_to_build_module_name      - 
+      break_elab_on_unreferenced_instance         - Enables elaboration with unreferenced (black box) module. Modules preserved as cells with inout ports.
+      break_elab_on_unsized_concat                - 
+      write_elaborated_netlist                    - 
+      use_built_in_edb                            - Disables searching module (that wasn't found in RTL and Liberty) in pre-compiled components at $ESHELL_HOME/edb
+      new_timer                                   - Disables to use new timing calculator engine (internal tool setting)
+      synth_merge_registers                       - Disables equivalent registers merging (simplifies LEC in some cases)
+      synth_allow_non_static_loop_test_expr       - 
+      ADV-1 ... ADV-199                           - Disables selected tool message.
+      ADV                                         - Disables all the ADV messages, i.e. no tool messages will be generated.

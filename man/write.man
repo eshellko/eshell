@@ -3,5 +3,6 @@
       write [filename]
  DESCRIPTION
       Writes netlist of the current state of design (if successful 'build' was).
-	  If no 'filename' specified '${WORKSPACE_NAME}_netlist.v' is used.
  ARGUMENTS
+      [filename] - name of the file to be written.
+                   '${WORKSPACE_NAME}_netlist.v' is used if omitted.

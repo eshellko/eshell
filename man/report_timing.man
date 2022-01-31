@@ -1,7 +1,9 @@
 ##########################
  COMMAND
-      report_timing
+      report_timing [-all] | [-summary]
  DESCRIPTION
-
+      Prints information about design's timing path.
+      By default, prints detailed information about longest path in design.
  ARGUMENTS
-
+      summary - prints only delay value, from- and to-points.
+      all     - prints all design's endpoints with their delays.

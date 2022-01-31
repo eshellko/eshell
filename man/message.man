@@ -7,6 +7,6 @@
          NOTE  - print all messages except debug
          WARN  - print warnings and errors (default)
          ERROR - print only errors
-      CUrrent message level reported if no argument provided to the command.
+      Current message level reported if no argument provided to the command.
  ARGUMENTS
       N - specifies severity level

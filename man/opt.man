@@ -1,7 +1,12 @@
 ##########################
  COMMAND
-      opt
+      opt [-recursive] [-area] [-time] [design_name]
  DESCRIPTION
-
+      runs design optimization pass.
+      Default run optimizes whol design once
  ARGUMENTS
-
+      recursive   - optimizes logic while there is area reduction detected
+      area        - run single optimization round with heavy algoritm.
+      time        - single delay optimization run of longest path (or paths)
+      design_name - run single optimization round of selected module(s).
+                    '*' and '?' supported

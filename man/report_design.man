@@ -1,6 +1,6 @@
 ##########################
  COMMAND
-      report_design
+      report_design [-io]
  DESCRIPTION
       Writes information about current elaborated design.
       This includes:
@@ -10,6 +10,7 @@
       * presence of combinatorial timing loops in design;
       * flip-flops with undriven data and clock pins;
       * presence of black boxes in original design (although they can be completely removed during optimizations);
-      * presence of multidriven nets.
+      * presence of multidriven nets;
+      * PAD cell present on design I/Os.
  ARGUMENTS
-      None
+      -io     - report presence of PAD cells at design I/Os.

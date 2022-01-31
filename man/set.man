@@ -1,7 +1,30 @@
 ##########################
  COMMAND
-      set
+      set ARG
  DESCRIPTION
-
+      Sets tool variable, specified by ARG to false.
  ARGUMENTS
-
+      break_elab_on_extra_parameter               - Reports an error if extra parameter used during module instantiation.
+      break_elab_on_extra_port                    - Reports an error if extra module port connection used during module instantiation.
+      break_vlog_on_initial_reg_assignment        - Reports an error if variable assigned during declaration.
+      break_vlog_on_undirected_port               - Reports an error if module port decalred but it's direction not specified.
+      break_vlog_on_tri01                         - Reports an error if tri0 / tri1 net detected.
+      break_vlog_on_verilog_xl_compiler_directive - Reports an error if one of the Verilog-XL compiler directives detected in source code (TODO: list them).
+      allow_incremental_compilation               - Skips compilation of modules that were not modified since last compilation (do not check for included modules).
+      break_vlog_on_zero_width_constants          - 
+      break_elab_on_missed_timescale              - Reports an error if one of the modules in design has timescale, and other one is not. IEEE 1364-2005 assumed to be legacy for synthesis and also became warning in IEEE 1800.
+      prune_unused_hierarchies                    - 
+      break_vlog_on_case_operator                 - 
+      break_vlog_on_systemverilog                 - Reports an error in case of SystemVerilog construct detected in source code.
+      detect_xs_in_unary_plus                     - 
+      console_color                               - Highlights message severity warnings in console.
+      append_parameters_to_build_module_name      - 
+      break_elab_on_unreferenced_instance         - Stops elaboration of module if unreferenced (black box) instance is detected.
+      break_elab_on_unsized_concat                - 
+      write_elaborated_netlist                    - 
+      use_built_in_edb                            - 
+      new_timer                                   - Enables to use new timing calculator engine (internal tool setting)
+      synth_merge_registers                       - Enables equivalent registers merging (complicates LEC in some cases)
+      synth_allow_non_static_loop_test_expr       - 
+      ADV-1 ... ADV-199                           - Enables selected tool message.
+      ADV                                         - Enables all the ADV messages.
