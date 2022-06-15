@@ -1,0 +1,7 @@
+##########################
+ COMMAND
+      ungroup
+ DESCRIPTION
+      Ungroups hierarchy.
+      It should not be made 'ungroup' for elaborated design without at least single 'opt' run. This is due to missed design connections (like undriven D pins of FF).
+ ARGUMENTS

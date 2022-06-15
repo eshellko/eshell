@@ -1,0 +1,9 @@
+##########################
+ COMMAND
+      filelist list_of_files
+ DESCRIPTION
+      Command reads content of provided filelists and provides
+         each of filelist's content as single list to Verilog
+         processor.
+ ARGUMENTS
+      list_of_files  - one or more list that contain ordered set of files

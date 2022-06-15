@@ -14,3 +14,4 @@
       * PAD cell present on design I/Os.
  ARGUMENTS
       -io     - report presence of PAD cells at design I/Os.
+                checks that connected library cells' pins has identical power/ground voltage

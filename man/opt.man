@@ -6,7 +6,7 @@
       Default run optimizes whol design once
  ARGUMENTS
       recursive   - optimizes logic while there is area reduction detected
-      area        - run single optimization round with heavy algoritm.
+      area        - run single optimization round with heavy algorithm.
       time        - single delay optimization run of longest path (or paths)
       design_name - run single optimization round of selected module(s).
                     '*' and '?' supported

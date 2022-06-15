@@ -1,7 +1,9 @@
 ##########################
  COMMAND
-      clear_db
+      clear_db [-noedb] [-noldb] [-nopdb]
  DESCRIPTION
       Clears design database
  ARGUMENTS
-
+      -noedb  - do not remove compiled modules
+      -noldb  - do not remove compiled technology libraries
+      -nopdb  - do not remove compiled packages

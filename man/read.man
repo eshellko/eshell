@@ -1,19 +1,24 @@
 ##########################
  COMMAND
-      read
+      read <-Dmacros> <-Iinclude directories> files
  DESCRIPTION
-
+      Compiles Verilog IEEE 1364-2005 (default) or SystemVerilog IEEE 1800-2017
+	     (if variable break_vlog_on_systemverilog unset prior to read command)
+		 into Eshell Database (EDB) used during elaboration for modules
+		 reference resolving.
  ARGUMENTS
-##########################
-      <b>read Command</b>
-SYNTAX
+      -Dmacros              - list of defined Verilog macros.
+	                          Definition takes place in order of appearance
+							  and impacts Verilog files that follow definition.
+	  -Iinclude directories - list of directories used for `include files search
+	                          in order of appearance.
+							  Unlike conventional compilers Eshell searches for
+							  include files into same directory, where original
+							  file located (not run directory). Provided include
+							  directories also specifies path relative to file
+							  directory and not run directory.
+	  files                 - list of (System)Verilog files
+ EXAMPLES
+      Read file ehl_crc.v with defined macro ENDIAN before reading:
 
-   <b>read <-Dmacros> files</b>
-
-See also
-
-Examples
-
-   Read file ehl_crc.v with defined macro ENDIAN before reading:
-
-   <b>read -DENDIAN ehl_crc.v</b>
+      read -DENDIAN ehl_crc.v

@@ -1,6 +1,6 @@
 ##########################
  COMMAND
-      message <N>
+      message [N]
  DESCRIPTION
       Defines message level for reporting:
          DEBUG - print all messages including internal debug info

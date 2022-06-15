@@ -1,7 +1,9 @@
 ##########################
  COMMAND
-      read_lib
+      read_lib list_of_files
  DESCRIPTION
-
+      Compiles Synopsys Liberty files into Library Database (LDB) format
+	     used during elaboration (for cells resolving) and technology
+		 mapping (for mapping itself).
  ARGUMENTS
-
+      list_of_files - list of Liberty files to be compiled

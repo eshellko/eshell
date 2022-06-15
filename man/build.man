@@ -10,4 +10,4 @@
  ARGUMENTS
       name      - top level module name
       parameter - top level parameter name to be redefined
-      value     - value associated with preceeding parameter
+      value     - value associated with preceding parameter

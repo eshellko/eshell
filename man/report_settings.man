@@ -2,6 +2,6 @@
  COMMAND
       report_settings
  DESCRIPTION
-
+      Lists tool settings and their values at the moment of command execution.
  ARGUMENTS
-
+      None
