@@ -1,0 +1,30 @@
+This is the first public release of 'eshell' (EDA Compiler Shell).
+It is distributed as precompiled binary for Linux and Windows.
+
+INSTALLATION:
+-------------
+   Tool distirbuted as precompiled binary 'eshell.exe' for both
+   Windows (32-bit) and Linux (32-bit) OS.
+   To build from source files (if available, which are likely not)
+   use simple 'make' from root directory (as defined in Makefile).
+
+USAGE:
+------
+  (1) Linux machines
+     (1.1) add tool into /bin
+	 (1.2) eshell.exe
+  (2) Windows machines
+     (1.1) modify 'path' system variable to point into 'eshell.exe' location
+	 (1.2) eshell.exe
+
+VERSION:
+--------
+   Tool version defined in include/eshell.h file.
+   Format of the version is following: "YYYY.RR.MMM".
+   YYYY - specifies year of build (ex. 2015)
+   RR   - major release number (ex. 09)
+   MMM  - minor release number (ex. 012)
+   After tool database format modified RR should be changed to
+   allow tool recompile files from older release (Incremental Flow).
+
+  Alexei Kornyukhin, May 2013

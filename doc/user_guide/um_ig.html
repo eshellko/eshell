@@ -1,0 +1,40 @@
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+      <title>Installation Guide</title>
+   </head>
+   <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+      <h2>Инструкция по установке</h2>
+      <hr>
+      <p><b>eshell</b> распространяется в виде двоичного исполняемого файла скомпилированного для 32 и 64-битных версий CPU со статической линковкой библиотек и без статической линковки.</p>
+
+      <table summary="hist" cellpadding="4" width="90%" border="1" cellspacing="0" rules="all">
+         <colgroup><col><col><col></colgroup>
+         <thead>
+            <tr bgcolor="#C0C0C0">
+               <th>Файл</th>
+               <th>Архитектура</th>
+               <th>Замечания</th>
+            </tr>
+         </thead>
+         <tbody>
+            <tr> <td>bin/eshell32.exe</td>  <td>32-бит Linux</td> <td>Для 64-битных CPU может потребоваться модификация переменной LD_LIBRARY_PATH для указания пути к 32-битным библиотекам (ex. <b>export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib/</b>)</td> </tr>
+            <tr> <td>bin/eshell32s.exe</td> <td>32-бит Linux со статическими библиотеками</td> <td>-</td> </tr>
+            <tr> <td>bin/eshell64.exe</td>  <td>64-бит Linux</td> <td>-</td> </tr>
+            <tr> <td>bin/eshell64s.exe</td> <td>64-бит Linux со статическими библиотеками</td> <td>-</td> </tr>
+         </tbody>
+      </table>
+
+      <br> </br>
+      <h3>Настройка среды</h3>
+      <p>
+          Дистрибутив содержит скомпилированные программы для нескольких архитектур. Для запуска требуемой архитектуры используется скрипт <b>eshell</b>.
+          В качестве настроек он принимает те же аргументы, что и программа, а также дополнительно позволяет выбрать 32-битную или 64-битную архитектуру.
+      </p>
+      <p>
+         Если система не содержит требуемых библиотек (например, версия системы отличается от версии, на которой компилировалась программа), то может быть выбрана программа со статической линковкой библиотек.
+         Для ее использования следует определить переменную среды <b>ESHELL_STATIC</b> отличной от пустой строки (например, <b>export ESHELL_STATIC=1</b>).
+      </p>
+      <p></p>
+   </body>
+</html>

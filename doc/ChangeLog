@@ -1,0 +1,39 @@
+What is new in this release.
+============================
+
+2022-05-30	Alexei Kornukhin
+	* tool: Verilog filelist compilation.
+
+2018-03-23	Alexei Kornukhin
+	* tool: Multiline compiler directives and directives with formal arguments are supported.
+
+2017-02-22	Alexei Kornukhin
+	* tool: Added support for local variables in named blocks.
+
+2017-02-04	Alexei Kornukhin
+	* tool: Sequential processes handled with full for/repeat support.
+
+2016-02-26	Alexei Kornukhin
+	* tool: Added GUI written at TCL/TK. Some features need to be added.
+
+2016-02-26	Alexei Kornukhin
+	* tool: Added initial (experimental) support for TCL shell interface.
+
+2016-02-15	Alexei Kornukhin
+	* tool: EHL (Eshell Hardware Library) concept created.
+
+2016-01-28	Alexei Kornukhin
+	* tool: 'report_lint' command added.
+
+2015-01-14	Alexei Kornukhin
+	* tool: VCD reader significantly speed-up by using N search lists.
+
+2014-12-27	Alexei Kornukhin
+	* tool: added get_ports (get_instances) functions to search single object.
+
+2013-11-01	Alexei Kornukhin
+	* tool: added conversion of real constants into integers. message - WARNING.
+	* added support of embedded spaces in constants. message - NOTE.
+
+2012-04-13	Alexei Kornukhin
+	* Added reporting when object declared but not used inside module. message - NOTE.
