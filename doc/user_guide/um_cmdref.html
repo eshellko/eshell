@@ -4,33 +4,63 @@
       <title>Command Reference</title>
    </head>
    <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
-      <h2>Command Reference</h2>
+      <h2>Описание команд</h2>
       <hr>
       <table summary="hist" cellpadding="4" width="70%" border="1" cellspacing="0" rules="all">
          <colgroup><col><col><col></colgroup>
          <thead>
             <tr bgcolor="#C0C0C0">
-               <th>Command</th>
-               <th>GUI Command</th>
-               <th>Description</th>
+               <th>Команда</th>
+               <th>Графическая версия</th>
+               <th>Описание</th>
             </tr>
          </thead>
          <tbody>
-            <tr> <td>exit</td>          <td>Exit</td> <td>Exit from eshell tool.</td></tr>
-            <tr> <td>read</td>          <td>Read verilog</td> <td>Read verilog file.</td></tr>
-            <tr> <td>clear_edb</td>     <td>Clear Design</td> <td>Clear 'eshell.edb' content.</td></tr>
-            <tr> <td>mif2rom</td>       <td>Mif2rom</td> <td>Start mif2rom converter.</td></tr>
-            <tr> <td>cpu</td>           <td></td> <td>Sets MAX number of threads. Useful for multi-core processors.</td></tr>
-            <tr> <td>help</td>          <td></td> <td>Start help for eshell.</td></tr>
+            <tr> <td>build</td>                <td></td> <td>Builds selected design from modules in 'eshell.edb'.</td></tr>
+            <tr> <td>clear_db</td>             <td>Clear Design</td> <td>Clear 'eshell.edb' content.</td></tr>
+            <tr> <td>cpu</td>                  <td></td> <td>Sets MAX number of threads. Useful for multi-core processors.</td></tr>
+            <tr> <td>env</td>                  <td></td> <td></td></tr>
+            <tr> <td>exit</td>                 <td>Exit</td> <td>Exit from eshell tool.</td></tr>
+            <tr> <td>filelist</td>             <td></td> <td></td></tr>
+            <tr> <td>get_customer_info</td>    <td></td> <td></td></tr>
+            <tr> <td>get_designs</td>          <td></td> <td></td></tr>
+            <tr> <td>get_instances</td>        <td></td> <td></td></tr>
+            <tr> <td>get_ports</td>            <td></td> <td></td></tr>
+            <tr> <td>help</td>                 <td></td> <td>Start help for eshell.</td></tr>
+            <tr> <td>history</td>              <td></td> <td></td></tr>
+            <tr> <td>init</td>                 <td></td> <td></td></tr>
+            <tr> <td>man</td>                  <td>Help</td> <td>Start manual.</td></tr>
+            <tr> <td>marker</td>               <td></td> <td></td></tr>
+            <tr> <td>message</td>              <td></td> <td></td></tr>
+            <tr> <td>mif2rom</td>              <td>Mif2rom</td> <td>Start mif2rom converter.</td></tr>
+            <tr> <td>opt</td>                  <td></td> <td></td></tr>
+            <tr> <td>read</td>                 <td>Read verilog</td> <td>Read verilog file.</td></tr>
+            <tr> <td>read_lib</td>             <td></td> <td></td></tr>
+            <tr> <td>read_sdc</td>             <td></td> <td></td></tr>
+            <tr> <td>read_vcd</td>             <td>Read VCD</td> <td>Read Value Change Dump (VCD) file. Used for Simulation-Aware Power Analysis.</td></tr>
+            <tr> <td>report_blackbox</td>      <td></td> <td></td></tr>
+            <tr> <td>report_design</td>        <td>Report</td> <td>Report designs in memory.</td></tr>
+            <tr> <td>report_hierarchy</td>     <td></td> <td></td></tr>
+            <tr> <td>report_libs</td>          <td></td> <td></td></tr>
+            <tr> <td>report_lint</td>          <td></td> <td></td></tr>
+            <tr> <td>report_settings</td>      <td></td> <td></td></tr>
+            <tr> <td>report_timing</td>        <td></td> <td></td></tr>
+            <tr> <td>report_uninitialized</td> <td></td> <td></td></tr>
+            <tr> <td>report_vcd</td>           <td></td> <td></td></tr>
+            <tr> <td>report_workspace</td>     <td></td> <td></td></tr>
+            <tr> <td>set</td>                  <td></td> <td></td></tr>
+            <tr> <td>set_workspace</td>        <td></td> <td>Specifies workspace name</td></tr>
+            <tr> <td>source</td>               <td></td> <td></td></tr>
+            <tr> <td>system</td>               <td></td> <td></td></tr>
+            <tr> <td>techmap</td>              <td></td> <td></td></tr>
+            <tr> <td>ungroup</td>              <td></td> <td></td></tr>
+            <tr> <td>unset</td>                <td></td> <td></td></tr>
+            <tr> <td>write</td>                <td>Write netlist</td> <td>Write verilog file for defined design.</td></tr>
+<!--
             <tr> <td>lp</td>            <td></td> <td>Start Low-Power Advisor for RTL power optimization.</td></tr>
-            <tr> <td>write_verilog</td> <td>Write netlist</td> <td>Write verilog file for defined design.</td></tr>
-            <tr> <td>report_design</td> <td>Report</td> <td>Report designs in memory.</td></tr>
             <tr> <td>report_port</td>   <td>Report</td> <td>Report ports of the current design.</td></tr>
             <tr> <td>report_object</td> <td>Report</td> <td>Report variables of the current design.</td></tr>
-            <tr> <td>man</td>           <td>Help</td> <td>Start manual.</td></tr>
-            <tr> <td>read_vcd</td>      <td>Read VCD</td> <td>Read Value Change Dump (VCD) file. Used for Simulation-Aware Power Analysis.</td></tr>
-            <tr> <td>build</td>         <td></td> <td>Builds selected design from modules in 'eshell.edb'.</td></tr>
-            <tr> <td>set_workspace</td> <td></td> <td>Specifies workspace name</td></tr>
+-->
          </tbody>
       </table>
 
