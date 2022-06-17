@@ -1,7 +1,14 @@
 ##########################
  COMMAND
-      man
+      man topic
  DESCRIPTION
-
+      Prints information requested by 'topic'.
+	  Allow to get more information about specific message (ADV-...)
+	     or command.
  ARGUMENTS
-
+      topic - one or more SDC files to be read
+              Can be one of 'ADV-...' or command.
+			  Warning printed if no topic found.
+			  Example:
+			     man ADV-1              prints details of message
+				 man read_sdc           prints 'read_sdc' description

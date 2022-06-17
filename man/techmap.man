@@ -2,8 +2,9 @@
  COMMAND
       techmap
  DESCRIPTION
-      maps design into specified technology.
-      libraries from ldb are used for mapping
-      It should not be made techmap for elaborated design without at least single 'opt' run. This is due to missed design connections (like undriven D pins of FF).
+      Maps design into specified technology.
+      Libraries from ldb are used for mapping.
+      'techmap' should not be run for elaborated design without at least single 'opt' run.
+         At this stage design has structures not ready to mapping, like missed design connections (undriven D pins of FF...).
  ARGUMENTS
       None

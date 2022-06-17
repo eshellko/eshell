@@ -1,7 +1,7 @@
 ##########################
  COMMAND
-      read_sdc
+      read_sdc list_of_files
  DESCRIPTION
-
+      Apply constraints provided in 'list_of_files'.
  ARGUMENTS
-
+      list_of_files  - one or more SDC files to be read
