@@ -1,0 +1,103 @@
+#!/bin/sh
+
+# set as default (none)
+# 1 - x84_64
+# 2 - i686
+declare mode=0
+declare nolog=""
+declare nodb=""
+declare quiet=""
+declare noinit=""
+declare tcl=""
+declare script=""
+declare help=""
+declare dir=""
+# Note: allow to run tool with Valgrind memory checker
+declare valgrind=0
+
+# process arguments to define if user explicitly requires specific architecture to be run
+while [ $# -gt 0 ]
+do
+#echo "-- ${1} --"
+   if [ "$1" == "-32" ] ; then
+      let mode=2
+   elif [ "$1" == "-64" ] ; then
+      let mode=1
+   elif [ "$1" == "-nolog" ] ; then
+      declare nolog="-nolog"
+   elif [ "$1" == "-nodb" ] ; then
+      declare nodb="-nodb"
+   elif [ "$1" == "-quiet" ] ; then
+      declare quiet="-quiet"
+   elif [ "$1" == "-noinit" ] ; then
+      declare noinit="-noinit"
+   elif [ "$1" == "-tcl" ] ; then
+      declare tcl="-tcl"
+   elif [ "$1" == "-valgrind" ] ; then
+      declare valgrind=1
+   elif [ "$1" == "-valgrind_all" ] ; then
+      declare valgrind=2
+   elif [ "$1" == "-script" ] ; then
+      shift
+      if [ $# -gt 0 ] ; then
+         declare script="-script $1"
+      else
+         echo "   Error: no script provided."
+         exit 1
+      fi
+   elif [ "$1" == "-dir" ] ; then
+      shift
+      if [ $# -gt 0 ] ; then
+         declare dir="-dir $1"
+      else
+         echo "   Error: no dir provided."
+         exit 1
+      fi
+   elif [ "$1" == "-help" ] ; then
+      declare help="-help"
+# Note: alternative way to write multiline text using EOF
+# TODO: better describe this VELGRIND options - their exclusion and priority order...
+   else
+      cat << EOF
+   Error: incorrect argument '$1' provided.
+
+
+   Usage: eshell [-32 | -64] [-nodb] [-nolog] [-quiet] [-noinit] [-tcl] [-script <filename>] [-help] [-dir <directory>]
+                 [-valgrind] [-valgrind_all].
+
+EOF
+      exit 1
+   fi
+   shift
+done
+
+# Note: detect if system is x86_64, or i686 (if none explicitly specified by the user)
+if [ $mode == 0 ] ; then
+   uname -p | grep -q "x86_64" && let mode=1
+   uname -p | grep -q "i686" && let mode=2
+fi
+
+declare TOOL_EXEC=""
+if [ $mode == 1 ] ; then
+   if [[ -z "${ESHELL_STATIC}" ]]; then
+      declare TOOL_EXEC=${ESHELL_HOME}/bin/eshell64.exe
+   else
+      declare TOOL_EXEC=${ESHELL_HOME}/bin/eshell64s.exe
+   fi
+elif [ $mode == 2 ] ; then
+   if [[ -z "${ESHELL_STATIC}" ]]; then
+      declare TOOL_EXEC=${ESHELL_HOME}/bin/eshell32.exe
+   else
+      declare TOOL_EXEC=${ESHELL_HOME}/bin/eshell32s.exe
+   fi
+else
+   declare TOOL_EXEC=./eshell.exe
+fi
+
+if [ $valgrind == 1 ] ; then
+   declare TOOL_EXEC="valgrind ${TOOL_EXEC}"
+elif [ $valgrind == 2 ] ; then
+   declare TOOL_EXEC="valgrind --leak-check=full --show-leak-kinds=all ${TOOL_EXEC}"
+fi
+
+$TOOL_EXEC $nodb $nolog $quiet $noinit $tcl $script $help $dir
