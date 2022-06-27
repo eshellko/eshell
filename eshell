@@ -56,7 +56,7 @@ do
    elif [ "$1" == "-help" ] ; then
       declare help="-help"
 # Note: alternative way to write multiline text using EOF
-# TODO: better describe this VELGRIND options - their exclusion and priority order...
+# TODO: better describe this VALGRIND options - their exclusion and priority order...
    else
       cat << EOF
    Error: incorrect argument '$1' provided.
