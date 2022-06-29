@@ -25,6 +25,6 @@ module ternary_adder(
 
    assign q = qi;
 `else
-   assign q = a + b + c; // 59 gates, 16 delay
+   assign q = a + b + c;
 `endif
 endmodule

@@ -3,23 +3,12 @@ module carry_save_adder
    parameter W = 24
 )
 (
-   input [W-1:0] a, b, c, output [W:0] q
+   input [W-1:0] a, b, c, output [W-1:0] q
 );
 `ifdef CSA
-   wire [W-1:0] ps;
-   wire [W-1:0] sc;
-   genvar gen_i;
-   for(gen_i = 0; gen_i < W; gen_i = gen_i + 1)
-   begin
-      assign ps[gen_i] = a[gen_i] ^ b[gen_i] ^ c[gen_i];
-      assign sc[gen_i] = (a[gen_i] & b[gen_i]) | (a[gen_i] & c[gen_i]) | (b[gen_i] & c[gen_i]);
-   end
-
-   wire [W:0] s0 = {sc, 1'b0};
-   wire [W:0] s1 = {1'b0, ps};
-
-   assign q = s0 + s1;
-
+   wire [W-1:0] ps = a ^ b ^ c;
+   wire [W-1:0] sc = (a & b) | (a & c) | (b & c);
+   assign q = ps + (sc << 1);
 `else
    assign q = a + b + c;
 `endif
