@@ -21,7 +21,21 @@
       <pre class="code">      assign data_gray = (data_bin>>1) ^ data_bin;</pre>
       <pre class="code">   endmodule</pre>
       <p>Транслируется в следующее представление (библиотека <b>ehl.lib</b>):</p>
-      <pre class="code">TODO:</pre>
+      <pre class="code">   module ehl_bin2gray</pre>
+      <pre class="code">   (</pre>
+      <pre class="code">      data_bin,</pre>
+      <pre class="code">      data_gray</pre>
+      <pre class="code">   );</pre>
+      <pre class="code">   // total number of IO: 6</pre>
+      <pre class="code">     input [2:0] data_bin;</pre>
+      <pre class="code">     output [2:0] data_gray;</pre>
+      <pre class="code">   </pre>
+      <pre class="code">     wire n1,n2,n3,n4,n5;</pre>
+      <pre class="code">   </pre>
+      <pre class="code">   </pre>
+      <pre class="code">   XOR2 c2(.A(data_bin[2]),.B(data_bin[1]),.Q(data_gray[1]));</pre>
+      <pre class="code">   XOR2 c1(.A(data_bin[1]),.B(data_bin[0]),.Q(data_gray[0]));</pre>
+      <pre class="code">   endmodule</pre>
 
       <h3>Алгоритм</h3>
       <p>1. Построение библиотеки триггеров, применимых для маппинга.</p>
