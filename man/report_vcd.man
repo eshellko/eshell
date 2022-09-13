@@ -1,4 +1,6 @@
 ##########################
+UNSUPPORTED
+##########################
  COMMAND
       report_vcd
  DESCRIPTION

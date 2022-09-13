@@ -4,4 +4,4 @@
  DESCRIPTION
       Executes OS shell command specified after 'system'.
  ARGUMENTS
-
+      a   - command to be provided to host environment.

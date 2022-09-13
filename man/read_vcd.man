@@ -1,7 +1,7 @@
 ##########################
  COMMAND
-      read_vcd
+      read_vcd vcd_file
  DESCRIPTION
       Read-in Value Change Dump (VCD) file
  ARGUMENTS
-
+      vcd_file   - VCD file to be read

@@ -40,9 +40,11 @@ pack forget .f5
 # Note: progress bar, which turned on when process launched
 ttk::progressbar .f1.progress -mode indeterminate -maximum 100
 pack .f1.progress -fill both -expand 0
+############################
 #
 # Buttons
 #
+############################
 # Note: buttons created before initial tool setup made, which will call start_cmd/stop_cmd and thus modify buttons settings
 #       so they configured once more
 array set button_cfg [ list \
@@ -116,8 +118,11 @@ for {set i 0} {$i < $anum} {incr i} {
       }
    }
 }
-
+############################
+#
 # Tree
+#
+############################
 set TreeRowsNum 8; #[expr 12-4]
 pack [ ttk::treeview .outer.f3.tree -columns "Vendor Version Date Description" -displaycolumns "Description Date Version Vendor" -height $TreeRowsNum ] -side left -expand y -fill both
 .outer.f3.tree heading Vendor      -text "Vendor"      -anchor w
@@ -134,9 +139,11 @@ pack [ ttk::treeview .outer.f3.tree -columns "Vendor Version Date Description" -
 pack [ scrollbar .outer.f3.sby -orient vert -width 12 ] -side right -fill y
 .outer.f3.tree conf -yscrollcommand {.outer.f3.sby set}
 .outer.f3.sby conf -command {.outer.f3.tree yview}
+############################
 #
 # Edit HDL
 #
+############################
 menu .popupMenu
 .popupMenu configure -tearoff 0
 .popupMenu add command -label "Edit HDL" -command "EventOnBtnEditHdl"
@@ -145,14 +152,16 @@ menu .popupMenu
 proc EventOnBtnCompile {} {
    set filename [.outer.f3.tree focus]
    read_verilog $filename
+   vwait mutex
    EventOnBtnReloadEDB
 }
 .popupMenu add command -label "Compile All" -command "EventOnBtnCompileAll" ; # -state disable ; # todo: add valid file name, not 'id'
  proc EventOnBtnCompileAll {} {
    set filetop [.outer.f3.tree children {}]
+# TODO: when tool exited during read - stop reading next files... and do not halt
    foreach r $filetop {
       read_verilog $r
-       vwait mutex
+      vwait mutex
    }
    EventOnBtnReloadEDB
 }
@@ -161,9 +170,11 @@ proc EventOnBtnCompile {} {
 #bind .outer.f3.tree <Double-Button-1> {tk_popup .popupMenu %X %Y}
 #bind .outer.f3.tree <Button-2> {tk_popup .popupMenu %X %Y}
 bind .outer.f3.tree <Button-3> {tk_popup .popupMenu %X %Y}
+############################
 #
 # Log
 #
+############################
 pack [ text .outer.f4.text -state normal -height 10 -font efont -wrap char -background white ] -side left -expand y -fill both
 .outer.f4.text insert end "Welcome to EHL $sw_version.\n"
 .outer.f4.text see end
@@ -181,80 +192,90 @@ bind .outer.f4.text <Button-3> {tk_popup .popupMenu2 %X %Y}
 pack [ scrollbar .outer.f4.sby -orient vert -width 12 ] -side right -fill y
 .outer.f4.text conf -yscrollcommand {.outer.f4.sby set}
 .outer.f4.sby conf -command {.outer.f4.text yview}
+############################
 #
 # ComboBox
 #
+############################
 pack [message .f2.myMessage -text "Current design" -width 100 -font efont -background grey85] -side left -padx 4
 append EdbSpace $WorkSpace ".edb"
 # Note: -height set in terms of text lines
 pack [ttk::combobox .f2.myComboBox -textvariable ElaboratedDesign  -state readonly -font efont -height 20 ] -side left  -padx 4 ; # todo: place predefined packaged designs from sw_library in list
 ReadEDB $EdbSpace
+############################
 #
 # Radiobutton
 #
+############################
 pack [label .f2.label1 -text "Message level" -font efont -background grey85] -side top -after .f2.myComboBox -anchor w -padx 30 -pady 4
 pack [radiobutton .f2.errorBtn -text "Error"   -variable mesLev -command "message ERROR" -value "ERROR" -font efont -background grey85] -side left
 pack [radiobutton .f2.warnBtn  -text "Warning" -variable mesLev -command "message WARN"  -value "WARN"  -font efont -background grey85] -side left
 pack [radiobutton .f2.noteBtn  -text "Note"    -variable mesLev -command "message NOTE"  -value "NOTE"  -font efont -background grey85] -side left
 .f2.errorBtn select
+############################
 #
 # Checkbutton
 #
+############################
 # Note: set default before trace, to avoid not necessary commands to eshell (on the other hand it will synchronize gui and console)
 proc proc_break { var e op rr } {
-   global eshell_tool
+   global eshell_tool io
    if $eshell_tool==1 {
       start_cmd
-      global io
       global $e
       if $$e==1 {
-         puts $io "set $e"
+         TOOL_CMD "set $e"
       } else {
-         puts $io "unset $e"
+         TOOL_CMD "unset $e"
       }
    }
 }   
 
-set vlog_set { break_vlog_on_undirected_port break_vlog_on_tri01 break_vlog_on_verilog_xl_compiler_directive break_vlog_on_zero_width_constants break_vlog_on_systemverilog }
-set vlog_text { "Break Vlog On Undirected Port" "Break Vlog On Tri Port" "Break Vlog On VerilogXL Compiler Directive" "Break Vlog On Zero Width Constants" "Break Vlog on SystemVerilog"}
-set vlog_init {1 1 1 1 1}
-set elab_set { break_elab_on_extra_parameter break_elab_on_extra_port break_elab_on_unreferenced_instance break_elab_on_missed_timescale}
-set elab_text { "Break Elab On Extra Parameter" "Break Elab On Extra Port" "Break Elab On Unreferenced Instance" "Break Elab On Missed Timescale" }
-set elab_init {1 1 1 1}
-set tool_set {allow_incremental_compilation detect_xs_in_unary_plus append_parameters_to_build_module_name}
-set tool_text {"Allow Incremental Compilation" "Detect Xs In Unary Plus" "Append Parameters To Build Module Name"}
-set tool_init {0 1 0}
+proc print_settings {arr} {
+   upvar $arr a
+   set anum [array size a]
+   for {set i 0} {$i < $anum} {incr i} {
+      # Note: made variable global to refer by out-of-proc functions
+      set ::cfg_name [lindex $a($i) 0]
+      set cfg_text [lindex $a($i) 1]
+      set cfg_enbl [lindex $a($i) 2]
+      set cfg_tips [lindex $a($i) 3]
 
-pack [label .f5.label4 -text "COMPILATION" -font efontbold -background grey85 ] -side top
-foreach com $vlog_set text $vlog_text ini $vlog_init {
-   variable $com $ini
-   trace var $com wu {proc_break $$com}
-   pack [checkbutton .f5.$com -font efont -text $text -variable $com -background grey85 ] -side top -anchor w
-}
-pack [label .f5.label5 -text "ELABORATION" -font efontbold -background grey85 ] -side top
-foreach com $elab_set text $elab_text ini $elab_init {
-   variable $com $ini
-   trace var $com wu {proc_break $$com}
-   pack [checkbutton .f5.$com -font efont -text $text -variable $com -background grey85 ] -side top -anchor w
-}
-pack [label .f5.label6 -text "SETTINGS" -font efontbold -background grey85 ] -side top
-foreach com $tool_set text $tool_text ini $tool_init {
-   variable $com $ini
-   trace var $com wu {proc_break $$com}
-   pack [checkbutton .f5.$com -font efont -text $text -variable $com -background grey85 ] -side top -anchor w
+      variable $::cfg_name $cfg_enbl
+      trace var $::cfg_name wu {proc_break $$::cfg_name}
+      pack [checkbutton .f5.$::cfg_name -font efont -text $cfg_text -variable $::cfg_name -background grey85 ] -side top -anchor w
+      setToolTip .f5.$::cfg_name $cfg_tips
+   }
 }
 # Note: texts are same as  in help.cpp
-setToolTip .f5.break_vlog_on_undirected_port "When set break the compilation if any port has no direction."
-setToolTip .f5.break_vlog_on_tri01 "When set treat tri0/tri1 port types as wires; otherwise they are not supported. This nets should have pull-up/pull-down which is not supported by tool."
-setToolTip .f5.break_vlog_on_verilog_xl_compiler_directive "When set break the compilation if Verilog-XL directive found. Otherwise directive (one of the suppress_faults, nosuppress_faults, enable_portfaults, disable_portfaults, delay_mode_path, delay_mode_unit, delay_mode_zero, delay_mode_distributed) ignored."
-setToolTip .f5.break_vlog_on_zero_width_constants "When set break the compilation on constants with zero width. In other case treat them as 1'b0."
-setToolTip .f5.break_elab_on_extra_parameter "When set break the elaboration if instance has connected parameters which are not present in instantiated module."
-setToolTip .f5.break_elab_on_extra_port "When set break the elaboration if instance has connected ports which are not present in instantiated module."
-setToolTip .f5.break_elab_on_unreferenced_instance "When set break elaboration if module referenced but not found in library."
-setToolTip .f5.break_elab_on_missed_timescale "When set break the elaboration when some of the modules has timescale specified but other do not."
-setToolTip .f5.allow_incremental_compilation ""
-setToolTip .f5.detect_xs_in_unary_plus "Verilog standard doesn't clearly explain how to implement unary plus operator:\n(1) IEEE 1364-2005 5.1.5:\nFor the arithmetic operators, if any operand bit value is the unknown value x or the high-impedance value z, then the entire result should be x.\n(2) Table 5-7:\nUnary plus m (same as m).\nWhen detect_xs_in_unary_plus set - (1) implemented, otherwise (2).\nDefault is (1) should be treated as 'value if no Xs' as otherwise unary plus doesn't have any meaning."
-setToolTip .f5.append_parameters_to_build_module_name "Append parameter name and value to elaborated module name. This allow find out what value were used to elaborate module. This option not affected top level module."
+array set vlog_cfg [ list \
+   0  [ list break_vlog_on_undirected_port               "Break Vlog On Undirected Port"              1 "When set break the compilation if any port has no direction." ] \
+   1  [ list break_vlog_on_tri01                         "Break Vlog On Tri Port"                     1 "When set treat tri0/tri1 port types as wires; otherwise they are not supported. This nets should have pull-up/pull-down which is not supported by tool." ] \
+   2  [ list break_vlog_on_verilog_xl_compiler_directive "Break Vlog On VerilogXL Compiler Directive" 1 "When set break the compilation if Verilog-XL directive found. Otherwise directive (one of the suppress_faults, nosuppress_faults, enable_portfaults, disable_portfaults, delay_mode_path, delay_mode_unit, delay_mode_zero, delay_mode_distributed) ignored." ] \
+   3  [ list break_vlog_on_zero_width_constants          "Break Vlog On Zero Width Constants"         1 "When set break the compilation on constants with zero width. In other case treat them as 1'b0." ] \
+   4  [ list break_vlog_on_systemverilog                 "Break Vlog on SystemVerilog"                1 "When set reports an error in case of SystemVerilog construct detected in source code." ] \
+]
+
+array set elab_cfg [ list \
+   0  [ list break_elab_on_extra_parameter       "Break Elab On Extra Parameter"       1 "When set break the elaboration if instance has connected parameters which are not present in instantiated module." ] \
+   1  [ list break_elab_on_extra_port            "Break Elab On Extra Port"            1 "When set break the elaboration if instance has connected ports which are not present in instantiated module." ] \
+   2  [ list break_elab_on_unreferenced_instance "Break Elab On Unreferenced Instance" 1 "When set break elaboration if module referenced but not found in library." ] \
+   3  [ list break_elab_on_missed_timescale      "Break Elab On Missed Timescale"      1 "When set break the elaboration when some of the modules has timescale specified but other do not." ] \
+]
+
+array set tool_cfg [ list \
+   0  [ list allow_incremental_compilation          "Allow Incremental Compilation"          0 "When set skips compilation of modules that were not modified since last compilation (do not check for included modules)." ] \
+   1  [ list detect_xs_in_unary_plus                "Detect Xs In Unary Plus"                1 "Verilog standard doesn't clearly explain how to implement unary plus operator:\n(1) IEEE 1364-2005 5.1.5:\nFor the arithmetic operators, if any operand bit value is the unknown value x or the high-impedance value z, then the entire result should be x.\n(2) Table 5-7:\nUnary plus m (same as m).\nWhen detect_xs_in_unary_plus set - (1) implemented, otherwise (2).\nDefault is (1) should be treated as 'value if no Xs' as otherwise unary plus doesn't have any meaning." ] \
+   2  [ list append_parameters_to_build_module_name "Append Parameters To Build Module Name" 0 "Append parameter name and value to elaborated module name. This allow find out what value were used to elaborate module. This option not affected top level module." ] \
+   3  [ list use_built_in_edb                       "Use EDB"                                0 "When set EHL modules from built-in tool's library when there is no user provided modules." ] \
+]
+
+pack [label .f5.label4 -text "COMPILATION" -font efontbold -background grey85 ] -side top
+print_settings vlog_cfg
+pack [label .f5.label5 -text "ELABORATION" -font efontbold -background grey85 ] -side top
+print_settings elab_cfg
+pack [label .f5.label6 -text "SETTINGS" -font efontbold -background grey85 ] -side top
+print_settings tool_cfg
 
 # Note: command line to customize GUI (ctrl-r executes specified command)
 variable wish ""

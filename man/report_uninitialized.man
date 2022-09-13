@@ -1,7 +1,9 @@
 ##########################
+UNSUPPORTED
+##########################
  COMMAND
       report_uninitialized
  DESCRIPTION
-
+      Displays registers that were not initialized at VCD specified time.
  ARGUMENTS
 

@@ -3,10 +3,10 @@
       message [N]
  DESCRIPTION
       Defines message level for reporting:
-         DEBUG - print all messages including internal debug info
-         NOTE  - print all messages except debug
-         WARN  - print warnings and errors (default)
-         ERROR - print only errors
+         DEBUG - display all messages including internal debug info
+         NOTE  - display all messages except debug
+         WARN  - display warnings and errors (default)
+         ERROR - display only errors
       Current message level reported if no argument provided to the command.
  ARGUMENTS
       N - specifies severity level

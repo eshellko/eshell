@@ -145,16 +145,15 @@ set command_set { build \
 #                    append command_set $sdc_set
 foreach cs $command_set {
    proc $cs args {
-      global eshell_tool
+      global eshell_tool io
       if $eshell_tool==1 {
          start_cmd
-         global io
          # Note: provide arguments as text string and not as tcl list with '{}'
          set CMD "[lindex [info level 0] 0] "
          foreach arg $args {
             set CMD "$CMD $arg"
          }
-         puts $io $CMD
+         TOOL_CMD "$CMD"
       }
    }
 }
@@ -168,11 +167,10 @@ foreach cs $command_set {
 ####################       set        sete
 ####################       unset      unsete
 proc quit {} {
-   global eshell_tool
+   global eshell_tool io
    if $eshell_tool==1 {
       start_cmd
-      global io
-      puts $io "exit"
+      TOOL_CMD "exit"
       close $io
    }
    exit
@@ -181,8 +179,21 @@ proc read_verilog args {
    global eshell_tool
    if $eshell_tool==1 {
       start_cmd
-      global io
-      puts $io "read $args"
+      TOOL_CMD "read $args"
+   }
+}
+#
+# Wrapper above command, sent to tool
+# TODO: implement funcitonality
+# It checks for channel status before send command
+# If channel is closed - error written into console
+#
+proc TOOL_CMD arg {
+   global io
+   if {![eof $io]} {
+      puts $io "$arg"
+   } else {
+#   puts "can't do it!!!"
    }
 }
 

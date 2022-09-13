@@ -22,7 +22,8 @@
       break_elab_on_unreferenced_instance         - Stops elaboration of module if not referenced (black box) instance is detected.
       break_elab_on_unsized_concat                - 
       write_elaborated_netlist                    - 
-      use_built_in_edb                            - 
+      use_built_in_edb                            - Enables EHL modules from built-in tool's library when there is no user provided modules.
+      print_file_date                             - Display file modification time and date during file compilation.
       new_timer                                   - Enables to use new timing calculator engine (internal tool setting)
       synth_merge_registers                       - Enables equivalent registers merging (complicates LEC in some cases)
       synth_allow_non_static_loop_test_expr       - 

@@ -162,8 +162,6 @@ proc EventOnBtnClear {} {
    clear_db
 }
 
-proc EventOnBtnWriteNetlist_PressOK  {} { global WorkSpace ; write ${WorkSpace}.v ; destroy .writer }
-proc EventOnBtnWriteNetlist_PressEsc {} { catch [destroy .writer] }
 proc EventOnBtnWriteNetlist {} {
    global last_command WorkSpace
    variable filename ${WorkSpace}.v
@@ -172,13 +170,13 @@ proc EventOnBtnWriteNetlist {} {
    wm title .writer "Write netlist"
    pack [label .writer.label1 -text "Specify output file name" -font efont ] -fill both -pady 3 -padx 3
    pack [entry .writer.entryWS -text ${WorkSpace}.v -font efont -textvariable filename -width 32] -fill both -pady 3 -padx 3
-   pack [button .writer.myButton01 -font efont -width 7 -text "OK"     -command EventOnBtnWriteNetlist_PressOK  ] -padx 3 -pady 3 -side left
-   pack [button .writer.myButton02 -font efont -width 7 -text "Cancel" -command EventOnBtnWriteNetlist_PressEsc ] -padx 3 -pady 3 -side left
+   pack [button .writer.myButton01 -font efont -width 7 -text "OK"     -command { write $filename ; destroy .writer } ] -padx 3 -pady 3 -side left
+   pack [button .writer.myButton02 -font efont -width 7 -text "Cancel" -command "destroy .writer"                     ] -padx 3 -pady 3 -side left
 
    focus .writer.entryWS
    # Note: ENTER became same as OK
-   bind .writer <Return> { EventOnBtnWriteNetlist_PressOK  }
-   bind .writer <Escape> { EventOnBtnWriteNetlist_PressEsc }
+   bind .writer <Return> { write $filename ; destroy .writer }
+   bind .writer <Escape> { destroy .writer }
 }
 
 proc EventOnBtnReadVCD {} {
@@ -204,8 +202,9 @@ proc EventOnBtnReloadEDB {} {
 
 proc EventOnBtnExit {} {
    global io ; # Note: close tool
-   catch { puts $io "exit" }
-   catch { check_flush $io }
+# TODO: when tool is executing current command, and 'x' button pressed, tool will left active after GUI is closed
+#       for such case need to close tool explicitly...
+   catch { TOOL_CMD "exit" }
    catch { close $io }
    exit
 }
@@ -443,56 +442,66 @@ proc EventOnBtnViewHdl {} {
             # Note: highlight module keywords: todo: use regexp for that
             #
             foreach tkw $verilog_keywords {
-               set idx_kw [string first $tkw $x]
-               if $idx_kw!=-1 {
-               # Note: keywords inside line comments filtered away if they located at the right of comment start
-                  if {$idx_kw > $lc_start} {
-                     set idx_kw -1
-                  }
-               }
-               if $idx_kw!=-1 {
-                  set len_kw [ string length $tkw ]
-                  set init "${r}.${idx_kw}"
-                  set fini "${r}.[expr $idx_kw + $len_kw]"
-                  # Note: skip highlighting of partially matched words, like "use" from "user"
-                  set skip_as_part_of_another_word 0
-                  set pre_init [expr $idx_kw - 1]
-                  set before [string index $x $pre_init]
-                  foreach tch {a b c d e f g h i j k l m n o p q r s t u v w x y z _ A B C D E F G H I J K L M N O P Q R S T U V W X Y Z 0 1 2 3 4 5 6 7 8 9 } {
-                     if {$before eq $tch} {
-                        set skip_as_part_of_another_word 1
+               set len_kw [ string length $tkw ]
+               set start_pos 0
+
+               set idx_kw 0
+               while {$idx_kw != -1} {
+                  set idx_kw [string first $tkw [string range $x $start_pos end]]
+
+                  if $idx_kw!=-1 {
+                  # Note: keywords inside line comments filtered away if they located at the right of comment start
+                     if {$idx_kw > $lc_start} {
+                        set idx_kw -1
                      }
                   }
-                  set post_fini [expr $idx_kw + $len_kw ]
-                  set after [string index $x $post_fini]
-                  foreach tch {a b c d e f g h i j k l m n o p q r s t u v w x y z _ A B C D E F G H I J K L M N O P Q R S T U V W X Y Z 0 1 2 3 4 5 6 7 8 9 } {
-                     if {$after eq $tch} {
-                        set skip_as_part_of_another_word 1
+
+                  if $idx_kw!=-1 {
+                     set tmp [expr ${idx_kw} + ${start_pos}]
+                     set init "${r}.${tmp}"
+                     set tmp [expr ${idx_kw} + ${start_pos} + $len_kw]
+                     set fini "${r}.${tmp}"
+                     # Note: skip highlighting of partially matched words, like "use" from "user"
+                     set skip_as_part_of_another_word 0
+                     set pre_init [expr $idx_kw + $start_pos - 1]
+                     set before [string index $x $pre_init]
+                     foreach tch {a b c d e f g h i j k l m n o p q r s t u v w x y z _ A B C D E F G H I J K L M N O P Q R S T U V W X Y Z 0 1 2 3 4 5 6 7 8 9 } {
+                        if {$before eq $tch} {
+                           set skip_as_part_of_another_word 1
+                        }
                      }
-                  }
-                  if $skip_as_part_of_another_word==0 {
-                     switch -exact $tkw {
-                        "`define"              { .hdleditor.text tag add highlightO $init $fini }
-                        "`ifdef"               { .hdleditor.text tag add highlightO $init $fini }
-                        "`endif"               { .hdleditor.text tag add highlightO $init $fini }
-                        "`else"                { .hdleditor.text tag add highlightO $init $fini }
-                        "`ifndef"              { .hdleditor.text tag add highlightO $init $fini }
-                        "`include"             { .hdleditor.text tag add highlightO $init $fini }
-                        "`elsif"               { .hdleditor.text tag add highlightO $init $fini }
-                        "`undef"               { .hdleditor.text tag add highlightO $init $fini }
-                        "`timescale"           { .hdleditor.text tag add highlightO $init $fini }
-                        "`celldefine"          { .hdleditor.text tag add highlightO $init $fini }
-                        "`default_nettype"     { .hdleditor.text tag add highlightO $init $fini }
-                        "`endcelldefine"       { .hdleditor.text tag add highlightO $init $fini }
-                        "`line"                { .hdleditor.text tag add highlightO $init $fini }
-                        "`nounconnected_drive" { .hdleditor.text tag add highlightO $init $fini }
-                        "`resetall"            { .hdleditor.text tag add highlightO $init $fini }
-                        "`unconnected_drive"   { .hdleditor.text tag add highlightO $init $fini }
-                        default                { .hdleditor.text tag add highlightB $init $fini }
+                     set post_fini [expr $idx_kw + $start_pos + $len_kw ]
+                     set after [string index $x $post_fini]
+                     foreach tch {a b c d e f g h i j k l m n o p q r s t u v w x y z _ A B C D E F G H I J K L M N O P Q R S T U V W X Y Z 0 1 2 3 4 5 6 7 8 9 } {
+                        if {$after eq $tch} {
+                           set skip_as_part_of_another_word 1
+                        }
                      }
+                     if $skip_as_part_of_another_word==0 {
+                        switch -exact $tkw {
+                           "`define"              { .hdleditor.text tag add highlightO $init $fini }
+                           "`ifdef"               { .hdleditor.text tag add highlightO $init $fini }
+                           "`endif"               { .hdleditor.text tag add highlightO $init $fini }
+                           "`else"                { .hdleditor.text tag add highlightO $init $fini }
+                           "`ifndef"              { .hdleditor.text tag add highlightO $init $fini }
+                           "`include"             { .hdleditor.text tag add highlightO $init $fini }
+                           "`elsif"               { .hdleditor.text tag add highlightO $init $fini }
+                           "`undef"               { .hdleditor.text tag add highlightO $init $fini }
+                           "`timescale"           { .hdleditor.text tag add highlightO $init $fini }
+                           "`celldefine"          { .hdleditor.text tag add highlightO $init $fini }
+                           "`default_nettype"     { .hdleditor.text tag add highlightO $init $fini }
+                           "`endcelldefine"       { .hdleditor.text tag add highlightO $init $fini }
+                           "`line"                { .hdleditor.text tag add highlightO $init $fini }
+                           "`nounconnected_drive" { .hdleditor.text tag add highlightO $init $fini }
+                           "`resetall"            { .hdleditor.text tag add highlightO $init $fini }
+                           "`unconnected_drive"   { .hdleditor.text tag add highlightO $init $fini }
+                           default                { .hdleditor.text tag add highlightB $init $fini }
+                        }
+                     }
+                     .hdleditor.text tag configure highlightB -foreground blue
+                     .hdleditor.text tag configure highlightO -foreground orange
                   }
-                  .hdleditor.text tag configure highlightB -foreground blue
-                  .hdleditor.text tag configure highlightO -foreground orange
+                  set start_pos [expr $start_pos + $idx_kw + $len_kw]
                }
             }
          }

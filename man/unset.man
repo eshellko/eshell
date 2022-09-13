@@ -23,6 +23,7 @@
       break_elab_on_unsized_concat                - 
       write_elaborated_netlist                    - 
       use_built_in_edb                            - Disables searching module (that wasn't found in RTL and Liberty) in pre-compiled components at $ESHELL_HOME/edb
+      print_file_date                             - Does not display file modification time and date during file compilation.
       new_timer                                   - Disables to use new timing calculator engine (internal tool setting)
       synth_merge_registers                       - Disables equivalent registers merging (simplifies LEC in some cases)
       synth_allow_non_static_loop_test_expr       - 

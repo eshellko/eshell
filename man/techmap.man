@@ -7,4 +7,3 @@
       'techmap' should not be run for elaborated design without at least single 'opt' run.
          At this stage design has structures not ready to mapping, like missed design connections (undriven D pins of FF...).
  ARGUMENTS
-      None

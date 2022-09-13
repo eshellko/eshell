@@ -2,7 +2,7 @@
  COMMAND
       report_lint [-clear]
  DESCRIPTION
-      Prints detailed lint messages.
+      Displays detailed lint messages.
  ARGUMENTS
       -clear   Clears all violation counters to allow check modifications
 	           without tool re-invocation.

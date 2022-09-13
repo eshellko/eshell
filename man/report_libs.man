@@ -2,6 +2,6 @@
  COMMAND
       report_libs
  DESCRIPTION
-      Prints content of compiled libraries
+      Displays content of compiled libraries
  ARGUMENTS
 

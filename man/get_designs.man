@@ -5,4 +5,4 @@
       Lists modules of elaborated top level with specified names,
 	  including wildcard (?*) symbols.
  ARGUMENTS
-
+      a  - pattern to search

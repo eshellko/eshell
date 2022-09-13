@@ -2,6 +2,6 @@
  COMMAND
       marker [text]
  DESCRIPTION
-      prints message, specified as an argument. Can be used to point to specific log locations.
+      Displays message, specified as an argument. Can be used to point to specific log locations.
  ARGUMENTS
       text - message to be written into log.

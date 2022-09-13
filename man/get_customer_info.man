@@ -2,6 +2,6 @@
  COMMAND
       get_customer_info
  DESCRIPTION
-      Prints information about current software copy's customer
+      Displays information about current software copy's customer
  ARGUMENTS
 
