@@ -8,51 +8,51 @@ fi
 # set as default (none)
 # 1 - x84_64
 # 2 - i686
-declare mode=0
-declare gui=0
-declare nolog=""
-declare nodb=""
-declare quiet=""
-declare noinit=""
-declare tcl=""
-declare script=""
-declare help=""
-declare dir=""
+mode=0
+gui=0
+nolog=""
+nodb=""
+quiet=""
+noinit=""
+tcl=""
+script=""
+help=""
+dir=""
 # Note: allow to run tool with Valgrind memory checker
-declare valgrind=0
+valgrind=0
 # Note: allow GNU debugger
-declare gdb=0
+gdb=0
 
 # process arguments to define if user explicitly requires specific architecture to be run
 while [ $# -gt 0 ]
 do
 #echo "-- ${1} --"
    if [ "$1" == "-32" ] ; then
-      let mode=2
+      mode=2
    elif [ "$1" == "-64" ] ; then
-      let mode=1
+      mode=1
    elif [ "$1" == "-gui" ] ; then
-      let gui=1
+      gui=1
    elif [ "$1" == "-nolog" ] ; then
-      declare nolog="-nolog"
+      nolog="-nolog"
    elif [ "$1" == "-nodb" ] ; then
-      declare nodb="-nodb"
+      nodb="-nodb"
    elif [ "$1" == "-quiet" ] ; then
-      declare quiet="-quiet"
+      quiet="-quiet"
    elif [ "$1" == "-noinit" ] ; then
-      declare noinit="-noinit"
+      noinit="-noinit"
    elif [ "$1" == "-tcl" ] ; then
-      declare tcl="-tcl"
+      tcl="-tcl"
    elif [ "$1" == "-valgrind" ] ; then
-      declare valgrind=1
+      valgrind=1
    elif [ "$1" == "-valgrind_all" ] ; then
-      declare valgrind=2
+      valgrind=2
    elif [ "$1" == "-gdb" ] ; then
-      declare gdb=1
+      gdb=1
    elif [ "$1" == "-script" ] ; then
       shift
       if [ $# -gt 0 ] ; then
-         declare script="-script $1"
+         script="-script $1"
       else
          echo "   Error: no script provided."
          return 1
@@ -60,13 +60,13 @@ do
    elif [ "$1" == "-dir" ] ; then
       shift
       if [ $# -gt 0 ] ; then
-         declare dir="-dir $1"
+         dir="-dir $1"
       else
          echo "   Error: no dir provided."
          return 1
       fi
    elif [ "$1" == "-help" ] ; then
-      declare help="-help"
+      help="-help"
 # Note: alternative way to write multiline text using EOF
 # TODO: better describe this VALGRIND options - their exclusion and priority order...
 # TODO: gdb runs only without valgrind, and for 64? 32? debug mode compilation?
@@ -86,45 +86,45 @@ EOF
 done
 
 # Note: detect if system is x86_64, or i686 (if none explicitly specified by the user)
-if [ $mode == 0 ] ; then
-   uname -p | grep -q "x86_64" && let mode=1
-   uname -p | grep -q "i686" && let mode=2
+if [ $mode = 0 ] ; then
+   uname -p | grep -q "x86_64" && mode=1
+   uname -p | grep -q "i686" && mode=2
 fi
 
-declare TOOL_EXEC=""
-if [ $mode == 1 ] ; then
-   if [[ -z "${ESHELL_STATIC}" ]]; then
-      declare TOOL_EXEC=${ESHELL_HOME}/bin/x86_64.exe
+TOOL_EXEC=""
+if [ $mode = 1 ] ; then
+   if [ -z "${ESHELL_STATIC}" ]; then
+      TOOL_EXEC=${ESHELL_HOME}/bin/x86_64.exe
    else
-      declare TOOL_EXEC=${ESHELL_HOME}/bin/x86_64.s.exe
+      TOOL_EXEC=${ESHELL_HOME}/bin/x86_64.s.exe
    fi
-elif [ $mode == 2 ] ; then
-   if [[ -z "${ESHELL_STATIC}" ]]; then
-      declare TOOL_EXEC=${ESHELL_HOME}/bin/i686.exe
+elif [ $mode = 2 ] ; then
+   if [ -z "${ESHELL_STATIC}" ]; then
+      TOOL_EXEC=${ESHELL_HOME}/bin/i686.exe
    else
-      declare TOOL_EXEC=${ESHELL_HOME}/bin/i686.s.exe
+      TOOL_EXEC=${ESHELL_HOME}/bin/i686.s.exe
    fi
 else
    echo "   Error: unsupported platform '`uname -p`'"
-   retrn 1
+   return 1
 fi
 
-if [ $valgrind == 1 ] ; then
-   declare TOOL_EXEC="valgrind ${TOOL_EXEC}"
-elif [ $valgrind == 2 ] ; then
-   declare TOOL_EXEC="valgrind --leak-check=full --show-leak-kinds=all ${TOOL_EXEC}"
+if [ $valgrind = 1 ] ; then
+   TOOL_EXEC="valgrind ${TOOL_EXEC}"
+elif [ $valgrind = 2 ] ; then
+   TOOL_EXEC="valgrind --leak-check=full --show-leak-kinds=all ${TOOL_EXEC}"
 elif [ $gdb == 1 ] ; then
-   declare TOOL_EXEC="gdb -ex run -ex where -ex quit --batch --args ${TOOL_EXEC}"
+   TOOL_EXEC="gdb -ex run -ex where -ex quit --batch --args ${TOOL_EXEC}"
 elif [ $gui == 1 ] ; then
-   declare TOOL_EXEC="wish ${ESHELL_HOME}/tcl/egui.tcl"
-   declare nodb=""
-   declare nolog=""
-   declare quiet=""
-   declare noinit=""
-   declare tcl=""
-   declare script=""
-   declare help=""
-   declare dir=""
+   TOOL_EXEC="wish ${ESHELL_HOME}/tcl/egui.tcl"
+   nodb=""
+   nolog=""
+   quiet=""
+   noinit=""
+   tcl=""
+   script=""
+   help=""
+   dir=""
 fi
 
 $TOOL_EXEC $nodb $nolog $quiet $noinit $tcl $script $help $dir
