@@ -71,7 +71,7 @@ proc configureIP {} {
       setToolTip .${ip_name}.label$y $x
    }
 
-   place [button .${ip_name}.button0 -text "Doc"      -font efont -width 10 -command "exec firefox $::env(ESHELL_HOME)/ehl/$ip_doc(${ip_name})" ] -x 565 -y 20
+   place [button .${ip_name}.button0 -text "Doc"      -font efont -width 10 -command "catch { exec firefox $::env(ESHELL_HOME)/ehl/$ip_doc(${ip_name}) }" ] -x 565 -y 20
    place [button .${ip_name}.button1 -text "Generate" -font efont -width 10 -command "GENERATE_CMD $ip_name"] -x 565 -y 60
    place [button .${ip_name}.button2 -text "Done"     -font efont -width 10 -command "destroy .${ip_name}" ] -x 565 -y 100
 
