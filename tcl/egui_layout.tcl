@@ -95,7 +95,7 @@ for {set i 0} {$i < $anum} {incr i} {
 # create button
    pack [button .f1.myButton$btn_name -relief groove -font efont -width 12 -text $btn_name -command $btn_hndl ] -side top -pady 1 -padx 2
    .f1.myButton$btn_name configure -background          [.f1 cget -background]
-   .f1.myButton$btn_name configure -activebackground    [.f1 cget -background]
+   .f1.myButton$btn_name configure -activebackground    "light green" ; # Note: highlight button when mouse is on
    .f1.myButton$btn_name configure -foreground          black
    .f1.myButton$btn_name configure -activeforeground    black
    .f1.myButton$btn_name configure -disabledforeground  grey85
