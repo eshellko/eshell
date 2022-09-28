@@ -54,7 +54,7 @@ do
       if [ $# -gt 0 ] ; then
          script="-script $1"
       else
-         echo "   Error: no script provided."
+         echo -e "\n   Error: no script provided.\n"
          return 1
       fi
    elif [ "$1" == "-dir" ] ; then
@@ -62,22 +62,34 @@ do
       if [ $# -gt 0 ] ; then
          dir="-dir $1"
       else
-         echo "   Error: no dir provided."
+         echo -e "\n   Error: no dir provided.\n"
          return 1
       fi
    elif [ "$1" == "-help" ] ; then
       help="-help"
-# Note: alternative way to write multiline text using EOF
-# TODO: better describe this VALGRIND options - their exclusion and priority order...
-# TODO: gdb runs only without valgrind, and for 64? 32? debug mode compilation?
    else
       cat << EOF
+
    Error: incorrect argument '$1' provided.
 
 
    Usage: eshell [-32 | -64] [-nodb] [-nolog] [-quiet] [-noinit] [-tcl] [-script <filename>] [-help] [-dir <directory>]
                  [-gui]
                  [-valgrind] [-valgrind_all] [-gdb].
+
+      [-32 | -64]               execute 32-bit or 64-bit version
+      [-nodb]                   do not create database for compiled modules
+      [-nolog]                  do not create log file
+      [-quiet]                  do not write into console
+      [-noinit]                 do not run initialization script
+      [-tcl]                    run with TCL mode (used by GUI)
+      [-script <filename>]      start <filename> script execution
+      [-help]                   print help message
+      [-dir <directory>]        set directory for logs and databases
+      [-gui]                    lainch graphical user interface (GUI)
+      [-valgrind]               run Valgrind to check memory issues (mutually exclusive with [-valgrind_all] and [-gdb])
+      [-valgrind_all]           run Valgrind to check memory issues and leakages (mutually exclusive with [-valgrind] and [-gdb])
+      [-gdb]                    run GNU debugger (mutually exclusive with [-valgrind] and [-valgrind_all])
 
 EOF
       return 1
@@ -105,7 +117,7 @@ elif [ $mode = 2 ] ; then
       TOOL_EXEC=${ESHELL_HOME}/bin/i686.s.exe
    fi
 else
-   echo "   Error: unsupported platform '`uname -p`'"
+   echo -e "\n   Error: unsupported platform '`uname -p`'\n"
    return 1
 fi
 
