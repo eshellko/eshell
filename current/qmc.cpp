@@ -15,6 +15,10 @@ using namespace std;
 
 #define eprint printf
 
+#define LOCAL_SOP
+#include "sop.cpp"
+#undef LOCAL_SOP
+
 #include "qmc.h"
 //
 //
@@ -25,8 +29,8 @@ int main ()
 {
 //   for(int i=0; i<0x100000; i++) eqmc(i);
 //   for(int i=0x17fb6; i<0x18000; i++) eqmc(i);
-//type_t rv = 0xff78ff78;
-type_t rv = 0x1111111111111111L;
+type_t rv = 0x40801020;
+//type_t rv = 0x1111111111111111L;
 eqmc(rv);
 
 // Q: create local AIG for given expression and optimize it independently!? it will not give optimal, as in case with original design?

@@ -1,7 +1,9 @@
-// Q: eprint without special symbols which can only be written into printf file?
-//    special handling internally!?
+//#define __PRINT__
 
-#define __PRINT__
+//
+// Include SOP for minimized QMC
+//
+#include "sop.h"
 
 // Source: https://github.com/AkshayRaman/Quine-McCluskey-algorithm/blob/master/Quine-McClusky.cpp
 #include <vector>
@@ -360,5 +362,4 @@ Essentials:
    for(i=0; i<sz; i++)
       prepare_product(arr, minions[i], i);
    sop_core(arr);
-   eprint("      >>> see previous code >>> print_int(w, 12);\n");
 }

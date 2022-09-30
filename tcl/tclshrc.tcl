@@ -8,7 +8,7 @@ set tcl_prompt1 {puts -nonewline "eshell-tcl> "}
 
 #######################################################
 source $path/tcl/parse_options.tcl
-set tool_arguments [list ] ; # todo: do not clear after convertion will be made
+set tool_arguments [list ] ; # TODO: do not clear after conversion will be made
 #######################################################
 set io 0
 if { [catch { global io ; set io [ open "|eshell.exe $tool_arguments -noinit -tcl" r+ ] } ] } {
@@ -132,16 +132,16 @@ proc stop_cmd {} {
 
 set command_set { build \
                   clear_db cpu \
-				  _exit \
-				  get_customer_info get_designs get_instances get_ports \
-				  _help _history lec man message mif2rom \
-				  opt techmap \
-				  _read read_lib _read_sdc read_vcd \
-				  report_hierarchy report_blackbox report_design report_libs report_lint report_resources report_settings report_timing report_uninitialized report_vcd report_workspace   report_d_flops \
-				  set_workspace _source system \
-				  write \
-				  skip endskip \
-				  }
+                  _exit \
+                  get_customer_info get_designs get_instances get_ports \
+                  _help _history lec man message mif2rom \
+                  opt techmap \
+                  _read read_lib _read_sdc read_vcd \
+                  report_hierarchy report_blackbox report_design report_libs report_lint report_resources report_settings report_timing report_uninitialized report_vcd report_workspace   report_d_flops \
+                  set_workspace _source system \
+                  write \
+                  skip endskip \
+                  }
 #                    append command_set $sdc_set
 foreach cs $command_set {
    proc $cs args {
@@ -184,7 +184,7 @@ proc read_verilog args {
 }
 #
 # Wrapper above command, sent to tool
-# TODO: implement funcitonality
+# TODO: implement functionality
 # It checks for channel status before send command
 # If channel is closed - error written into console
 #

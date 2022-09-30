@@ -2415,6 +2415,34 @@ Minimal Form (with ~) =
       print_int(w, 0x21840000);
       print_int(w, 5);
       print_int(w, 18);
+
+      print_int3(w, 0,2,0);//5
+      print_int3(w, 0,2,3);//6
+/*
+10-1-6
+11-0-6
+10-1-5
+11-0-5
+      print_int3(w, 1,3,8);//7
+1----67
+1----57
+      print_int3(w, 4,7,0);//8
+      print_int3(w, 5,6,7);//9
+      print_int3(w, 8,9,0);
+*/
+/*
+10-1-6
+10-1-5
+11-0-6
+11-0-5
+      print_int3(w, 5,6,7);//7
+10-1-7
+11-0-7
+      print_int3(w, 1,3,8);//8
+1----78
+      print_int3(w, 7,8,0);//9
+      print_int3(w, 4,9,0);
+*/
       print_int3(w, 4,3,2);
       print_int3(w, 3,1,2);
       print_int3(w, 2,0,3);

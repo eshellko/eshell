@@ -4,11 +4,11 @@
 #include <set>
 
 // Note: define to print more debug info
-//#define __REPORT__
+//#define __PRINT__
 
 void print(int arr[32][5], int num_clause)
 {
-#ifdef __REPORT__
+#ifdef __PRINT__
    int i, j;
    for(int i=0; i<num_clause; i++)
    {
@@ -43,7 +43,7 @@ void sop(int arr[32][5], int num_clause, int& num_nodes)
    while(nodes.size() > 1)
    { // Q: make sure order is tree, and not linear
       num_nodes++;
-#ifdef __REPORT__
+#ifdef __PRINT__
       printf("Alias+ : %d = (", num_nodes);
       printf("%d, ", *it);
 #endif
@@ -51,7 +51,7 @@ int a = *it;
       ite = it;
       it++;
       nodes.erase(ite);
-#ifdef __REPORT__
+#ifdef __PRINT__
       printf("%d)\n", *it);
 #endif
 int b = *it;
@@ -90,7 +90,7 @@ int core(int arr[32][5], int num_clause, int& num_nodes)
    {
       short a = it->first & 0xFFFF;
       short b = (it->first >> 16) & 0xFFFF;
-#ifdef __REPORT__
+#ifdef __PRINT__
       if(a > 0 && b > 0) printf("(%d,%d) = %d\n", a, b, it->second);
       else if(a > 0 && b < 0) printf("(%d,%d') = %d\n", a, -b, it->second);
       else if(a < 0 && b > 0) printf("(%d',%d) = %d\n", -a, b, it->second);
@@ -107,7 +107,7 @@ int core(int arr[32][5], int num_clause, int& num_nodes)
    // no pairs left, only products...
    if(high_presence == 0) return 0;
 
-#ifdef __REPORT__
+#ifdef __PRINT__
    printf("highest pair presence is %d\n", high_presence);
 #endif
 
@@ -121,7 +121,7 @@ int core(int arr[32][5], int num_clause, int& num_nodes)
    short a = it->first & 0xFFFF;
    short b = (it->first >> 16) & 0xFFFF;
    num_nodes++;
-#ifdef __REPORT__
+#ifdef __PRINT__
    printf("Alias : %d = (%d,%d)\n", num_nodes, a, b);
 #endif
 
@@ -145,7 +145,7 @@ int core(int arr[32][5], int num_clause, int& num_nodes)
              }
 
    prs.clear();
-#ifdef __REPORT__
+#ifdef __PRINT__
    printf("==============\n");
 #endif
 // iteratively apply CSE for pair with highest weight - O(n*n) - and rerun algorithm on new array
@@ -172,42 +172,30 @@ int sop_core(int arr[32][5])
             num_nodes = -arr[i][j];
       }
 // display
-#ifdef __REPORT__
+#ifdef __PRINT__
    printf("expression has %d product(s) and %d node(s):\n", num_clause, num_nodes);
 #endif
    print(arr, num_clause);
-#ifdef __REPORT__
+#ifdef __PRINT__
    printf("==============\n");
 #endif
 
    core(arr, num_clause, num_nodes);
 
-#ifdef __REPORT__
+#ifdef __PRINT__
    printf("SOP has %d product(s) and %d node(s):\n", num_clause, num_nodes);
 #endif
    print(arr, num_clause);
-#ifdef __REPORT__
+#ifdef __PRINT__
    printf("==============\n");
 #endif
 
    sop(arr, num_clause, num_nodes);
-#ifdef __REPORT__
+#ifdef __PRINT__
    printf("Expression has %d node(s).\n", num_nodes);
 #endif
 
-   printf("      print_int(w, %d);\n", num_nodes);
+   printf("      print_int(w, %d); // move to 3rd position in section\n", num_nodes);
 
    return 0;
 }
-
-#ifndef LOCAL_SOP
-int main()
-{
-   int arr[32][5] = {0};
-// prepare example
-   arr[0][0]=1;  arr[0][1]=2; arr[0][2]=3; arr[0][3]=4;  arr[0][4]=5;
-   arr[1][0]=-1; arr[1][1]=2; arr[1][2]=3; arr[1][3]=-4; arr[1][4]=-5;
-
-   return sop_core(arr);
-}
-#endif

@@ -396,7 +396,7 @@ proc EventOnBtnViewHdl {} {
             .hdleditor.text tag configure highlightG -foreground "#007000"
          } else {
             #
-            # Note: this part highlights line commnets in the middle of source code line, like:
+            # Note: this part highlights line comments in the middle of source code line, like:
             #       wire a; // line for buffering
             #
             set len [string length $x]
