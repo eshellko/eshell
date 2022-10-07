@@ -87,7 +87,7 @@ array set button_cfg [ list \
    13 [ list 0 "Exit"          EventOnBtnExit         normal ] \
 ]
 
-image create photo .ip -format PNG -file $::env(ESHELL_HOME)/tcl/ip.png
+#image create photo .ip -format PNG -file $::env(ESHELL_HOME)/tcl/ip.png
 
 set anum [array size button_cfg]
 for {set i 0} {$i < $anum} {incr i} {
@@ -95,11 +95,11 @@ for {set i 0} {$i < $anum} {incr i} {
    set btn_name [lindex $button_cfg($i) 1]
    set btn_hndl [lindex $button_cfg($i) 2]
 # create button
-   if [string eq $btn_name "IP"] {
-      pack [button .f1.myButton$btn_name -relief groove -font efont -compound left -image .ip -text $btn_name -command $btn_hndl ] -side top -pady 1 -padx 2
-   } else {
+#   if [string eq $btn_name "IP"] {
+#      pack [button .f1.myButton$btn_name -relief groove -font efont -compound left -image .ip -text $btn_name -command $btn_hndl ] -side top -pady 1 -padx 2
+#   } else {
       pack [button .f1.myButton$btn_name -relief groove -font efont -width 12 -text $btn_name -command $btn_hndl ] -side top -pady 1 -padx 2
-   }
+#   }
    .f1.myButton$btn_name configure -background          [.f1 cget -background]
    .f1.myButton$btn_name configure -activebackground    "light green" ; # Note: highlight button when mouse is on
    .f1.myButton$btn_name configure -foreground          black
