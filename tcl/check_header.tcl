@@ -22,6 +22,7 @@ proc firstNotSpaceChar { str pos } {
 }
 
 proc checkFileHeader { fileName eshell_gui } {
+   global tree_format
    set ex [ file exists $fileName ]
    if { $ex == 1 } {
       set fd [open $fileName r]
@@ -51,18 +52,44 @@ proc checkFileHeader { fileName eshell_gui } {
       }
       close $fd
       if $eshell_gui==1 {
+         #
+         # Note: create hierarchical view for project files
+         #
+         set tree_parent {} ; # Note: parent node in tree view
+         if {$tree_format==1} {
+            set temp $fileName
+            while { [ string first "/" $temp ] > 0 } {
+               set first_idx [ string first "/" $temp ]
+               set w_dir [ string range $temp 0 [expr $first_idx-1] ]
+               set cur_id $tree_parent
+               if { [string equal $cur_id ""] == 1 } {
+                  set cur_id $w_dir
+               } else {
+                  set cur_id "$tree_parent/$w_dir"
+               }
+               if { [ .outer.f3.tree exists $cur_id ] == 1} {
+                  set tree_parent $cur_id
+               } else {
+                  .outer.f3.tree insert $tree_parent end -id $cur_id -text "$w_dir/" -tags "ttk simple" -values [list "-" "-" "-" "-"]
+                  set tree_parent $cur_id
+               }
+               set temp [ string range $temp [expr $first_idx+1] end ]
+            }
+         }
+
          set last_idx [ string last "/" $fileName ]
          set wout_dir [ string range $fileName [expr $last_idx+1] end ]
          set timeline [file mtime $fileName]
          set timeline [clock format $timeline -format {%Y-%m-%d %H:%M:%S} ]
          if $code!=0x3f {
-            .outer.f3.tree insert {} end -id $fileName -text "$wout_dir ($timeline)" -tags "ttk simple" -values [list "-" "-" "-" "No standard header present ($code)"]
+            .outer.f3.tree insert $tree_parent end -id $fileName -text "$wout_dir ($timeline)" -tags "ttk simple" -values [list "-" "-" "-" "No standard header ($code)"]
          } else {
-            .outer.f3.tree insert {} end -id $fileName -text "$wout_dir ($timeline)" -tags "ttk simple" -values [list $COMPANY $REVISION $DATE $DESIGN]
+            .outer.f3.tree insert $tree_parent end -id $fileName -text "$wout_dir ($timeline)" -tags "ttk simple" -values [list $COMPANY $REVISION $DATE $DESIGN]
          }
+         .outer.f3.tree see $fileName
          .outer.f3.tree tag configure ttk -font efont
       } else {
-         if $code!=0x3f { puts "Error: no standard header present for ${fileName}(code: $code)." }
+         if $code!=0x3f { puts "Error: no standard header for ${fileName}(code: $code)." }
       }
    } else {
       global last_command
