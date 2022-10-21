@@ -27,7 +27,6 @@ proc configureIP {} {
             global $rrr
             set build_arg "$build_arg $y "
             set build_arg "$build_arg [set $rrr] "
-            if $cnt==1 { puts ""} else { puts "," }
             set cnt [expr $cnt - 1]
          }
 # eval make export-ip ip=ddr
