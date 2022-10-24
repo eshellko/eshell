@@ -97,7 +97,7 @@ for {set i 0} {$i < $anum} {incr i} {
 #   if [string eq $btn_name "IP"] {
 #      pack [button .f1.myButton$btn_name -relief groove -font efont -compound left -image .ip -text $btn_name -command $btn_hndl ] -side top -pady 1 -padx 2
 #   } else {
-      pack [button .f1.myButton$btn_name -relief groove -font efont -width 12 -text $btn_name -command $btn_hndl -anchor c ] -side top -pady 1 -padx 2
+      pack [button .f1.myButton$btn_name -relief groove -font efont -width 12 -text $btn_name -command $btn_hndl -anchor w ] -side top -pady 1 -padx 2
 #   }
    .f1.myButton$btn_name configure -background          [.f1 cget -background]
    .f1.myButton$btn_name configure -activebackground    "light green" ; # Note: highlight button when mouse is on
@@ -153,6 +153,11 @@ menu .popupMenu
 .popupMenu configure -tearoff 0
 .popupMenu add command -label "Edit HDL" -command "EventOnBtnEditHdl"
 .popupMenu add command -label "View HDL" -command "EventOnBtnViewHdl"
+#proc EventOnBtnCommit {} {
+#   set filename [.outer.f3.tree focus]
+#   puts "[exec git status $filename]"
+#}
+#.popupMenu add command -label "Commit" -command "EventOnBtnCommit"
 .popupMenu add command -label "Compile" -command "EventOnBtnCompile"
 proc EventOnBtnCompile {} {
    set filename [.outer.f3.tree focus]
