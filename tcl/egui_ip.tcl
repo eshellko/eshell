@@ -11,6 +11,11 @@ proc configureIP {} {
    global last_command
    global ip_parameters ip_ptypes ip_init_values ip_allowed_values ip_descriptions ip_names ip_vendor ip_version ip_doc
    set ip_name [.ipcatalog.tree focus]
+   # Note: check there is selection; otherwise access to '$ip_names($ip_name)' cause segmentation fault
+   if {[string length $ip_name] == 0} {
+      tk_messageBox -message "no IP selected"
+      return 0
+   }
    catch [ destroy .${ip_name} ]
    set last_command "Configure EHL $ip_names($ip_name)."
 
