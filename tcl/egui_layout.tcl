@@ -78,12 +78,11 @@ array set button_cfg [ list \
                                Exit           "" \
                    ] \
    6  [ list 0 "Write netlist" EventOnBtnWriteNetlist disabled ] \
-   7  [ list 0 "IP"            EventOnBtnIP           normal ] \
-   8  [ list 0 "Custom"        EventOnBtnCustom       normal ] \
-   9  [ list 0 "Clear"         EventOnBtnClear        disabled ] \
-   10 [ list 0 "Bug Tracker"   EventOnBtnBugTracker   normal ] \
-   11 [ list 0 "<-"            ExtendSize             normal ] \
-   12 [ list 0 "Exit"          EventOnBtnExit         normal ] \
+   7  [ list 0 "Custom"        EventOnBtnCustom       normal ] \
+   8  [ list 0 "Clear"         EventOnBtnClear        disabled ] \
+   9  [ list 0 "Bug Tracker"   EventOnBtnBugTracker   normal ] \
+   10 [ list 0 "<-"            ExtendSize             normal ] \
+   11 [ list 0 "Exit"          EventOnBtnExit         normal ] \
 ]
 
 #image create photo .ip -format PNG -file $::env(ESHELL_HOME)/tcl/ip.png
@@ -128,22 +127,70 @@ for {set i 0} {$i < $anum} {incr i} {
 # Tree
 #
 ############################
-set TreeRowsNum 8; #[expr 12-4]
-pack [ ttk::treeview .outer.f3.tree -columns "Vendor Version Date Description" -displaycolumns "Description Date Version Vendor" -height $TreeRowsNum ] -side left -expand y -fill both
-.outer.f3.tree heading Vendor      -text "Vendor"      -anchor w
-.outer.f3.tree heading Version     -text "Version"     -anchor w
-.outer.f3.tree heading Date        -text "Date"        -anchor w
-.outer.f3.tree heading Description -text "Description" -anchor w
-.outer.f3.tree heading #0          -text "Name"        -anchor w
-.outer.f3.tree column #0          -width 160
-.outer.f3.tree column Description -width 280
-.outer.f3.tree column Date        -width 80
-.outer.f3.tree column Version     -width 70
-.outer.f3.tree column Vendor      -width 60
+set TreeRowsNum 8
+
+pack [::ttk::notebook .outer.f3.n] -fill both -expand true -side bottom
+
+::ttk::entry .outer.f3.n.sources
+.outer.f3.n add .outer.f3.n.sources -text sources
+pack [ ttk::treeview .outer.f3.n.sources.tree -columns "Vendor Version Date Description" -displaycolumns "Description Date Version Vendor" -height $TreeRowsNum ] -side left -expand y -fill both
+.outer.f3.n.sources.tree heading Vendor      -text "Vendor"      -anchor w
+.outer.f3.n.sources.tree heading Version     -text "Version"     -anchor w
+.outer.f3.n.sources.tree heading Date        -text "Date"        -anchor w
+.outer.f3.n.sources.tree heading Description -text "Description" -anchor w
+.outer.f3.n.sources.tree heading #0          -text "Name"        -anchor w
+set tabsize [winfo screenmmwidth .outer.f3.n.sources.tree ]
+.outer.f3.n.sources.tree column #0          -width [expr ($tabsize - 270) / 2]
+.outer.f3.n.sources.tree column Description -width [expr ($tabsize - 270) / 2]
+.outer.f3.n.sources.tree column Date        -width 120 -stretch no
+.outer.f3.n.sources.tree column Version     -width 70  -stretch no
+.outer.f3.n.sources.tree column Vendor      -width 80  -stretch no
 # scrollbar
-pack [ scrollbar .outer.f3.sby -orient vert -width 12 ] -side right -fill y
-.outer.f3.tree conf -yscrollcommand {.outer.f3.sby set}
-.outer.f3.sby conf -command {.outer.f3.tree yview}
+pack [ scrollbar .outer.f3.n.sources.sby -orient vert -width 12 ] -side right -fill y
+.outer.f3.n.sources.tree conf -yscrollcommand {.outer.f3.n.sources.sby set}
+.outer.f3.n.sources.sby conf -command {.outer.f3.n.sources.tree yview}
+
+::ttk::entry .outer.f3.n.project
+.outer.f3.n add .outer.f3.n.project -text project
+pack [ ttk::treeview .outer.f3.n.project.tree -columns "Description" -displaycolumns "Description" -height $TreeRowsNum ] -side left -expand y -fill both
+.outer.f3.n.project.tree heading Description -text "Description" -anchor w
+.outer.f3.n.project.tree heading #0          -text "File"        -anchor w
+set tabsize [winfo screenmmwidth .outer.f3.n.project.tree ]
+.outer.f3.n.project.tree column #0          -width [expr $tabsize / 2]
+.outer.f3.n.project.tree column Description -width [expr $tabsize / 2]
+# scrollbar
+pack [ scrollbar .outer.f3.n.project.sby -orient vert -width 12 ] -side right -fill y
+.outer.f3.n.project.tree conf -yscrollcommand {.outer.f3.n.project.sby set}
+.outer.f3.n.project.sby conf -command {.outer.f3.n.project.tree yview}
+
+::ttk::entry .outer.f3.n.ip
+.outer.f3.n add .outer.f3.n.ip -text IP
+pack [ ttk::treeview .outer.f3.n.ip.tree      -columns "Vendor Version Honor Description" -displaycolumns "Description Honor Version Vendor" -height $TreeRowsNum ] -side left -expand y -fill both
+.outer.f3.n.ip.tree heading Vendor      -text "Vendor"      -anchor w
+.outer.f3.n.ip.tree heading Version     -text "Version"     -anchor w
+.outer.f3.n.ip.tree heading Honor       -text "Honor"       -anchor w
+.outer.f3.n.ip.tree heading Description -text "Description" -anchor w
+.outer.f3.n.ip.tree heading #0          -text "Name"        -anchor w
+set tabsize [winfo screenmmwidth .outer.f3.n.ip.tree ]
+.outer.f3.n.ip.tree column #0          -width [expr ($tabsize - 270) / 2]
+.outer.f3.n.ip.tree column Description -width [expr ($tabsize - 270) / 2]
+.outer.f3.n.ip.tree column Honor       -width 120 -stretch no
+.outer.f3.n.ip.tree column Version     -width 80  -stretch no
+.outer.f3.n.ip.tree column Vendor      -width 70  -stretch no
+# scrollbar
+pack [ scrollbar .outer.f3.n.ip.sby -orient vert -width 12 ] -side right -fill y
+.outer.f3.n.ip.tree conf -yscrollcommand {.outer.f3.n.ip.sby set}
+.outer.f3.n.ip.sby conf -command {.outer.f3.n.ip.tree yview}
+
+# Note: load IP catalog after IP tab selected for a first time
+bind .outer.f3.n <<NotebookTabChanged>> tabChanged
+proc tabChanged {} {
+   if {[.outer.f3.n select] eq ".outer.f3.n.ip"} {
+      if {$::ip_loaded==0} {
+         EventOnBtnIP
+      }
+   }
+}
 ############################
 #
 # Edit HDL
@@ -160,14 +207,14 @@ menu .popupMenu
 #.popupMenu add command -label "Commit" -command "EventOnBtnCommit"
 .popupMenu add command -label "Compile" -command "EventOnBtnCompile"
 proc EventOnBtnCompile {} {
-   set filename [.outer.f3.tree focus]
+   set filename [.outer.f3.n.sources.tree focus]
    read_verilog $filename
    vwait mutex
    EventOnBtnReloadEDB
 }
 .popupMenu add command -label "Compile All" -command "EventOnBtnCompileAll" ; # -state disable ; # todo: add valid file name, not 'id'
  proc EventOnBtnCompileAll {} {
-   set filetop [.outer.f3.tree children {}]
+   set filetop [.outer.f3.n.sources.tree children {}]
 # TODO: when tool exited during read - stop reading next files... and do not halt
    foreach r $filetop {
       read_verilog $r
@@ -179,7 +226,7 @@ proc EventOnBtnCompile {} {
 # Note: Button-1/2/3 from left to right... when mouse doesn't have scroll wheel, number can be different (touch pad doesn't think so)?
 #bind .outer.f3.tree <Double-Button-1> {tk_popup .popupMenu %X %Y}
 #bind .outer.f3.tree <Button-2> {tk_popup .popupMenu %X %Y}
-bind .outer.f3.tree <Button-3> {tk_popup .popupMenu %X %Y}
+bind .outer.f3.n.sources.tree <Button-3> {tk_popup .popupMenu %X %Y}
 ############################
 #
 # Log
@@ -189,6 +236,7 @@ pack [ text .outer.f4.text -state normal -height 10 -font efont -wrap char -back
 .outer.f4.text insert end "Welcome to EHL $sw_version.\n"
 .outer.f4.text see end
 .outer.f4.text configure -state disabled
+
 menu .popupMenu2
 .popupMenu2 configure -tearoff 0
 .popupMenu2 add command -label "Clear" -command "EventOnMenuClear"

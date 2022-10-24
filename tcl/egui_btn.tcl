@@ -58,36 +58,14 @@ proc EventOnBtnProject {} {
    source tcl/egui_project.tcl
 }
 
-proc CloseIpCatalog {} {
-   catch [ destroy .ipcatalog ]
-}
-
 proc EventOnBtnIP {} {
    if [file exist $::env(ESHELL_HOME)/tcl/ip.csv ] {
-      CloseIpCatalog ; # Note: only one window allowed
-      toplevel .ipcatalog
-      wm title .ipcatalog "IP Catalog"
-      wm geometry .ipcatalog 765x480+120+140
-      wm minsize .ipcatalog 765 480
-      wm maxsize .ipcatalog 765 480
       set TreeRowsNum 22
-      place [ ttk::treeview .ipcatalog.tree -columns "Vendor Version Honor Description" -displaycolumns "Description Honor Version Vendor" -height $TreeRowsNum ] -x 5 -y 5 ; # todo: add brief description
-      .ipcatalog.tree heading Vendor      -text "Vendor" -anchor w
-      .ipcatalog.tree heading Version     -text "Version" -anchor w
-      .ipcatalog.tree heading Honor       -text "Honor" -anchor w
-      .ipcatalog.tree heading Description -text "Description" -anchor w
-      .ipcatalog.tree heading #0          -text "Name" -anchor w
-      .ipcatalog.tree column #0          -width 190
-      .ipcatalog.tree column Description -width 340
-      .ipcatalog.tree column Honor       -width 70
-      .ipcatalog.tree column Version     -width 60
-      .ipcatalog.tree column Vendor      -width 90
 
-      menu .ipcatalog.popupMenu
-      .ipcatalog.popupMenu configure -tearoff 0
-      .ipcatalog.popupMenu add command -label "Configure & Generate" -command configureIP
-      .ipcatalog.popupMenu add command -label "Close" -command CloseIpCatalog
-      bind .ipcatalog.tree <Button-3> {tk_popup .ipcatalog.popupMenu %X %Y}
+      menu .outer.f3.n.ip.tree.popupMenu
+      .outer.f3.n.ip.tree.popupMenu configure -tearoff 0
+      .outer.f3.n.ip.tree.popupMenu add command -label "Configure & Generate" -command configureIP
+      bind .outer.f3.n.ip.tree <Button-3> {tk_popup .outer.f3.n.ip.tree.popupMenu %X %Y}
 
       global ip_parameters ip_ptypes ip_init_values ip_allowed_values ip_descriptions ip_names ip_vendor ip_version ip_doc
       set last_category ""
@@ -101,7 +79,7 @@ proc EventOnBtnIP {} {
                # Note: Create CATEGORY to group IPs
                } elseif {[string range $x 0 8] eq "category="} {
                   set category [string range $x 9 end]
-                  .ipcatalog.tree insert {} end -id $category -text $category -tags "ttkh simple"
+                  .outer.f3.n.ip.tree insert {} end -id $category -text $category -tags "ttkh simple"
                   set last_category $category
                # Note: process IP for specified category
                } else {
@@ -149,15 +127,17 @@ proc EventOnBtnIP {} {
                      if $cnt==7 { set doc $y; set ip_doc($id) $y }
                      incr cnt
                   }
-                  .ipcatalog.tree insert $last_category end -id $id -text $name -values [list $vendor $version $proven $descr ] -tags "ttk simple"
+                  .outer.f3.n.ip.tree insert $last_category end -id $id -text $name -values [list $vendor $version $proven $descr ] -tags "ttk simple"
                }
             }
          }
       }
       close $fd
-      .ipcatalog.tree tag configure ttk  -font efont
-      .ipcatalog.tree tag configure ttkh -font efontbold
+      .outer.f3.n.ip.tree tag configure ttk  -font efont
+      .outer.f3.n.ip.tree tag configure ttkh -font efontbold
    }
+   global ip_loaded
+   set ip_loaded 1
 }
 
 proc EventOnBtnClear {} {
@@ -283,7 +263,7 @@ proc EventOnBtnEditHdl {} {
    catch [ destroy .hdleditor ] ; # Note: only one window allowed
    toplevel .hdleditor
 
-   set filename [.outer.f3.tree focus]
+   set filename [.outer.f3.n.sources.tree focus]
 
    wm title .hdleditor "HDL editor ($filename)"
    wm geometry .hdleditor 120x30+20+20
@@ -316,7 +296,7 @@ proc EventOnBtnViewHdl {} {
    catch [ destroy .hdleditor ] ; # Note: only one window allowed
    toplevel .hdleditor
 
-   set filename [.outer.f3.tree focus]
+   set filename [.outer.f3.n.sources.tree focus]
 
    wm title .hdleditor "HDL editor ($filename)"
    wm geometry .hdleditor 120x30+20+20

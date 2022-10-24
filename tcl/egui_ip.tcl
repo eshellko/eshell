@@ -10,7 +10,7 @@
 proc configureIP {} {
    global last_command
    global ip_parameters ip_ptypes ip_init_values ip_allowed_values ip_descriptions ip_names ip_vendor ip_version ip_doc
-   set ip_name [.ipcatalog.tree focus]
+   set ip_name [.outer.f3.n.ip.tree focus]
    # Note: check there is selection; otherwise access to '$ip_names($ip_name)' cause segmentation fault
    if {[string length $ip_name] == 0} {
       tk_messageBox -message "no IP selected"
@@ -36,6 +36,7 @@ proc configureIP {} {
          }
 # eval make export-ip ip=ddr
          build $build_arg
+# TODO: 2nd waiter mutex required here, as GUI already completed while toll still dumps netlist as a second command...
          write "$ip_names($ip_name)_egui_netlist.v"
          # Note: VAR updated and GUI that sets this variable...
          global ElaboratedDesign

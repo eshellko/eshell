@@ -67,10 +67,10 @@ proc checkFileHeader { fileName eshell_gui } {
                } else {
                   set cur_id "$tree_parent/$w_dir"
                }
-               if { [ .outer.f3.tree exists $cur_id ] == 1} {
+               if { [ .outer.f3.n.sources.tree exists $cur_id ] == 1} {
                   set tree_parent $cur_id
                } else {
-                  .outer.f3.tree insert $tree_parent end -id $cur_id -text "$w_dir/" -tags "ttk simple" -values [list "-" "-" "-" "-"]
+                  .outer.f3.n.sources.tree insert $tree_parent end -id $cur_id -text "$w_dir/" -tags "ttk simple" -values [list "-" "-" "-" "-"]
                   set tree_parent $cur_id
                }
                set temp [ string range $temp [expr $first_idx+1] end ]
@@ -82,12 +82,12 @@ proc checkFileHeader { fileName eshell_gui } {
          set timeline [file mtime $fileName]
          set timeline [clock format $timeline -format {%Y-%m-%d %H:%M:%S} ]
          if $code!=0x3f {
-            .outer.f3.tree insert $tree_parent end -id $fileName -text "$wout_dir ($timeline)" -tags "ttk simple" -values [list "-" "-" "-" "No standard header ($code)"]
+            .outer.f3.n.sources.tree insert $tree_parent end -id $fileName -text "$wout_dir ($timeline)" -tags "ttk simple" -values [list "-" "-" "-" "No standard header ($code)"]
          } else {
-            .outer.f3.tree insert $tree_parent end -id $fileName -text "$wout_dir ($timeline)" -tags "ttk simple" -values [list $COMPANY $REVISION $DATE $DESIGN]
+            .outer.f3.n.sources.tree insert $tree_parent end -id $fileName -text "$wout_dir ($timeline)" -tags "ttk simple" -values [list $COMPANY $REVISION $DATE $DESIGN]
          }
-         .outer.f3.tree see $fileName
-         .outer.f3.tree tag configure ttk -font efont
+         .outer.f3.n.sources.tree see $fileName
+         .outer.f3.n.sources.tree tag configure ttk -font efont
       } else {
          if $code!=0x3f { puts "Error: no standard header for ${fileName}(code: $code)." }
       }

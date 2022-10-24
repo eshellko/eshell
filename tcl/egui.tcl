@@ -38,6 +38,7 @@ set top_level "" ; # Note: name of top-level from CSV (useless in EGUI, but can 
 set testbench "" ; # Note: name of the testbench file (only one should be specified)
 set constraints "\"\"" ; # Note: name of the SDC file (only one should be specified)
 variable general_purpose_buffer ""
+set ip_loaded 0 ; # Note: set when IP catalog loaded (only after IP tab selected to reduce boot time)
 #
 # Tool settings
 #
@@ -138,8 +139,8 @@ source $path/tcl/flow.tcl
 proc read_csv fileName {
    global top_level
    set top_level ""
-   set filetop [.outer.f3.tree children {}]
-   .outer.f3.tree delete $filetop
+   set filetop [.outer.f3.n.sources.tree children {}]
+   .outer.f3.n.sources.tree delete $filetop
 # TODO: check duplicate files... they will have duplicate IDs!!!
    set ex [ file exists $fileName ]
    if { $ex == 1 } {
