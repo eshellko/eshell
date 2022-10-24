@@ -13,17 +13,17 @@ frame .f5 -background grey85
 frame .f6 -background grey85
 
 ######################################
-#    #            f2            -    #
-# f1 ###########################-    #
-#    #                          -    #
-#    #           f3             -    #
-#    #                          -    #
-#    ###########################- f5 #
-#    #                          -    #
-#    #          f4              -    #
-#    #                          -    #
-################################-    #
-#               f6              -    #
+#    #            f2            .    #
+#    ###########################.    #
+#    #                          .    #
+#    #            f3            .    #
+# f1 #                          .    #
+#    ###########################. f5 #
+#    #                          .    #
+#    #            f4            .    #
+#    #                          .    #
+################################.    #
+#               f6              .    #
 ######################################
 
 pack .f6 -side bottom -fill x
@@ -81,10 +81,9 @@ array set button_cfg [ list \
    7  [ list 0 "IP"            EventOnBtnIP           normal ] \
    8  [ list 0 "Custom"        EventOnBtnCustom       normal ] \
    9  [ list 0 "Clear"         EventOnBtnClear        disabled ] \
-   10 [ list 0 "Reload EDB"    EventOnBtnReloadEDB    disabled ] \
-   11 [ list 0 "Bug Tracker"   EventOnBtnBugTracker   normal ] \
-   12 [ list 0 "<-"            ExtendSize             normal ] \
-   13 [ list 0 "Exit"          EventOnBtnExit         normal ] \
+   10 [ list 0 "Bug Tracker"   EventOnBtnBugTracker   normal ] \
+   11 [ list 0 "<-"            ExtendSize             normal ] \
+   12 [ list 0 "Exit"          EventOnBtnExit         normal ] \
 ]
 
 #image create photo .ip -format PNG -file $::env(ESHELL_HOME)/tcl/ip.png
@@ -203,7 +202,8 @@ pack [ scrollbar .outer.f4.sby -orient vert -width 12 ] -side right -fill y
 # ComboBox
 #
 ############################
-pack [message .f2.myMessage -text "Current design" -width 100 -font efont -background grey85] -side left -padx 4
+pack [button  .f2.myMessage -font efont -relief flat -width 9 -text "Current\ndesign" -command EventOnBtnReloadEDB -anchor c -font efont -background grey85 ] -side left -padx 4
+setToolTip .f2.myMessage "Push to reload EDB"
 append EdbSpace $WorkSpace ".edb"
 # Note: -height set in terms of text lines
 pack [ttk::combobox .f2.myComboBox -textvariable ElaboratedDesign  -state readonly -font efont -height 20 ] -side left  -padx 4 ; # todo: place predefined packaged designs from sw_library in list
@@ -235,7 +235,7 @@ proc proc_break { var e op rr } {
          TOOL_CMD "unset $e"
       }
    }
-}   
+}
 
 proc print_settings {arr} {
    upvar $arr a
@@ -248,11 +248,12 @@ proc print_settings {arr} {
       set cfg_tips [lindex $a($i) 3]
 
       variable $::cfg_name $cfg_enbl
-      trace var $::cfg_name wu {proc_break $$::cfg_name}
+      trace variable ::$::cfg_name wu {proc_break $$::cfg_name}
       pack [checkbutton .f5.$::cfg_name -font efont -text $cfg_text -variable $::cfg_name -background grey85 ] -side top -anchor w
       setToolTip .f5.$::cfg_name $cfg_tips
    }
 }
+
 # Note: texts are same as  in help.cpp
 array set vlog_cfg [ list \
    0  [ list break_vlog_on_undirected_port               "Break Vlog On Undirected Port"              1 "When set break the compilation if any port has no direction." ] \

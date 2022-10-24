@@ -178,9 +178,9 @@ proc read_csv fileName {
 #       modify check_header, to allow single file checking (separate procedure), for every file in project...
 source $path/tcl/check_header.tcl
 source $path/tcl/egui_btn.tcl
+source $path/tcl/tclshrc.tcl
 source $path/tcl/egui_layout.tcl
 source $path/tcl/reference.tcl
-source $path/tcl/tclshrc.tcl
 #
 # Note: disable buttons N/A for non-tool run
 #

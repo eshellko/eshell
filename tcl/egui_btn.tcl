@@ -58,9 +58,13 @@ proc EventOnBtnProject {} {
    source tcl/egui_project.tcl
 }
 
+proc CloseIpCatalog {} {
+   catch [ destroy .ipcatalog ]
+}
+
 proc EventOnBtnIP {} {
    if [file exist $::env(ESHELL_HOME)/tcl/ip.csv ] {
-      catch [ destroy .ipcatalog ] ; # Note: only one window allowed
+      CloseIpCatalog ; # Note: only one window allowed
       toplevel .ipcatalog
       wm title .ipcatalog "IP Catalog"
       wm geometry .ipcatalog 765x480+120+140
@@ -82,6 +86,7 @@ proc EventOnBtnIP {} {
       menu .ipcatalog.popupMenu
       .ipcatalog.popupMenu configure -tearoff 0
       .ipcatalog.popupMenu add command -label "Configure & Generate" -command configureIP
+      .ipcatalog.popupMenu add command -label "Close" -command CloseIpCatalog
       bind .ipcatalog.tree <Button-3> {tk_popup .ipcatalog.popupMenu %X %Y}
 
       global ip_parameters ip_ptypes ip_init_values ip_allowed_values ip_descriptions ip_names ip_vendor ip_version ip_doc
