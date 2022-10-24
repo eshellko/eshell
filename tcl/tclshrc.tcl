@@ -139,6 +139,7 @@ set command_set { build \
                   _read read_lib _read_sdc read_vcd \
                   report_hierarchy report_blackbox report_design report_libs report_lint report_resources report_settings report_timing report_uninitialized report_vcd report_workspace   report_d_flops \
                   set_workspace _source system \
+                  ungroup \
                   write \
                   skip endskip \
                   }

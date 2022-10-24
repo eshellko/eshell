@@ -9,7 +9,7 @@ set eshell_tool 1 ; # Note: set if ESHELL launched at startup (in other case it 
 # TODO: add "what is new" window with major news ... connect to web (if possible) site and receive news into this window ...
 #       make small button for this (to show up) to not annoy user
 #
-#
+# TODO: run 'sockets' between EGUI (tcl) and CORE (c++) to inform about completed command (and not tcl-done method)
 #
 
 if {![info exists ::env(ESHELL_HOME)]} {

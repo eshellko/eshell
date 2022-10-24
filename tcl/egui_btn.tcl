@@ -253,6 +253,7 @@ proc SaveHdl filename {
 proc SaveAndCompileHdl filename {
    SaveHdl $filename
    read_verilog $filename
+   vwait mutex ; # Note: wait compilation completed
    EventOnBtnReloadEDB
 }
 

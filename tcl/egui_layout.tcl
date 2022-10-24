@@ -60,6 +60,7 @@ array set button_cfg [ list \
                                Area           "opt -area" \
                                Timing         "opt -time" \
                                Logic          "opt" \
+                               Ungroup        "ungroup" \
                                Exit           "" \
                    ] \
    4  [ list 0 "Techmap"       EventOnBtnTechmap      disabled ] \
@@ -85,7 +86,8 @@ array set button_cfg [ list \
    11 [ list 0 "Exit"          EventOnBtnExit         normal ] \
 ]
 
-#image create photo .ip -format PNG -file $::env(ESHELL_HOME)/tcl/ip.png
+# Note: use 'convert omg.png img.gif'
+#image create photo .ip -format gif -file $::env(ESHELL_HOME)/tcl/ip.gif
 
 set anum [array size button_cfg]
 for {set i 0} {$i < $anum} {incr i} {
@@ -236,7 +238,6 @@ pack [ text .outer.f4.text -state normal -height 10 -font efont -wrap char -back
 .outer.f4.text insert end "Welcome to EHL $sw_version.\n"
 .outer.f4.text see end
 .outer.f4.text configure -state disabled
-
 menu .popupMenu2
 .popupMenu2 configure -tearoff 0
 .popupMenu2 add command -label "Clear" -command "EventOnMenuClear"
