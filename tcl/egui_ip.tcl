@@ -63,24 +63,28 @@ proc configureIP {} {
    set init  ip_init_values($ip_name)
 
    foreach x [set $descr] y [set $param] z [set $allow] q [set $init] t [set $ptype] {
-# TODO: use ptype to define type of parameter... and keep it somehow to differentiate combo from other types...
       global ${ip_name}_combo_$y
       set ${ip_name}_combo_$y $q
       catch [ destroy .${ip_name}.label$y ]
       catch [ destroy .${ip_name}.${ip_name}_combo$y ]
       place [label .${ip_name}.label$y -text $x -font efont ] -x $xpos -y $ypos
-      place [ttk::combobox .${ip_name}.${ip_name}_combo$y -textvariable ${ip_name}_combo_$y -state readonly -values $z -font efont -width 10 ] -x 440 -y $ypos
+      # Note: combobox with values for type A, text box with initial value for type B
+      if [string equal $t "A"] {
+         place [ttk::combobox .${ip_name}.${ip_name}_combo$y -textvariable ${ip_name}_combo_$y -state readonly -values $z -font efont -width 15 ] -x 440 -y $ypos
+      } elseif [string equal $t "B"] {
+         place [entry .${ip_name}.${ip_name}_entry$y -text $z -font efont -textvariable ${ip_name}_combo_$y -width 15 ] -x 440 -y $ypos
+      }
       set ypos [expr $ypos + 30 - 10]
       # tooltip text - TODO: write description into separate field, and brief one for text -- check long description in highlight will be moved into next line
 #      set listab $x
       setToolTip .${ip_name}.label$y $x
    }
 
-   place [button .${ip_name}.button0 -text "Doc"      -font efont -width 10 -command "catch { exec firefox $::env(ESHELL_HOME)/ehl/$ip_doc(${ip_name}) }" ] -x 565 -y 20
-   place [button .${ip_name}.button1 -text "Generate" -font efont -width 10 -command "GENERATE_CMD $ip_name"] -x 565 -y 60
-   place [button .${ip_name}.button2 -text "Done"     -font efont -width 10 -command "destroy .${ip_name}" ] -x 565 -y 100
+   place [button .${ip_name}.button0 -text "Doc"      -font efont -width 10 -command "catch { exec firefox $::env(ESHELL_HOME)/ehl/$ip_doc(${ip_name}) }" ] -x 615 -y 20
+   place [button .${ip_name}.button1 -text "Generate" -font efont -width 10 -command "GENERATE_CMD $ip_name"] -x 615 -y 60
+   place [button .${ip_name}.button2 -text "Done"     -font efont -width 10 -command "destroy .${ip_name}" ] -x 615 -y 100
 
    set ypos [expr $ypos + 20]
    if $ypos<190 {set ypos 190}
-   wm geometry .${ip_name} 700x$ypos+100+100
+   wm geometry .${ip_name} 760x$ypos+100+100
 }

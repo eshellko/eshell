@@ -278,7 +278,7 @@ pack [radiobutton .f2.noteBtn  -text "Note"    -variable mesLev -command "messag
 ############################
 # Note: set default before trace, to avoid not necessary commands to eshell (on the other hand it will synchronize gui and console)
 proc proc_break { var e op rr } {
-   global eshell_tool io
+   global eshell_tool
    if $eshell_tool==1 {
       start_cmd
       global $e

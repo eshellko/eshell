@@ -36,14 +36,10 @@ proc EventOnBtnBuild {} {
    } else {
       set last_command "Building design $ElaboratedDesign."
       build $ElaboratedDesign
+# Note: if build caller, then wokrpsace/read already made (no check for errors)
+#.f1.myButtonWorkspace configure -background "light blue"
+#.f1.myButtonRead configure -background "light blue"
    }
-}
-
-proc EventOnBtnOptimize {} {
-   global ElaboratedDesign
-   global last_command
-   set last_command "Optimizing $ElaboratedDesign."
-   opt
 }
 
 proc EventOnBtnTechmap {} {
@@ -51,10 +47,10 @@ proc EventOnBtnTechmap {} {
    global last_command
    set last_command "Technology Mapping $ElaboratedDesign."
    techmap
+#.f1.myButtonOptimize configure -background "light blue"
 }
 
 proc EventOnBtnProject {} {
-   global email
    source tcl/egui_project.tcl
 }
 
@@ -115,11 +111,16 @@ proc EventOnBtnIP {} {
                         foreach t [ split $y "%\n"] {
                            set pid 0
                            foreach r [ split $t ":\n"] {
-                              if $pid==0 { lappend ip_parameters($id) $r }
-                              if $pid==1 { lappend ip_ptypes($id) $r }
-                              if $pid==2 { lappend ip_init_values($id) $r }
-                              if $pid==3 { lappend ip_allowed_values($id) $r }
-                              if $pid==4 { lappend ip_descriptions($id) $r }
+                              if {$pid==0} { lappend ip_parameters($id) $r
+                              } elseif {$pid==1} { lappend ip_ptypes($id) $r
+                              } elseif {$pid==2} { lappend ip_init_values($id) $r
+                                 # Note: there is no allowed values for B-type parameters
+                                 set len [ llength $ip_ptypes($id) ]
+                                 set len [expr $len - 1]
+                                 set val [ lindex $ip_ptypes($id) $len ]
+                                 if {[string eq $val "B"]} { incr pid }
+                              } elseif {$pid==3} { lappend ip_allowed_values($id) $r
+                              } elseif {$pid==4} { lappend ip_descriptions($id) $r }
                               incr pid
                            }
                         }
@@ -148,7 +149,7 @@ proc EventOnBtnClear {} {
 }
 
 proc EventOnBtnWriteNetlist {} {
-   global last_command WorkSpace
+   global WorkSpace
    variable filename ${WorkSpace}.v
    catch [ destroy .writer ]
    toplevel .writer
@@ -215,7 +216,7 @@ set csv_search_path ./
 # Note: combobox used to specify workspace; readonly mode
 proc EventOnBtnWorkspace {} {
    global csv_search_path
-   global WorkSpace last_command general_purpose_buffer
+   global WorkSpace general_purpose_buffer
    set general_purpose_buffer $WorkSpace
    catch [ destroy .workspace ] ; # Note: only one window allowed
    toplevel .workspace
@@ -526,12 +527,9 @@ proc EventOnBtnCustom {} {
 set BT_WINDOW .bt_win.outer. ; # Note: defined in global namespace - outer added to match bt.tcl suffix
 set BT_WINDOW_GUI .bt_win ; # Note: defined in global namespace
 # Note: tool should use same tasks.csv, as bt.tcl placed into EHL repository
-#set database_name "tasks.csv"
 proc EventOnBtnBugTracker {} {
-   global eshell_gui
    global BT_WINDOW_GUI
    global path
-   global database_name
    global BT_WINDOW
    set BT_WINDOW .bt_win.outer. ; # Note: defined in global namespace - outer added to match bt.tcl suffix
    set BT_WINDOW_GUI .bt_win ; # Note: defined in global namespace
