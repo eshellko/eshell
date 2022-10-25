@@ -2,24 +2,23 @@ if { ! [info exist eshell_gui] } {
    set eshell_gui 0
 }
 
-# Note: eshell.exe should be in your $PATH or %path% variable (or into env(ESHELL_HOME))
-
 set tcl_prompt1 {puts -nonewline "eshell-tcl> "}
 
 #######################################################
+# Note: eshell.exe (32/64) should be in your $PATH or %path% variable (or into env(ESHELL_HOME))
+set tool_arguments [list ]
+set tool_name "x86_64.exe" ; # Note: set default tool name - 64-bit onon-static tool
 source $path/tcl/parse_options.tcl
-set tool_arguments [list ] ; # TODO: do not clear after conversion will be made
+eshell
 #######################################################
 set io 0
-if { [catch { global io ; set io [ open "|eshell.exe $tool_arguments -noinit -tcl" r+ ] } ] } {
-   if {[info exists ::env(ESHELL_HOME)]} {
-      set path $env(ESHELL_HOME)
-      if { [catch { global io ; set io [ open "|$path/eshell.exe $tool_arguments -noinit -tcl" r+ ] } ] } {
-         global last_command
-         set last_command "Error: can't find eshell.exe file. Make sure it's in your PATH variable, or ESHELL_HOME points to valid location."
-         global eshell_tool
-         set eshell_tool 0
-      }
+if {[info exists ::env(ESHELL_HOME)]} {
+   set path $env(ESHELL_HOME)
+   if { [catch { global io ; set io [ open "|$path/bin/$tool_name $tool_arguments" r+ ] } ] } {
+      global last_command
+      set last_command "Error: can't find $tool_name file. Make sure ESHELL_HOME points to valid location."
+      global eshell_tool
+      set eshell_tool 0
    }
 }
 
