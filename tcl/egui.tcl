@@ -149,7 +149,10 @@ proc read_csv fileName {
          foreach x [ split $fline ";\n"] {
             if [string length $x]>0 {
                if {[string range $x 0 3] eq "top="} {
-                  set ElaboratedDesign [string range $x 4 end]
+                  set values [.f2.myComboBox cget -values]
+                  if {[string range $x 4 end] in $values} {
+                     set ElaboratedDesign [string range $x 4 end]
+                  }
 #                   .outer.f3.n.project.tree insert top end -id top_level -text "Top-level module" -tags "ttk simple" -values [list [string range $x 4 end]]
                } elseif {[string range $x 0 3] eq "lib="} {
 #                   .outer.f3.n.project.tree insert lib end -id [string range $x 4 end] -text "file:" -tags "ttk simple" -values [list [string range $x 4 end]]
