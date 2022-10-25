@@ -126,63 +126,56 @@ for {set i 0} {$i < $anum} {incr i} {
 }
 ############################
 #
-# Tree
+# Trees
+# - sources
+# - project
+# - IPs
 #
 ############################
 set TreeRowsNum 8
 
 pack [::ttk::notebook .outer.f3.n] -fill both -expand true -side bottom
 
-::ttk::entry .outer.f3.n.sources
-.outer.f3.n add .outer.f3.n.sources -text sources
-pack [ ttk::treeview .outer.f3.n.sources.tree -columns "Vendor Version Date Description" -displaycolumns "Description Date Version Vendor" -height $TreeRowsNum ] -side left -expand y -fill both
-.outer.f3.n.sources.tree heading Vendor      -text "Vendor"      -anchor w
-.outer.f3.n.sources.tree heading Version     -text "Version"     -anchor w
-.outer.f3.n.sources.tree heading Date        -text "Date"        -anchor w
-.outer.f3.n.sources.tree heading Description -text "Description" -anchor w
-.outer.f3.n.sources.tree heading #0          -text "Name"        -anchor w
-set tabsize [winfo screenmmwidth .outer.f3.n.sources.tree ]
-.outer.f3.n.sources.tree column #0          -width [expr ($tabsize - 270) / 2]
-.outer.f3.n.sources.tree column Description -width [expr ($tabsize - 270) / 2]
-.outer.f3.n.sources.tree column Date        -width 120 -stretch no
-.outer.f3.n.sources.tree column Version     -width 70  -stretch no
-.outer.f3.n.sources.tree column Vendor      -width 80  -stretch no
-# scrollbar
-pack [ scrollbar .outer.f3.n.sources.sby -orient vert -width 12 ] -side right -fill y
-.outer.f3.n.sources.tree conf -yscrollcommand {.outer.f3.n.sources.sby set}
-.outer.f3.n.sources.sby conf -command {.outer.f3.n.sources.tree yview}
+set views {sources project ip}
+set heads { {Vendor Version Date Description Name} {Description File} {Vendor Version Honor Description Name} }
+set aligns { {80 70 120 0 0} {0 0} {80 70 120 0 0} }
 
-::ttk::entry .outer.f3.n.project
-.outer.f3.n add .outer.f3.n.project -text project
-pack [ ttk::treeview .outer.f3.n.project.tree -columns "Description" -displaycolumns "Description" -height $TreeRowsNum ] -side left -expand y -fill both
-.outer.f3.n.project.tree heading Description -text "Description" -anchor w
-.outer.f3.n.project.tree heading #0          -text "File"        -anchor w
-set tabsize [winfo screenmmwidth .outer.f3.n.project.tree ]
-.outer.f3.n.project.tree column #0          -width [expr $tabsize / 2]
-.outer.f3.n.project.tree column Description -width [expr $tabsize / 2]
-# scrollbar
-pack [ scrollbar .outer.f3.n.project.sby -orient vert -width 12 ] -side right -fill y
-.outer.f3.n.project.tree conf -yscrollcommand {.outer.f3.n.project.sby set}
-.outer.f3.n.project.sby conf -command {.outer.f3.n.project.tree yview}
+foreach v $views h $heads a $aligns {
+   ::ttk::entry .outer.f3.n.$v
+   .outer.f3.n add .outer.f3.n.$v -text $v
+   set numb [llength $h] ; # Number of columns
+   set columns ""
+   set displaycolumns ""
+   for {set i 0} {$i < [expr $numb - 1]} {incr i} {
+      set columns "$columns [lindex $h $i]"
+      set displaycolumns "[lindex $h $i] $displaycolumns"
+   }
 
-::ttk::entry .outer.f3.n.ip
-.outer.f3.n add .outer.f3.n.ip -text IP
-pack [ ttk::treeview .outer.f3.n.ip.tree      -columns "Vendor Version Honor Description" -displaycolumns "Description Honor Version Vendor" -height $TreeRowsNum ] -side left -expand y -fill both
-.outer.f3.n.ip.tree heading Vendor      -text "Vendor"      -anchor w
-.outer.f3.n.ip.tree heading Version     -text "Version"     -anchor w
-.outer.f3.n.ip.tree heading Honor       -text "Honor"       -anchor w
-.outer.f3.n.ip.tree heading Description -text "Description" -anchor w
-.outer.f3.n.ip.tree heading #0          -text "Name"        -anchor w
-set tabsize [winfo screenmmwidth .outer.f3.n.ip.tree ]
-.outer.f3.n.ip.tree column #0          -width [expr ($tabsize - 270) / 2]
-.outer.f3.n.ip.tree column Description -width [expr ($tabsize - 270) / 2]
-.outer.f3.n.ip.tree column Honor       -width 120 -stretch no
-.outer.f3.n.ip.tree column Version     -width 80  -stretch no
-.outer.f3.n.ip.tree column Vendor      -width 70  -stretch no
-# scrollbar
-pack [ scrollbar .outer.f3.n.ip.sby -orient vert -width 12 ] -side right -fill y
-.outer.f3.n.ip.tree conf -yscrollcommand {.outer.f3.n.ip.sby set}
-.outer.f3.n.ip.sby conf -command {.outer.f3.n.ip.tree yview}
+   pack [ ttk::treeview .outer.f3.n.${v}.tree -columns $columns -displaycolumns $displaycolumns -height $TreeRowsNum ] -side left -expand y -fill both
+   for {set i 0} {$i < [expr $numb - 1]} {incr i} {
+      set t "[lindex $h $i]"
+      .outer.f3.n.${v}.tree heading $t -text $t -anchor w
+   }
+   set t "[lindex $h [expr $numb-1]]"
+   .outer.f3.n.${v}.tree heading #0 -text $t -anchor w
+
+   set tabsize [winfo screenmmwidth .outer.f3.n.${v}.tree ]
+   set overal 0
+   for {set i [expr $numb - 3]} {$i >= 0} {set i [expr $i - 1]} {
+      set overal [expr $overal + [lindex $a $i]]
+   }
+
+   .outer.f3.n.${v}.tree column #0 -width [expr ($tabsize - $overal) / 2]
+   .outer.f3.n.${v}.tree column [lindex $h [expr $numb - 2]] -width [expr ($tabsize - $overal) / 2]
+
+   for {set i [expr $numb - 3]} {$i >= 0} {set i [expr $i - 1]} {
+      .outer.f3.n.${v}.tree column [lindex $h $i] -width [lindex $a $i] -stretch no
+   }
+   # scrollbar
+   pack [ scrollbar .outer.f3.n.${v}.sby -orient vert -width 12 ] -side right -fill y
+   .outer.f3.n.${v}.tree conf -yscrollcommand ".outer.f3.n.${v}.sby set"
+   .outer.f3.n.${v}.sby conf -command ".outer.f3.n.${v}.tree yview"
+}
 
 # Note: load IP catalog after IP tab selected for a first time
 bind .outer.f3.n <<NotebookTabChanged>> tabChanged
