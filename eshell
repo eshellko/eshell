@@ -104,13 +104,13 @@ if [ $mode = 0 ] ; then
 fi
 
 TOOL_EXEC=""
-if [ $mode = 1 ] ; then
+if [ $mode == 1 ] ; then
    if [ -z "${ESHELL_STATIC}" ]; then
       TOOL_EXEC=${ESHELL_HOME}/bin/x86_64.exe
    else
       TOOL_EXEC=${ESHELL_HOME}/bin/x86_64.s.exe
    fi
-elif [ $mode = 2 ] ; then
+elif [ $mode == 2 ] ; then
    if [ -z "${ESHELL_STATIC}" ]; then
       TOOL_EXEC=${ESHELL_HOME}/bin/i686.exe
    else
@@ -121,19 +121,22 @@ else
    return 1
 fi
 
-if [ $valgrind = 1 ] ; then
+if [ $valgrind == 1 ] ; then
    TOOL_EXEC="valgrind ${TOOL_EXEC}"
-elif [ $valgrind = 2 ] ; then
+elif [ $valgrind == 2 ] ; then
    TOOL_EXEC="valgrind --leak-check=full --show-leak-kinds=all ${TOOL_EXEC}"
 elif [ $gdb == 1 ] ; then
    TOOL_EXEC="gdb -ex run -ex where -ex quit --batch --args ${TOOL_EXEC}"
 elif [ $gui == 1 ] ; then
+# TODO: provide 64/32 to caller inside tcl... to allow their selection too
    TOOL_EXEC="wish ${ESHELL_HOME}/tcl/egui.tcl"
+   if [ $mode == 1 ] ; then TOOL_EXEC="$TOOL_EXEC -64"; fi
+   if [ $mode == 2 ] ; then TOOL_EXEC="$TOOL_EXEC -32"; fi
    nodb=""
    nolog=""
    quiet=""
-   noinit=""
-   tcl=""
+   noinit="-noinit"
+   tcl="-tcl"
    script=""
    help=""
    dir=""
