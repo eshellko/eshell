@@ -118,7 +118,10 @@ proc EventOnBtnIP {} {
                                  set len [ llength $ip_ptypes($id) ]
                                  set len [expr $len - 1]
                                  set val [ lindex $ip_ptypes($id) $len ]
-                                 if {[string eq $val "B"]} { incr pid }
+                                 if {[string eq $val "B"]} { incr pid
+                                 # Note: empty entry to keep ordered list consistency
+                                    lappend ip_allowed_values($id) ""
+                                 }
                               } elseif {$pid==3} { lappend ip_allowed_values($id) $r
                               } elseif {$pid==4} { lappend ip_descriptions($id) $r }
                               incr pid
