@@ -179,8 +179,6 @@ proc EventOnBtnReadVCD {} {
 }
 
 proc EventOnBtnReloadEDB {} {
-   global ElaboratedDesign
-   set ElaboratedDesign {}
    #set prev_color [.myButton10 cget -background]
    global WorkSpace
    append EdbSpace $WorkSpace ".edb"
@@ -228,11 +226,11 @@ proc EventOnBtnWorkspace {} {
    wm geometry .workspace 300x100+120+140
    place [label .workspace.label1 -text "Specify new workspace name" -font efont ] -x 10 -y 5
    place [entry .workspace.entryWS -text $WorkSpace -font efont -textvariable WorkSpace -width [expr 32 - 6]] -x 10 -y 30
-   place [button .workspace.myButton01 -font efont -width 7 -text "OK"     -command { wm title . "EHL\ Design\ Browser\ (workspace:\ $WorkSpace)" ; set_workspace $WorkSpace ; destroy .workspace ;    read_csv ${csv_search_path}/${WorkSpace}.csv ; EventOnBtnReloadEDB ;} ] -x 30 -y 60
+   place [button .workspace.myButton01 -font efont -width 7 -text "OK"     -command { wm title . "EHL\ Design\ Browser\ (workspace:\ $WorkSpace)" ; set_workspace $WorkSpace ; destroy .workspace ;   read_csv ${csv_search_path}/${WorkSpace}.csv ; EventOnBtnReloadEDB ;} ] -x 30 -y 60
    place [button .workspace.myButton02 -font efont -width 7 -text "Cancel" -command "set workspace $general_purpose_buffer; destroy .workspace" ] -x 130 -y 60
    focus .workspace.entryWS
    # Note: ENTER became same as OK (todo: create proc to use same code for ENTER and OK-button)
-   bind .workspace <Return> { wm title . "EHL\ Design\ Browser\ (workspace:\ $WorkSpace)" ; set_workspace $WorkSpace ; destroy .workspace ;    read_csv ${csv_search_path}/${WorkSpace}.csv ; EventOnBtnReloadEDB ;}
+   bind .workspace <Return> { wm title . "EHL\ Design\ Browser\ (workspace:\ $WorkSpace)" ; set_workspace $WorkSpace ; destroy .workspace ;  read_csv ${csv_search_path}/${WorkSpace}.csv ; EventOnBtnReloadEDB ;}
    bind .workspace <Escape> { set workspace $general_purpose_buffer; destroy .workspace }
 
    global lista

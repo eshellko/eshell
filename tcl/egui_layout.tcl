@@ -186,6 +186,14 @@ proc tabChanged {} {
       }
    }
 }
+
+.outer.f3.n.project.tree insert {} end -id top -text "top" -tags "ttk simple" -values [list "-"]
+.outer.f3.n.project.tree insert {} end -id lib -text "lib" -tags "ttk simple" -values [list "-"]
+.outer.f3.n.project.tree insert {} end -id sgdc -text "sgdc" -tags "ttk simple" -values [list "-"]
+.outer.f3.n.project.tree insert {} end -id bb -text "bb" -tags "ttk simple" -values [list "-"]
+.outer.f3.n.project.tree insert {} end -id parameter -text "parameter" -tags "ttk simple" -values [list "-"]
+.outer.f3.n.project.tree insert {} end -id define -text "define" -tags "ttk simple" -values [list "-"]
+.outer.f3.n.project.tree insert {} end -id incdir -text "incdir" -tags "ttk simple" -values [list "-"]
 ############################
 #
 # Edit HDL
@@ -253,7 +261,7 @@ pack [button  .f2.myMessage -font efont -relief flat -width 9 -text "Current\nde
 setToolTip .f2.myMessage "Push to reload EDB"
 append EdbSpace $WorkSpace ".edb"
 # Note: -height set in terms of text lines
-pack [ttk::combobox .f2.myComboBox -textvariable ElaboratedDesign  -state readonly -font efont -height 20 ] -side left  -padx 4 ; # todo: place predefined packaged designs from sw_library in list
+pack [ttk::combobox .f2.myComboBox -textvariable ElaboratedDesign  -state readonly -font efont -height 20 ] -side left -padx 4 ; # todo: place predefined packaged designs from ehl in list
 ReadEDB $EdbSpace
 ############################
 #

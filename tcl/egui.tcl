@@ -29,12 +29,11 @@ catch {font create efontbold -family Courier -size -14 -weight bold}
 # Global variables
 #
 set sw_version "2016.04.30"
-set ElaboratedDesign ""
+set ElaboratedDesign "" ; # Note: name of top-level from CSV, or set manually by user in combobox
 variable WorkSpace "eshell"
 set email kornukhin@mail.ru
 set currentDir "."
 set last_command "Initialize [pid]"
-set top_level "" ; # Note: name of top-level from CSV (useless in EGUI, but can be useful in other tools)
 set testbench "" ; # Note: name of the testbench file (only one should be specified)
 set constraints "\"\"" ; # Note: name of the SDC file (only one should be specified)
 variable general_purpose_buffer ""
@@ -137,8 +136,8 @@ proc elog {message} {
 source $path/tcl/flow.tcl
 
 proc read_csv fileName {
-   global top_level
-   set top_level ""
+   global ElaboratedDesign
+   set ElaboratedDesign ""
    set filetop [.outer.f3.n.sources.tree children {}]
    .outer.f3.n.sources.tree delete $filetop
 # TODO: check duplicate files... they will have duplicate IDs!!!
@@ -150,13 +149,20 @@ proc read_csv fileName {
          foreach x [ split $fline ";\n"] {
             if [string length $x]>0 {
                if {[string range $x 0 3] eq "top="} {
-                  set top_level [string range $x 4 end]
+                  set ElaboratedDesign [string range $x 4 end]
+#                   .outer.f3.n.project.tree insert top end -id top_level -text "Top-level module" -tags "ttk simple" -values [list [string range $x 4 end]]
                } elseif {[string range $x 0 3] eq "lib="} {
+#                   .outer.f3.n.project.tree insert lib end -id [string range $x 4 end] -text "file:" -tags "ttk simple" -values [list [string range $x 4 end]]
                } elseif {[string range $x 0 4] eq "sgdc="} {
+#                   .outer.f3.n.project.tree insert sgdc end -id [string range $x 5 end] -text "sgdc" -tags "ttk simple" -values [list [string range $x 5 end]]
                } elseif {[string range $x 0 2] eq "bb="} {
+#                   .outer.f3.n.project.tree insert bb end -id [string range $x 3 end] -text "bb" -tags "ttk simple" -values [list [string range $x 3 end]]
                } elseif {[string range $x 0 5] eq "param="} {
+#                   .outer.f3.n.project.tree insert param end -id [string range $x 6 end] -text "parameter" -tags "ttk simple" -values [list [string range $x 6 end]]
                } elseif {[string range $x 0 6] eq "define="} {
+#                   .outer.f3.n.project.tree insert define end -id [string range $x 7 end] -text "define" -tags "ttk simple" -values [list [string range $x 7 end]]
                } elseif {[string range $x 0 6] eq "incdir="} {
+#                   .outer.f3.n.project.tree insert incdir end -id [string range $x 7 end] -text "incdir" -tags "ttk simple" -values [list [string range $x 7 end]]
                } else {
 # TODO: here file placed into list by 'checkFileHeader'; similar should be applied to SDC/VCD/LIB...
                   checkFileHeader $x 1
@@ -168,7 +174,7 @@ proc read_csv fileName {
    }
    # Note: top_level filled during first run
 # TODO: add Flow option to allow script generation for given CSV
-#      gen_flow_eshell $top_level $fileName
+#      gen_flow_eshell $ElaboratedDesign $fileName
 }
 ###############################################
 #
