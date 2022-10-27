@@ -136,6 +136,8 @@ proc elog {message} {
 source $path/tcl/flow.tcl
 
 proc read_csv fileName {
+   EventOnBtnReloadEDB
+
    global ElaboratedDesign
    set ElaboratedDesign ""
    set filetop [.outer.f3.n.sources.tree children {}]
@@ -150,8 +152,9 @@ proc read_csv fileName {
             if [string length $x]>0 {
                if {[string range $x 0 3] eq "top="} {
                   set values [.f2.myComboBox cget -values]
-                  if {[string range $x 4 end] in $values} {
-                     set ElaboratedDesign [string range $x 4 end]
+                  set new_top [string range $x 4 end]
+                  if {$new_top in $values} {
+                     set ElaboratedDesign $new_top
                   }
 #                   .outer.f3.n.project.tree insert top end -id top_level -text "Top-level module" -tags "ttk simple" -values [list [string range $x 4 end]]
                } elseif {[string range $x 0 3] eq "lib="} {
@@ -216,7 +219,6 @@ proc DisableBtns {} {
 
 UpdateBtns
 read_csv ${csv_search_path}/${WorkSpace}.csv
-EventOnBtnReloadEDB
 message $mesLev
 
 # Note: to keep minsize as one created initially (automatically or using -geometry)

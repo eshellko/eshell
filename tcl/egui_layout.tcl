@@ -262,7 +262,6 @@ setToolTip .f2.myMessage "Push to reload EDB"
 append EdbSpace $WorkSpace ".edb"
 # Note: -height set in terms of text lines
 pack [ttk::combobox .f2.myComboBox -textvariable ElaboratedDesign  -state readonly -font efont -height 20 ] -side left -padx 4 ; # todo: place predefined packaged designs from ehl in list
-ReadEDB $EdbSpace
 ############################
 #
 # Radiobutton
