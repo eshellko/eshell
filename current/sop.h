@@ -28,7 +28,10 @@ void print(int arr[32][5], int num_clause)
    }
 #endif
 }
-
+//===============================
+// Sum Of Products (SOP)
+// Creates sums (OR) of provided arguments (previously made from products (ANDs))
+//===============================
 void sop(int arr[32][5], int num_clause, int& num_nodes)
 {
    std::set<int> nodes;
@@ -67,8 +70,12 @@ printf("      print_int3(w, %d,%d,%d);\n", a-1,b-1,opcode);
    }
 //printf("%ld\n", nodes.size());
 }
-
-int core(int arr[32][5], int num_clause, int& num_nodes)
+//===============================
+// Common Subexpression Elimination (CSE) Core
+// Searches for most common used pairs, and creates intermediate variable (alias) for them.
+// Runs iteratively until there are pairs.
+//===============================
+int core_cse(int arr[32][5], int num_clause, int& num_nodes)
 {
 // get highest index - say up to 32+32'
 // count pairs presence
@@ -125,14 +132,12 @@ int core(int arr[32][5], int num_clause, int& num_nodes)
    printf("Alias : %d = (%d,%d)\n", num_nodes, a, b);
 #endif
 
-
    int opcode = 0;
    short an = a;
    short bn = b;
    if(an < 0) { opcode += 1; an=-an; }
    if(bn < 0) { opcode += 2; bn=-bn; }
    printf("      print_int3(w, %d,%d,%d);\n", an-1,bn-1,opcode);
-
 
 // find pair and substitute with alias
    for(int i=0; i<num_clause; i++)
@@ -149,7 +154,7 @@ int core(int arr[32][5], int num_clause, int& num_nodes)
    printf("==============\n");
 #endif
 // iteratively apply CSE for pair with highest weight - O(n*n) - and rerun algorithm on new array
-   core(arr, num_clause, num_nodes);
+   core_cse(arr, num_clause, num_nodes);
 
    return 0;
 }
@@ -171,7 +176,6 @@ int sop_core(int arr[32][5])
          if(arr[i][j] < 0 && (-arr[i][j]) > num_nodes)
             num_nodes = -arr[i][j];
       }
-// display
 #ifdef __PRINT__
    printf("expression has %d product(s) and %d node(s):\n", num_clause, num_nodes);
 #endif
@@ -180,7 +184,7 @@ int sop_core(int arr[32][5])
    printf("==============\n");
 #endif
 
-   core(arr, num_clause, num_nodes);
+   core_cse(arr, num_clause, num_nodes);
 
 #ifdef __PRINT__
    printf("SOP has %d product(s) and %d node(s):\n", num_clause, num_nodes);
