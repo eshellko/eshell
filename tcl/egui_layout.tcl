@@ -348,11 +348,10 @@ trace var tree_format wu ""
 pack [checkbutton .f5.treeChk -font efont -text "List View" -variable tree_format -background grey85 ] -side top -anchor w
 setToolTip .f5.treeChk "Filelist view (on list creation time): 0 - list, 1 - tree"
 
-# Note: command line to customize GUI (ctrl-r executes specified command)
 variable wish ""
-pack [label .f6.labelCnsl -text "Tcl/Tk command line (Control-r to execute)" -font efont -background grey85 ] -side top -anchor w
+pack [label .f6.labelTool -text "eshell>\n" -font efont -background grey85 ] -side left -anchor w
 pack [entry .f6.entryCnsl -text $WorkSpace -font efont -textvariable wish -width 87] -side top -fill x
-bind . <Control-r> { eval $wish }
+bind .f6.entryCnsl <Return> { eval $wish }
 
 # Information about last command
 pack [label .f6.label22 -font efontbold -textvariable last_command -foreground red -background grey85 ] -side left -fill y

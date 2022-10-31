@@ -36,8 +36,9 @@ proc configureIP {} {
          }
 # eval make export-ip ip=ddr
          build $build_arg
-# TODO: 2nd waiter mutex required here, as GUI already completed while toll still dumps netlist as a second command...
+# TODO: 2nd waiter mutex required here, as GUI already completed while tool still dumps netlist as a second command...
          write "$ip_names($ip_name)_egui_netlist.v"
+         TOOL_CMD "report_hierarchy -depth 1 -resources"
          # Note: VAR updated and GUI that sets this variable...
          global ElaboratedDesign
          set ElaboratedDesign $ip_names($ip_name)
