@@ -24,9 +24,9 @@
 #define ST_ATAN2                (1+ST_ATAN)
 #define ST_ATANH                (1+ST_ATAN2)
 #define ST_BITS                 (1+ST_ATANH)
-#define ST_BITSTOSHORTREAL      (1+ST_BITS)
-#define ST_BITSTOREAL           (1+ST_BITSTOSHORTREAL)
-#define ST_CAST                 (1+ST_BITSTOREAL)
+#define ST_BITSTOREAL           (1+ST_BITS)
+#define ST_BITSTOSHORTREAL      (1+ST_BITSTOREAL)
+#define ST_CAST                 (1+ST_BITSTOSHORTREAL)
 #define ST_CEIL                 (1+ST_CAST)
 #define ST_CHANGED              (1+ST_CEIL)
 #define ST_CHANGED_GCLK         (1+ST_CHANGED)
@@ -151,8 +151,11 @@
 #define ST_STROBEB              (1+ST_STROBE)
 #define ST_STROBEH              (1+ST_STROBEB)
 #define ST_STROBEO              (1+ST_STROBEH)
-#define ST_SYSTEM               (1+ST_STROBEO)
-#define ST_SYNC_AND_ARRAY       (1+ST_SYSTEM)
+#define ST_SWRITE               (1+ST_STROBEO)
+#define ST_SWRITEB              (1+ST_SWRITE)
+#define ST_SWRITEH              (1+ST_SWRITEB)
+#define ST_SWRITEO              (1+ST_SWRITEH)
+#define ST_SYNC_AND_ARRAY       (1+ST_SWRITEO)
 #define ST_SYNC_AND_PLANE       (1+ST_SYNC_AND_ARRAY)
 #define ST_SYNC_NAND_ARRAY      (1+ST_SYNC_AND_PLANE)
 #define ST_SYNC_NAND_PLANE      (1+ST_SYNC_NAND_ARRAY)
@@ -160,11 +163,8 @@
 #define ST_SYNC_NOR_PLANE       (1+ST_SYNC_NOR_ARRAY)
 #define ST_SUNC_OR_ARRAY        (1+ST_SYNC_NOR_PLANE)
 #define ST_SYNC_OR_PLANE        (1+ST_SUNC_OR_ARRAY)
-#define ST_SWRITE               (1+ST_SYNC_OR_PLANE)
-#define ST_SWRITEB              (1+ST_SWRITE)
-#define ST_SWRITEH              (1+ST_SWRITEB)
-#define ST_SWRITEO              (1+ST_SWRITEH)
-#define ST_TAN                  (1+ST_SWRITEO)
+#define ST_SYSTEM               (1+ST_SYNC_OR_PLANE)
+#define ST_TAN                  (1+ST_SYSTEM)
 #define ST_TANH                 (1+ST_TAN)
 #define ST_TEST_PLUSARGS        (1+ST_TANH)
 #define ST_TIME                 (1+ST_TEST_PLUSARGS)
@@ -187,7 +187,7 @@ const int NEW_ST_1800_2017 [] = {
    ST_ASSERTON,             ST_ASSERTPASSOFF,    ST_ASSERTPASSON,     ST_ASSERTVACUOUSOFF,    ST_ASYNC_AND_ARRAY,
    ST_ASYNC_AND_PLANE,      ST_ASYNC_NAND_ARRAY, ST_ASYNC_NAND_PLANE, ST_ASYNC_NOR_ARRAY,     ST_ASYNC_NOR_PLANE,
    ST_ASYNC_OR_ARRAY,       ST_ASYNC_OR_PLANE,   ST_ATAN,             ST_ATAN2,               ST_ATANH,
-   ST_BITS,                 ST_BITSTOSHORTREAL,  ST_BITSTOREAL,       ST_CAST,                ST_CEIL,
+   ST_BITS,                 ST_BITSTOREAL,       ST_BITSTOSHORTREAL,  ST_CAST,                ST_CEIL,
    ST_CHANGED,              ST_CHANGED_GCLK,     ST_CHANGING_GCLK,    ST_CLOG2,               ST_COS,
    ST_COSH,                 ST_COUNTBITS,        ST_COUNTONES,        ST_COVERAGE_CONTROL,    ST_COVERAGE_GET,
    ST_COVERAGE_GET_MAX,     ST_COVERAGE_MERGE,   ST_COVERAGE_SAVE,    ST_DIMENSIONS,          ST_DISPLAY,
@@ -212,52 +212,52 @@ const int NEW_ST_1800_2017 [] = {
    ST_SET_COVERAGE_DB_NAME, ST_SFORMAT,          ST_SHORTREALTOBITS,  ST_SIGNED,              ST_SIN,
    ST_SINH,                 ST_SIZE,             ST_SQRT,             ST_SSCANF,              ST_STABLE,
    ST_STABLE_GCLK,          ST_STEADY_GCLK,      ST_STIME,            ST_STOP,                ST_STROBE,
-   ST_STROBEB,              ST_STROBEH,          ST_STROBEO,          ST_SYNC_AND_ARRAY,      ST_SYNC_AND_PLANE,
-   ST_SYNC_NAND_ARRAY,      ST_SYNC_NAND_PLANE,  ST_SYNC_NOR_ARRAY,   ST_SYNC_NOR_PLANE,      ST_SUNC_OR_ARRAY,
-   ST_SYNC_OR_PLANE,        ST_SYSTEM,           ST_SWRITE,           ST_SWRITEB,             ST_SWRITEH,
-   ST_SWRITEO,              ST_TAN,              ST_TANH,             ST_TEST_PLUSARGS,       ST_TIME,
+   ST_STROBEB,              ST_STROBEH,          ST_STROBEO,          ST_SWRITE,              ST_SWRITEB,
+   ST_SWRITEH,              ST_SWRITEO,          ST_SYNC_AND_ARRAY,   ST_SYNC_AND_PLANE,      ST_SYNC_NAND_ARRAY,
+   ST_SYNC_NAND_PLANE,      ST_SYNC_NOR_ARRAY,   ST_SYNC_NOR_PLANE,   ST_SUNC_OR_ARRAY,       ST_SYNC_OR_PLANE,
+   ST_SYSTEM,               ST_TAN,              ST_TANH,             ST_TEST_PLUSARGS,       ST_TIME,
    ST_TIMEFORMAT,           ST_TYPENAME,         ST_UNGETC,           ST_UNPACKED_DIMENSIONS, ST_UNSIGNED,
    ST_VALUE_PLUSARGS,       ST_WARNING,          ST_WRITE,            ST_WRITEB,              ST_WRITEH,
    ST_WRITEO
 };
 
 const int NEW_ST_1364_2001 [] = {
-   ST_ACOS,                 ST_ACOSH,            ST_ASIN,             ST_ASINH,               0/*ST_ASSERTCONTROL*/,
-   0/*ST_ASSERTFAILOFF*/,        0/*ST_ASSERTFAILON*/,     0/*ST_ASSERTKILL*/,       0/*ST_ASSERTNONVACUOUSON*/,  0/*ST_ASSERTOFF*/,
-   0/*ST_ASSERTON*/,             0/*ST_ASSERTPASSOFF*/,    0/*ST_ASSERTPASSON*/,     0/*ST_ASSERTVACUOUSOFF*/,    ST_ASYNC_AND_ARRAY,
-   ST_ASYNC_AND_PLANE,      ST_ASYNC_NAND_ARRAY, ST_ASYNC_NAND_PLANE, ST_ASYNC_NOR_ARRAY,     ST_ASYNC_NOR_PLANE,
-   ST_ASYNC_OR_ARRAY,       ST_ASYNC_OR_PLANE,   ST_ATAN,             ST_ATAN2,               ST_ATANH,
-   0/*ST_BITS*/,                 0/*ST_BITSTOSHORTREAL*/,  ST_BITSTOREAL,       ST_CAST,                ST_CEIL,
-   0/*ST_CHANGED*/,              0/*ST_CHANGED_GCLK*/,     0/*ST_CHANGING_GCLK*/,    ST_CLOG2,               ST_COS,
-   ST_COSH,                 0/*ST_COUNTBITS*/,        0/*ST_COUNTONES*/,        0/*ST_COVERAGE_CONTROL*/,    0/*ST_COVERAGE_GET*/,
-   0/*ST_COVERAGE_GET_MAX*/,     0/*ST_COVERAGE_MERGE*/,   0/*ST_COVERAGE_SAVE*/,    0/*ST_DIMENSIONS*/,          ST_DISPLAY,
-   ST_DISPLAYB,             ST_DISPLAYH,         ST_DISPLAYO,         ST_DIST_CHI_SQUARE,     ST_DIST_ERLANG,
-   ST_DIST_EXPONENTIAL,     ST_DIST_NORMAL,      ST_DIST_POISSON,     ST_DIST_T,              ST_DIST_UNIFORM,
-   0/*ST_ERROR*/,                0/*ST_EXIT*/,             ST_EXP,              0/*ST_FALLING_GCLK*/,        0/*ST_FATAL*/,
-   ST_FCLOSE,               ST_FDISPLAY,         ST_FDISPLAYB,        ST_FDISPLAYH,           ST_FDISPLAYO,
-   0/*ST_FELL*/,                 0/*ST_FELL_GCLK*/,        ST_FEOF,             ST_FERROR,              ST_FFLUSH,
-   ST_FGETC,                ST_FGETS,            ST_FINISH,           ST_FLOOR,               ST_FMONITOR,
-   ST_FMONITORB,            ST_FMONITORH,        ST_FMONITORO,        ST_FOPEN,               ST_FREAD,
-   ST_FSCANF,               ST_FSEEK,            ST_FSTROBE,          ST_FSTROBEB,            ST_FSTROBEH,
-   ST_FSTROBEO,             ST_FTELL,            0/*ST_FUTURE_GCLK*/,      ST_FWRITE,              ST_FWRITEB,
-   ST_FWRITEH,              ST_FWRITEO,          0/*ST_GET_COVERAGE*/,     0/*ST_HIGH*/,                ST_HYPOT,
-   0/*ST_INCREMENT*/,            0/*ST_INFO*/,             0/*ST_ISUNBOUNDED*/,      0/*ST_ISUNKNOWN*/,           ST_ITOR,
-   0/*ST_LEFT*/,                 ST_LN,               0/*ST_LOAD_COVERAGE_DB*/, ST_LOG10,               0/*ST_LOW*/,
-   ST_MONITOR,              ST_MONITORB,         ST_MONITORH,         ST_MONITORO,            ST_MONITOROFF,
-   ST_MONITORON,            0/*ST_ONEHOT*/,           0/*ST_ONEHOT0*/,          0/*ST_PAST*/,                0/*ST_PAST_GCLK*/,
-   ST_POW,                  ST_PRINTTIMESCALE,   ST_Q_ADD,            ST_Q_EXAM,              ST_Q_FULL,
-   ST_Q_INITIALIZE,         ST_Q_REMOVE,         ST_RANDOM,           ST_READMEMB,            ST_READMEMH,
-   ST_REALTIME,             ST_REALTOBITS,       ST_REWIND,           0/*ST_RIGHT*/,               0/*ST_RISING_GCLK*/,
-   0/*ST_ROSE*/,                 0/*ST_ROSE_GCLK*/,        ST_RTOI,             0/*ST_SAMPLED*/,             ST_SDF_ANNOTATE,
-   0/*ST_SET_COVERAGE_DB_NAME*/, ST_SFORMAT,          0/*ST_SHORTREALTOBITS*/,  ST_SIGNED,              ST_SIN,
-   ST_SINH,                 0/*ST_SIZE*/,             ST_SQRT,             ST_SSCANF,              0/*ST_STABLE*/,
-   0/*ST_STABLE_GCLK*/,          0/*ST_STEADY_GCLK*/,      ST_STIME,            ST_STOP,                ST_STROBE,
-   ST_STROBEB,              ST_STROBEH,          ST_STROBEO,          ST_SYNC_AND_ARRAY,      ST_SYNC_AND_PLANE,
-   ST_SYNC_NAND_ARRAY,      ST_SYNC_NAND_PLANE,  ST_SYNC_NOR_ARRAY,   ST_SYNC_NOR_PLANE,      ST_SUNC_OR_ARRAY,
-   ST_SYNC_OR_PLANE,           0/*ST_SYSTEM*/,              ST_SWRITE,   ST_SWRITEB,              ST_SWRITEH,
-   ST_SWRITEO,          ST_TAN,              ST_TANH,             ST_TEST_PLUSARGS,       ST_TIME,
-   ST_TIMEFORMAT,           0/*ST_TYPENAME*/,         ST_UNGETC,           0/*ST_UNPACKED_DIMENSIONS*/, ST_UNSIGNED,
-   ST_VALUE_PLUSARGS,       0/*ST_WARNING*/,          ST_WRITE,            ST_WRITEB,              ST_WRITEH,
+   ST_ACOS,                      ST_ACOSH,                ST_ASIN,                  ST_ASINH,                    0/*ST_ASSERTCONTROL*/,
+   0/*ST_ASSERTFAILOFF*/,        0/*ST_ASSERTFAILON*/,    0/*ST_ASSERTKILL*/,       0/*ST_ASSERTNONVACUOUSON*/,  0/*ST_ASSERTOFF*/,
+   0/*ST_ASSERTON*/,             0/*ST_ASSERTPASSOFF*/,   0/*ST_ASSERTPASSON*/,     0/*ST_ASSERTVACUOUSOFF*/,    ST_ASYNC_AND_ARRAY,
+   ST_ASYNC_AND_PLANE,           ST_ASYNC_NAND_ARRAY,     ST_ASYNC_NAND_PLANE,      ST_ASYNC_NOR_ARRAY,          ST_ASYNC_NOR_PLANE,
+   ST_ASYNC_OR_ARRAY,            ST_ASYNC_OR_PLANE,       ST_ATAN,                  ST_ATAN2,                    ST_ATANH,
+   0/*ST_BITS*/,                 ST_BITSTOREAL,           0/*ST_BITSTOSHORTREAL*/,  ST_CAST,                     ST_CEIL,
+   0/*ST_CHANGED*/,              0/*ST_CHANGED_GCLK*/,    0/*ST_CHANGING_GCLK*/,    ST_CLOG2,                    ST_COS,
+   ST_COSH,                      0/*ST_COUNTBITS*/,       0/*ST_COUNTONES*/,        0/*ST_COVERAGE_CONTROL*/,    0/*ST_COVERAGE_GET*/,
+   0/*ST_COVERAGE_GET_MAX*/,     0/*ST_COVERAGE_MERGE*/,  0/*ST_COVERAGE_SAVE*/,    0/*ST_DIMENSIONS*/,          ST_DISPLAY,
+   ST_DISPLAYB,                  ST_DISPLAYH,             ST_DISPLAYO,              ST_DIST_CHI_SQUARE,          ST_DIST_ERLANG,
+   ST_DIST_EXPONENTIAL,          ST_DIST_NORMAL,          ST_DIST_POISSON,          ST_DIST_T,                   ST_DIST_UNIFORM,
+   0/*ST_ERROR*/,                0/*ST_EXIT*/,            ST_EXP,                   0/*ST_FALLING_GCLK*/,        0/*ST_FATAL*/,
+   ST_FCLOSE,                    ST_FDISPLAY,             ST_FDISPLAYB,             ST_FDISPLAYH,                ST_FDISPLAYO,
+   0/*ST_FELL*/,                 0/*ST_FELL_GCLK*/,       ST_FEOF,                  ST_FERROR,                   ST_FFLUSH,
+   ST_FGETC,                     ST_FGETS,                ST_FINISH,                ST_FLOOR,                    ST_FMONITOR,
+   ST_FMONITORB,                 ST_FMONITORH,            ST_FMONITORO,             ST_FOPEN,                    ST_FREAD,
+   ST_FSCANF,                    ST_FSEEK,                ST_FSTROBE,               ST_FSTROBEB,                 ST_FSTROBEH,
+   ST_FSTROBEO,                  ST_FTELL,                0/*ST_FUTURE_GCLK*/,      ST_FWRITE,                   ST_FWRITEB,
+   ST_FWRITEH,                   ST_FWRITEO,              0/*ST_GET_COVERAGE*/,     0/*ST_HIGH*/,                ST_HYPOT,
+   0/*ST_INCREMENT*/,            0/*ST_INFO*/,            0/*ST_ISUNBOUNDED*/,      0/*ST_ISUNKNOWN*/,           ST_ITOR,
+   0/*ST_LEFT*/,                 ST_LN,                   0/*ST_LOAD_COVERAGE_DB*/, ST_LOG10,                    0/*ST_LOW*/,
+   ST_MONITOR,                   ST_MONITORB,             ST_MONITORH,              ST_MONITORO,                 ST_MONITOROFF,
+   ST_MONITORON,                 0/*ST_ONEHOT*/,          0/*ST_ONEHOT0*/,          0/*ST_PAST*/,                0/*ST_PAST_GCLK*/,
+   ST_POW,                       ST_PRINTTIMESCALE,       ST_Q_ADD,                 ST_Q_EXAM,                   ST_Q_FULL,
+   ST_Q_INITIALIZE,              ST_Q_REMOVE,             ST_RANDOM,                ST_READMEMB,                 ST_READMEMH,
+   ST_REALTIME,                  ST_REALTOBITS,           ST_REWIND,                0/*ST_RIGHT*/,               0/*ST_RISING_GCLK*/,
+   0/*ST_ROSE*/,                 0/*ST_ROSE_GCLK*/,       ST_RTOI,                  0/*ST_SAMPLED*/,             ST_SDF_ANNOTATE,
+   0/*ST_SET_COVERAGE_DB_NAME*/, ST_SFORMAT,              0/*ST_SHORTREALTOBITS*/,  ST_SIGNED,                   ST_SIN,
+   ST_SINH,                      0/*ST_SIZE*/,            ST_SQRT,                  ST_SSCANF,                   0/*ST_STABLE*/,
+   0/*ST_STABLE_GCLK*/,          0/*ST_STEADY_GCLK*/,     ST_STIME,                 ST_STOP,                     ST_STROBE,
+   ST_STROBEB,                   ST_STROBEH,              ST_STROBEO,               ST_SWRITE,                   ST_SWRITEB,
+   ST_SWRITEH,                   ST_SWRITEO,              ST_SYNC_AND_ARRAY,        ST_SYNC_AND_PLANE,           ST_SYNC_NAND_ARRAY,
+   ST_SYNC_NAND_PLANE,           ST_SYNC_NOR_ARRAY,       ST_SYNC_NOR_PLANE,        ST_SUNC_OR_ARRAY,            ST_SYNC_OR_PLANE,
+   0/*ST_SYSTEM*/,               ST_TAN,                  ST_TANH,                  ST_TEST_PLUSARGS,            ST_TIME,
+   ST_TIMEFORMAT,                0/*ST_TYPENAME*/,        ST_UNGETC,                0/*ST_UNPACKED_DIMENSIONS*/, ST_UNSIGNED,
+   ST_VALUE_PLUSARGS,            0/*ST_WARNING*/,         ST_WRITE,                 ST_WRITEB,                   ST_WRITEH,
    ST_WRITEO
 };
 
@@ -265,19 +265,17 @@ int IsSystemTask(char* word)
 {
 // according to 'IEEE 1364-2005' Clause 17
 // according to 'IEEE 1800-2017' Clause 20
-// todo: resort return values alphabetically in usage functions (i+1) returned
    const char* kw_hash [181] =
    {
-// todo: sort alphabetically
       "$acos", "$acosh", "$asin", "$asinh", "$assertcontrol", 
       "$assertcontroloff", "$assertfailon", "$assertkill", "$assertnonvacuouson", "$assertoff",
       "$asserton",          "$assertpassoff",    "$assertpasson",     "$assertvacuousoff",    "$async$and$array",
       "$async$and$plane", "$async$nand$array", "$async$nand$plane", "$async$nor$array", "$async$nor$plane",
       "$async$or$array", "$async$or$plane", "$atan", "$atan2", "$atanh",
-      "$bits", "$bitstoshortreal", "$bitstoreal", "$cast", "$ceil",
+      "$bits", "$bitstoreal", "$bitstoshortreal", "$cast", "$ceil",
       "$changed", "$changed_gclk", "$changing_gclk", "$clog2", "$cos", "$cosh",
       "$countbits",        "$countones",        "$coverage_control",    "$coverage_get",
-      "$coverage_get_max",     "$coverage_merge",   "$coverage_save",    "dimensions",          "$display",
+      "$coverage_get_max",     "$coverage_merge",   "$coverage_save",    "$dimensions",          "$display",
       "$displayb",             "$displayh",         "$displayo",         "$dist_chi_square",     "$dist_erlang",
       "$dist_exponential",     "$dist_normal", "$dist_poisson", "$dist_t",              "$dist_uniform",
       "$error",   "$exit", "$exp", "$falling_gclk", "$fatal",
@@ -297,9 +295,9 @@ int IsSystemTask(char* word)
       "$shortrealtobits", "$signed", "$sin", "$sinh", "$size", "$sqrt", "$sscanf",
       "$stable", "$stable_gclk", "$steady_gclk",  
       "$stime", "$stop", "$strobe", "$strobeb", "$strobeh", "$strobeo",
+      "$swrite", "$swriteb", "$swriteh", "$swriteo",
       "$sync$and$array", "$sync$and$plane", "$sync$nand$array", "$sync$nand$plane", "$sync$nor$array", "$sync$nor$plane", "$sync$or$array", "$sync$or$plane",
-      "$system", "$swrite", "$swriteb",
-      "$swriteh", "$swriteo",
+      "$system",
       "$tan", "$tanh", "$test$plusargs", "$time",
       "$timeformat", "$typename",
       "$ungetc", "$unpacked_dimensions",
@@ -307,6 +305,12 @@ int IsSystemTask(char* word)
       "$value$plusargs",         "$warning",                "$write", "$writeb",
       "$writeh", "$writeo"
    };
+// Note: sort check
+//   int n = sizeof(kw_hash) / sizeof(kw_hash[0]);
+//   for(int i=0; i<n-1; i++)
+//   {
+//       if(strcmp(kw_hash[i], kw_hash[i+1]) > 0) printf("%d of %d: ('%s' - '%s') = %d!\n", i, n, kw_hash[i], kw_hash[i+1], strcmp(kw_hash[i], kw_hash[i+1]));
+//   }
    // Note: Newton search algorithm; return value alphabetically sorted
    int num = sizeof(kw_hash) / sizeof(kw_hash[0]);
    int step = 32*2*2; // TODO: calculate as f(num)!!
