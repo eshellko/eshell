@@ -177,6 +177,11 @@ foreach v $views h $heads a $aligns {
    .outer.f3.n.${v}.sby conf -command ".outer.f3.n.${v}.tree yview"
 }
 
+# Q: embed HDL Editor into notepad?
+#::ttk::entry .outer.f3.n.txt
+#.outer.f3.n add .outer.f3.n.txt -text editor
+#pack [ text .outer.f3.n.txt.t  ] -side left -expand y -fill both
+
 # Note: load IP catalog after IP tab selected for a first time
 bind .outer.f3.n <<NotebookTabChanged>> tabChanged
 proc tabChanged {} {
@@ -201,11 +206,14 @@ proc tabChanged {} {
 ############################
 menu .popupMenu
 .popupMenu configure -tearoff 0
-.popupMenu add command -label "Edit HDL" -command "EventOnBtnEditHdl"
-.popupMenu add command -label "View HDL" -command "EventOnBtnViewHdl"
+.popupMenu add command -label "Edit HDL" -command "EventOnBtnEditHdl 1"
+.popupMenu add command -label "View HDL" -command "EventOnBtnEditHdl 0"
+# TODO: open text entry to write 1-line comment
 #proc EventOnBtnCommit {} {
-#   set filename [.outer.f3.tree focus]
-#   puts "[exec git status $filename]"
+#   set filename [.outer.f3.n.sources.tree focus]
+##   puts "[exec git status $filename]"
+##   puts "[exec svn status $filename]"
+#   puts "[exec svn diff --diff-cmd diff $filename]"
 #}
 #.popupMenu add command -label "Commit" -command "EventOnBtnCommit"
 .popupMenu add command -label "Compile" -command "EventOnBtnCompile"
