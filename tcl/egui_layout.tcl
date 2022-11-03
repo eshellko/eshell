@@ -206,8 +206,8 @@ proc tabChanged {} {
 ############################
 menu .popupMenu
 .popupMenu configure -tearoff 0
-.popupMenu add command -label "Edit HDL" -command "EventOnBtnEditHdl 1"
-.popupMenu add command -label "View HDL" -command "EventOnBtnEditHdl 0"
+.popupMenu add command -label "Edit HDL" -command "EventOnBtnEditHdl verilog_keywords 1"
+.popupMenu add command -label "View HDL" -command "EventOnBtnEditHdl verilog_keywords 0"
 # TODO: open text entry to write 1-line comment
 #proc EventOnBtnCommit {} {
 #   set filename [.outer.f3.n.sources.tree focus]

@@ -59,6 +59,7 @@ wm protocol . WM_DELETE_WINDOW {
 # Preload IP processor
 #
 source $path/tcl/egui_ip.tcl
+source $path/tcl/globals.tcl
 #
 # Utility
 #
