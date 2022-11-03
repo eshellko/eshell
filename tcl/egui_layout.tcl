@@ -223,7 +223,7 @@ proc EventOnBtnCompile {} {
    vwait mutex
    EventOnBtnReloadEDB
 }
-.popupMenu add command -label "Compile All" -command "EventOnBtnCompileAll" ; # -state disable ; # todo: add valid file name, not 'id'
+.popupMenu add command -label "Compile All" -command "EventOnBtnCompileAll" ; # -state disable
  proc EventOnBtnCompileAll {} {
    set filetop [.outer.f3.n.sources.tree children {}]
 # TODO: when tool exited during read - stop reading next files... and do not halt
@@ -363,20 +363,32 @@ bind .f6.entryCnsl <Return> { eval $wish }
 
 # Information about last command
 pack [label .f6.label22 -font efontbold -textvariable last_command -foreground red -background grey85 ] -side left -fill y
-
-# todo: create some implementation for it
-# Note: top-level menu example
+############################
+#
+# Top-level menu
+#
+############################
 menu .mb
 .mb add command -label "Feedback" -font efont -command {global email; global last_command; set last_command "Send your feedback to $email."} -background grey85
 
-menu .mb.set
-.mb add cascade -label "Settings" -font efont -menu .mb.set  -background grey85
-.mb.set add command -label "hide" -font efont -command {global ExtendedSettings; set ExtendedSettings 1; ExtendSize} -background grey85
-.mb.set add command -label "show" -font efont -command {global ExtendedSettings; set ExtendedSettings 0; ExtendSize} -background grey85
-. configure -menu .mb
-.mb.set configure -tearoff 0
+menu .mb.settings
+.mb add cascade -label "Settings" -font efont -menu .mb.settings -background grey85
+.mb.settings add command -label "hide" -font efont -command {global ExtendedSettings; set ExtendedSettings 1; ExtendSize} -background grey85
+.mb.settings add command -label "show" -font efont -command {global ExtendedSettings; set ExtendedSettings 0; ExtendSize} -background grey85
+.mb.settings configure -tearoff 0
 
-# Note: small button to open/hide tool settings. todo: use !menu!
+menu .mb.help
+.mb add cascade -label "Help" -font efont -menu .mb.help -background grey85
+.mb.help add command -label "User Guide" -font efont -command "catch { exec firefox $::env(ESHELL_HOME)/doc/user_guide/eug.html }" -background grey85
+.mb.help add command -label "Tutorial" -font efont -command "catch { exec firefox $::env(ESHELL_HOME)/doc/tutorial/tutorial.html }" -background grey85
+.mb.help configure -tearoff 0
+
+. configure -menu .mb
+############################
+#
+# Small button to open/hide tool settings
+#
+############################
 variable ExtendedSettings 0
 
 # Note: this button duplicates top menu
