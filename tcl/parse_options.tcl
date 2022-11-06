@@ -36,7 +36,7 @@ proc eshell {} {
                incr error
             }
             set tool_name "i686.exe"
-ls             set b32 1
+            set b32 1
          }
          -b64 -
          {^-6(4?)?$} {
@@ -105,6 +105,7 @@ ls             set b32 1
    }
    # Note: check for necessary argument
    if {$tcl==0} {
+      puts "   Error: no '-tcl' argument provided."
       set error 1
    }
 

@@ -64,7 +64,7 @@ proc EventOnBtnIP {} {
       bind .outer.f3.n.ip.tree <Button-3> {tk_popup .outer.f3.n.ip.tree.popupMenu %X %Y}
 
       global ip_parameters ip_ptypes ip_init_values ip_allowed_values ip_descriptions ip_names ip_vendor ip_version ip_doc
-      set last_category ""
+      set category ""
       set fd [open $::env(ESHELL_HOME)/tcl/ip.csv r]
       while {![eof $fd]} {
          set fline [ read $fd ]
@@ -74,9 +74,11 @@ proc EventOnBtnIP {} {
                if {[string range $x 0 0] eq "#"} {
                # Note: Create CATEGORY to group IPs
                } elseif {[string range $x 0 8] eq "category="} {
+                  # Note: extract comment (if present for every subcategory)
                   set category [string range $x 9 end]
-                  .outer.f3.n.ip.tree insert {} end -id $category -text $category -tags "ttkh simple"
-                  set last_category $category
+                  set cat_name [ split $category "%;\n"]
+                  set category [lindex $cat_name 0]
+                  .outer.f3.n.ip.tree insert {} end -id $category -text $category -values [list "" "" "" [lindex $cat_name 1] ] -tags "ttkh simple"
                # Note: process IP for specified category
                } else {
                   set id ""
@@ -130,7 +132,7 @@ proc EventOnBtnIP {} {
                      if $cnt==7 { set doc $y; set ip_doc($id) $y }
                      incr cnt
                   }
-                  .outer.f3.n.ip.tree insert $last_category end -id $id -text $name -values [list $vendor $version $proven $descr ] -tags "ttk simple"
+                  .outer.f3.n.ip.tree insert $category end -id $id -text $name -values [list $vendor $version $proven $descr ] -tags "ttk simple"
                }
             }
          }
