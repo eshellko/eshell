@@ -1,0 +1,149 @@
+library(ehl) {
+   technology(cmos);
+   delay_model : table_lookup;
+   time_unit : "1ns";
+   voltage_unit : "1V";
+   current_unit : "1mA";
+   pulling_resistance_unit : "1kohm";
+   leakage_power_unit : "1pW";
+   capacitive_load_unit (1.0,pf);
+/*
+   nom_process     : 1;
+   nom_temperature : 25;
+   nom_voltage     : 1.8;
+*/
+   operating_conditions(typical) {
+      process     : 1;
+      temperature : 25;
+      voltage     : 1.8;
+      tree_type   : balanced_tree
+   }
+   default_operating_conditions : typical;
+
+   slew_lower_threshold_pct_fall : 30.0;
+   slew_upper_threshold_pct_fall : 70.0;
+   slew_lower_threshold_pct_rise : 30.0;
+   slew_upper_threshold_pct_rise : 70.0;
+   input_threshold_pct_fall      : 50.0;
+   input_threshold_pct_rise      : 50.0;
+   output_threshold_pct_fall     : 50.0;
+   output_threshold_pct_rise     : 50.0;
+   slew_derate_from_library      : 0.5;
+
+   default_leakage_power_density : 0.0;
+   default_cell_leakage_power    : 0.0;
+   default_fanout_load           : 1.0;
+   default_output_pin_cap        : 0.0;
+   default_inout_pin_cap         : 0.001165;
+   default_input_pin_cap         : 0.001165;
+   default_max_transition        : 1.0;
+
+   k_process_cell_leakage_power   : 0;
+   k_temp_cell_leakage_power      : 0;
+   k_volt_cell_leakage_power      : 0;
+   k_process_internal_power       : 0;
+   k_temp_internal_power          : 0;
+   k_volt_internal_power          : 0;
+   k_process_rise_transition      : 1;
+   k_temp_rise_transition         : 0;
+   k_volt_rise_transition         : 0;
+   k_process_fall_transition      : 1;
+   k_temp_fall_transition         : 0;
+   k_volt_fall_transition         : 0;
+   k_process_setup_rise           : 1;
+   k_temp_setup_rise              : 0;
+   k_volt_setup_rise              : 0;
+   k_process_setup_fall           : 1;
+   k_temp_setup_fall              : 0;
+   k_volt_setup_fall              : 0;
+   k_process_hold_rise            : 1;
+   k_temp_hold_rise               : 0;
+   k_volt_hold_rise               : 0;
+   k_process_hold_fall            : 1;
+   k_temp_hold_fall               : 0;
+   k_volt_hold_fall               : 0;
+   k_process_min_pulse_width_high : 1;
+   k_temp_min_pulse_width_high    : 0;
+   k_volt_min_pulse_width_high    : 0;
+   k_process_min_pulse_width_low  : 1;
+   k_temp_min_pulse_width_low     : 0;
+   k_volt_min_pulse_width_low     : 0;
+   k_process_recovery_rise        : 1;
+   k_temp_recovery_rise           : 0;
+   k_volt_recovery_rise           : 0;
+   k_process_recovery_fall        : 1;
+   k_temp_recovery_fall           : 0;
+   k_volt_recovery_fall           : 0;
+   k_process_cell_rise            : 1;
+   k_temp_cell_rise               : 0;
+   k_volt_cell_rise               : 0;
+   k_process_cell_fall            : 1;
+   k_temp_cell_fall               : 0;
+   k_volt_cell_fall               : 0;
+   k_process_wire_cap             : 0;
+
+   wire_load("ehl90") {
+      resistance  : 0;
+      capacitance : 1;
+      area        : 1;
+      slope       : 1;
+      fanout_length(1,0);
+      fanout_length(10,0);
+   }
+
+   cell (AND2) { 
+      area : 25.0;
+      pin(A) {
+         direction : input;
+         capacitance : 0.005;
+      }
+      pin(B) {
+         direction : input;
+         capacitance : 0.005;
+      }
+      pin(TT) {
+         direction : internal;
+         capacitance : 0.005;
+      }
+      pin(Q) {
+         direction : output;
+         capacitance     : 0.0;
+         function        : "A & B";
+         max_capacitance : 0.1;
+         timing () {
+            related_pin : "A";
+            timing_sense : non_unate;
+            cell_rise(scalar) {
+               values("0.1" );
+            };
+            cell_fall(scalar) {
+               values("0.1" );
+            };
+            rise_transition(scalar) {
+               values("0.1" );
+            };
+            fall_transition(scalar) {
+               values("0.0" );
+            };
+         }
+         timing () {
+            related_pin : "B";
+            timing_sense : non_unate;
+            cell_rise(scalar) {
+               values("0.1" );
+            };
+            cell_fall(scalar) {
+               values("0.1" );
+            };
+            rise_transition(scalar) {
+               values("0.1" );
+            };
+            fall_transition(scalar) {
+               values("0.0" );
+            };
+         }
+      }
+      cell_leakage_power : 1.0;
+   }
+
+}
