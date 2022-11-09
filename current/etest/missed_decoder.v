@@ -6,6 +6,6 @@ module missed_decoder
    output q, w
 );
    assign q = data[addr]; // Note: always - X result
-   assign w = buffer[addr]; // Note: always pass single matched value [15]
+   assign w = buffer[addr]; // Note: pass single matched value [15], or 1'bx (1'b0 during synthesis)
 
 endmodule
