@@ -337,6 +337,7 @@ array set tool_cfg [ list \
    1  [ list detect_xs_in_unary_plus                "Detect Xs In Unary Plus"                1 "Verilog standard doesn't clearly explain how to implement unary plus operator:\n(1) IEEE 1364-2005 5.1.5:\nFor the arithmetic operators, if any operand bit value is the unknown value x or the high-impedance value z, then the entire result should be x.\n(2) Table 5-7:\nUnary plus m (same as m).\nWhen detect_xs_in_unary_plus set - (1) implemented, otherwise (2).\nDefault is (1) should be treated as 'value if no Xs' as otherwise unary plus doesn't have any meaning." ] \
    2  [ list append_parameters_to_build_module_name "Append Parameters To Build Module Name" 0 "Append parameter name and value to elaborated module name. This allow find out what value were used to elaborate module. This option not affected top level module." ] \
    3  [ list use_built_in_edb                       "Use EDB"                                0 "When set EHL modules from built-in tool's library when there is no user provided modules." ] \
+   4  [ list print_file_date                        "Print File Modification Date"           1 "When set prnits file modification date when file compiled." ] \
 ]
 
 pack [label .f5.label4 -text "COMPILATION" -font efontbold -background grey85 ] -side top
