@@ -38,8 +38,8 @@ pack .f5 -side right -fill both -after .f1
 pack forget .f5
 
 # Note: progress bar, which turned on when process launched
-ttk::progressbar .f1.progress -mode indeterminate -maximum 100
-pack .f1.progress -fill both -expand 0
+pack [ ttk::progressbar .f1.progress -mode indeterminate -maximum 100 ] -fill both -expand 0
+ttk::style configure TProgressbar -background green
 ############################
 #
 # Buttons
@@ -244,7 +244,7 @@ bind .outer.f3.n.sources.tree <Button-3> {tk_popup .popupMenu %X %Y}
 #
 ############################
 pack [ text .outer.f4.text -state normal -height 10 -font efont -wrap char -background white ] -side left -expand y -fill both
-.outer.f4.text insert end "Welcome to EHL $sw_version.\n"
+.outer.f4.text insert end "Welcome to EHL $ehl_version.\n"
 .outer.f4.text see end
 .outer.f4.text configure -state disabled
 menu .popupMenu2

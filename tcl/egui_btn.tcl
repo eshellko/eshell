@@ -55,6 +55,10 @@ proc EventOnBtnProject {} {
 }
 
 proc EventOnBtnIP {} {
+# Note: on TYPE field
+#       A - list of allowed parameters as provided (one of few cases)
+#       B - form to write Verilog compatible parameters (like 32-bit bus value)
+#       C - checkbox to specify 1 of 2 chooses
    if [file exist $::env(ESHELL_HOME)/tcl/ip.csv ] {
       set TreeRowsNum 22
 
@@ -119,7 +123,7 @@ proc EventOnBtnIP {} {
                                  set len [ llength $ip_ptypes($id) ]
                                  set len [expr $len - 1]
                                  set val [ lindex $ip_ptypes($id) $len ]
-                                 if {[string eq $val "B"]} { incr pid
+                                 if {[string eq $val "B"] || [string eq $val "C"]} { incr pid
                                  # Note: empty entry to keep ordered list consistency
                                     lappend ip_allowed_values($id) ""
                                  }

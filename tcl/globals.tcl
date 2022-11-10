@@ -1,3 +1,19 @@
+set eshell_gui 1
+set eshell_tool 1 ; # Note: set if ESHELL launched at startup (in other case it will be cleared, and GUI can be used for any other tool)
+#
+# Global variables
+#
+set ehl_version "2016.04.30"
+set ElaboratedDesign "" ; # Note: name of top-level from CSV, or set manually by user in combobox
+variable WorkSpace "eshell"
+set email kornukhin@mail.ru
+set currentDir "."
+set last_command "Initialize [pid]"
+set testbench "" ; # Note: name of the testbench file (only one should be specified)
+set constraints "\"\"" ; # Note: name of the SDC file (only one should be specified)
+variable general_purpose_buffer ""
+set ip_loaded 0 ; # Note: set when IP catalog loaded (only after IP tab selected to reduce boot time)
+
 # array set verilog_keywords [ list \
 #    "always" 0 "and" 0 "assign" 0 "automatic" 0 "begin" 0 "buf" 0 "bufif0" 0 "bufif1" 0 "case" 0 "casex" 0\
 #    "casez" 0 "cell" 0 "cmos" 0 "config" 0 "deassign" 0 "default" 0 "defparam" 0 "design" 0 "disable" 0 "edge" 0\

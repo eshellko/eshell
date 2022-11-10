@@ -1,7 +1,4 @@
 #!/usr/bin/wish
-set eshell_gui 1
-set eshell_tool 1 ; # Note: set if ESHELL launched at startup (in other case it will be cleared, and GUI can be used for any other tool)
-
 # Feature Requests:
 #
 # TODO: add command-line argument (and parse it), that allows to not to run eshell on launch (for other tools usage; default: false)
@@ -25,19 +22,7 @@ catch {font create efont -family Courier -size 12}
 catch {font create efontbold -family Courier -size -14 -weight bold}
 #catch {font create efont -family TimesNewRoman -size 13}
 #catch {font create efontbold -family TimesNewRoman -size 13 -weight bold}
-#
-# Global variables
-#
-set sw_version "2016.04.30"
-set ElaboratedDesign "" ; # Note: name of top-level from CSV, or set manually by user in combobox
-variable WorkSpace "eshell"
-set email kornukhin@mail.ru
-set currentDir "."
-set last_command "Initialize [pid]"
-set testbench "" ; # Note: name of the testbench file (only one should be specified)
-set constraints "\"\"" ; # Note: name of the SDC file (only one should be specified)
-variable general_purpose_buffer ""
-set ip_loaded 0 ; # Note: set when IP catalog loaded (only after IP tab selected to reduce boot time)
+source $path/tcl/globals.tcl
 #
 # Tool settings
 #
@@ -59,7 +44,6 @@ wm protocol . WM_DELETE_WINDOW {
 # Preload IP processor
 #
 source $path/tcl/egui_ip.tcl
-source $path/tcl/globals.tcl
 #
 # Utility
 #

@@ -74,6 +74,8 @@ proc configureIP {} {
          place [ttk::combobox .${ip_name}.${ip_name}_combo$y -textvariable ${ip_name}_combo_$y -state readonly -values $z -font efont -width 15 ] -x 440 -y $ypos
       } elseif [string equal $t "B"] {
          place [entry .${ip_name}.${ip_name}_entry$y -text $z -font efont -textvariable ${ip_name}_combo_$y -width 15 ] -x 440 -y $ypos
+      } elseif [string equal $t "C"] {
+         place [checkbutton .${ip_name}.${ip_name}_chkb$y -text $z -font efont -variable ${ip_name}_combo_$y  ] -x 440 -y $ypos
       }
       set ypos [expr $ypos + 30 - 10]
       # tooltip text - TODO: write description into separate field, and brief one for text -- check long description in highlight will be moved into next line
