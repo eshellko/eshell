@@ -18,4 +18,3 @@ module xor_cmp0
    assign q = g ^ nl; // Note: always 0
 
 endmodule
-
