@@ -360,6 +360,7 @@ setToolTip .f5.treeChk "Filelist view (on list creation time): 0 - list, 1 - tre
 variable wish ""
 pack [label .f6.labelTool -text "eshell>\n" -font efont -background grey85 ] -side left -anchor w
 pack [entry .f6.entryCnsl -text $WorkSpace -font efont -textvariable wish -width 87] -side top -fill x
+#bind .f6.entryCnsl <Return> { eval "TOOL_CMD \"$wish\"" }
 bind .f6.entryCnsl <Return> { eval $wish }
 
 # Information about last command
@@ -377,7 +378,7 @@ menu .mb.settings
 .mb.settings add command -label "hide" -font efont -command {global ExtendedSettings; set ExtendedSettings 1; ExtendSize} -background grey85
 .mb.settings add command -label "show" -font efont -command {global ExtendedSettings; set ExtendedSettings 0; ExtendSize} -background grey85
 .mb.settings configure -tearoff 0
-
+# Note: based on OS settings 'help' menu can be placed at the right side of the menu bar, or after the settings menu
 menu .mb.help
 .mb add cascade -label "Help" -font efont -menu .mb.help -background grey85
 .mb.help add command -label "User Guide" -font efont -command "catch { exec firefox $::env(ESHELL_HOME)/doc/user_guide/eug.html }" -background grey85

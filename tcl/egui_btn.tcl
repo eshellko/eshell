@@ -9,8 +9,8 @@ proc EventOnBtnReadVerilog {} {
           set dir [ string range $r 0 $last_idx ]
           set currentDir $dir
           read_verilog $r
+          vwait mutex ; # Note: wait after every read vommand
        }
-       vwait mutex
        EventOnBtnReloadEDB
    }
 }

@@ -30,8 +30,8 @@ wm title . "EHL Design Browser (workspace: $WorkSpace)"
 #
 # Note: placed at left upper position as specified by +0+0
 #
-wm geometry . 980x590+0+0
-wm minsize . 487 590
+wm geometry . 980x520+0+0
+wm minsize . 487 520
 #
 # Note: ask confirmation and close tool
 #
