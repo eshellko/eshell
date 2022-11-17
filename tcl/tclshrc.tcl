@@ -50,7 +50,6 @@ if $eshell_tool==1 {
 #   returns, and is immediately invoked again. 
    fileevent $io readable "ToolLogHndlr $io"
 }
-set mutex 0
 
 # TODO: get data interactively - ASAP it is provided... and not to HALT when point something during workmode!?
 proc ToolLogHndlr {chan} {
@@ -132,6 +131,7 @@ proc stop_cmd {} {
 set command_set { build \
                   clear_db cpu \
                   _exit \
+                  filelist \
                   get_customer_info get_designs get_instances get_ports \
                   _help _history lec man message mif2rom \
                   opt techmap \

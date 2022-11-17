@@ -2,14 +2,29 @@
 # Buttons handlers
 proc EventOnBtnReadVerilog {} {
    global currentDir
-   set filename [::tk::dialog::file:: open -defaultextension "*.v" -filetypes {{{Verilog files} {.v}} {{All files} *}} -initialdir ${currentDir} -multiple true -title "Compile Verilog files" ]
+   set filename [::tk::dialog::file:: open -defaultextension "*.v" -filetypes {{{Verilog files} {.v}} {{SystemVerilog files} {.v .sv}} {{All files} *}} -initialdir ${currentDir} -multiple true -title "Compile Verilog files" ]
    if {[string length $filename]>0} {
        foreach r $filename {
           set last_idx [ string last "/" $r ]
           set dir [ string range $r 0 $last_idx ]
           set currentDir $dir
           read_verilog $r
-          vwait mutex ; # Note: wait after every read vommand
+          vwait mutex ; # Note: wait after every read command
+       }
+       EventOnBtnReloadEDB
+   }
+}
+
+proc EventOnBtnReadFilelist {} {
+   global currentDir
+   set filename [::tk::dialog::file:: open -defaultextension "*.f" -filetypes {{{Filelists} {.f}} {{All files} *}} -initialdir ${currentDir} -multiple true -title "Compile Verilog filelists" ]
+   if {[string length $filename]>0} {
+       foreach r $filename {
+          set last_idx [ string last "/" $r ]
+          set dir [ string range $r 0 $last_idx ]
+          set currentDir $dir
+          filelist $r
+          vwait mutex ; # Note: wait after every read command
        }
        EventOnBtnReloadEDB
    }

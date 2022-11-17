@@ -6,8 +6,6 @@
 # TODO: add "what is new" window with major news ... connect to web (if possible) site and receive news into this window ...
 #       make small button for this (to show up) to not annoy user
 #
-# TODO: run 'sockets' between EGUI (tcl) and CORE (c++) to inform about completed command (and not tcl-done method)
-#
 
 if {![info exists ::env(ESHELL_HOME)]} {
    puts "   Error: ESHELL_HOME variable is not set."
@@ -23,6 +21,7 @@ catch {font create efontbold -family Courier -size -14 -weight bold}
 #catch {font create efont -family TimesNewRoman -size 13}
 #catch {font create efontbold -family TimesNewRoman -size 13 -weight bold}
 source $path/tcl/globals.tcl
+#source $path/tcl/socket.tcl
 #
 # Tool settings
 #

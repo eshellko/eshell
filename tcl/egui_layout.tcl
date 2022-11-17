@@ -50,10 +50,11 @@ ttk::style configure TProgressbar -background green
 array set button_cfg [ list \
    0  [ list 0 "Workspace"     EventOnBtnWorkspace    normal ] \
    1  [ list 1 "Read"          {tk_popup .pMenuRead [expr [winfo rootx .f1.myButtonRead]+[winfo width .f1.myButtonRead]] [expr [winfo rooty .f1.myButtonRead]]}               disabled \
-                               Verilog EventOnBtnReadVerilog \
-                               Liberty EventOnBtnReadLiberty \
-                               SDC     EventOnBtnReadSdc \
-                               VCD     EventOnBtnReadVCD \
+                               Verilog  EventOnBtnReadVerilog \
+                               Filelist EventOnBtnReadFilelist \
+                               Liberty  EventOnBtnReadLiberty \
+                               SDC      EventOnBtnReadSdc \
+                               VCD      EventOnBtnReadVCD \
                    ] \
    2  [ list 0 "Build"         EventOnBtnBuild        disabled ] \
    3  [ list 1 "Optimize"      {tk_popup .pMenuOptimize [expr [winfo rootx .f1.myButtonOptimize]+[winfo width .f1.myButtonOptimize]] [expr [winfo rooty .f1.myButtonOptimize]]}       disabled \

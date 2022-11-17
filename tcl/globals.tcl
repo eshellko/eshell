@@ -456,3 +456,5 @@ array set verilog_keywords [ list \
 "xnor" 4 \
 "xor" 3 \
 ]
+
+set mutex 0
