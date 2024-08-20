@@ -1,0 +1,20 @@
+   eshell 2022.10.015 - logic synthesis tool for converting Verilog RTL into gate-level.
+
+   Usage: eshell [-32 | -64] [-nodb] [-nolog] [-quiet] [-noinit] [-tcl] [-script <filename>] [-help] [-dir <directory>] [-workspace <name>]
+                 [-gui]
+                 [-valgrind] [-valgrind_all] [-gdb].
+
+      [-32 | -64]               execute 32-bit or 64-bit version
+      [-nodb]                   do not create database for compiled modules, useful for compilation regressions to avoid write to file (edb) stage
+      [-nolog]                  do not create log file. Can be used to avoid writing to disk and improve debug run-time
+      [-quiet]                  do not write into console. Can be used to not print messages into console for further log investigation. This option cleared after executing autosetup.tcl (or -script) and entering into interactive mode.
+      [-noinit]                 do not run initialization script ('autosetup.tcl' or specified with '-script')
+      [-tcl]                    run with TCL mode (used by GUI)
+      [-script <filename>]      start <filename> script execution instead of 'autosetup.tcl' (if specified without -noinit)
+      [-help]                   print help message
+      [-dir <directory>]        set directory for logs and databases (default one is tool run directory)
+      [-workspace <name>]       set workspace name (default, eshell)
+      [-gui]                    launch graphical user interface (GUI)
+      [-valgrind]               run Valgrind to check memory issues (mutually exclusive with [-valgrind_all] and [-gdb])
+      [-valgrind_all]           run Valgrind to check memory issues and leakages (mutually exclusive with [-valgrind] and [-gdb])
+      [-gdb]                    run GNU debugger (mutually exclusive with [-valgrind] and [-valgrind_all])

@@ -2,7 +2,7 @@
 
 if [[ -z "${ESHELL_HOME}" ]]; then
    echo "   Error: variable ESHELL_HOME not set."
-   return 1
+   exit 1
 fi
 
 # set as default (none)
@@ -18,6 +18,7 @@ tcl=""
 script=""
 help=""
 dir=""
+workspace=""
 # Note: allow to run tool with Valgrind memory checker
 valgrind=0
 # Note: allow GNU debugger
@@ -55,7 +56,7 @@ do
          script="-script $1"
       else
          echo -e "\n   Error: no script provided.\n"
-         return 1
+         exit 1
       fi
    elif [ "$1" == "-dir" ] ; then
       shift
@@ -63,7 +64,15 @@ do
          dir="-dir $1"
       else
          echo -e "\n   Error: no dir provided.\n"
-         return 1
+         exit 1
+      fi
+   elif [ "$1" == "-workspace" ] ; then
+      shift
+      if [ $# -gt 0 ] ; then
+         workspace="-workspace $1"
+      else
+         echo -e "\n   Error: no workspace provided.\n"
+         exit 1
       fi
    elif [ "$1" == "-help" ] ; then
       help="-help"
@@ -73,7 +82,7 @@ do
    Error: incorrect argument '$1' provided.
 
 
-   Usage: eshell [-32 | -64] [-nodb] [-nolog] [-quiet] [-noinit] [-tcl] [-script <filename>] [-help] [-dir <directory>]
+   Usage: eshell [-32 | -64] [-nodb] [-nolog] [-quiet] [-noinit] [-tcl] [-script <filename>] [-help] [-dir <directory>] [-workspace <name>]
                  [-gui]
                  [-valgrind] [-valgrind_all] [-gdb].
 
@@ -86,13 +95,14 @@ do
       [-script <filename>]      start <filename> script execution
       [-help]                   print help message
       [-dir <directory>]        set directory for logs and databases
+      [-workspace <name>]       set workspace name (default, eshell)
       [-gui]                    lainch graphical user interface (GUI)
       [-valgrind]               run Valgrind to check memory issues (mutually exclusive with [-valgrind_all] and [-gdb])
       [-valgrind_all]           run Valgrind to check memory issues and leakages (mutually exclusive with [-valgrind] and [-gdb])
       [-gdb]                    run GNU debugger (mutually exclusive with [-valgrind] and [-valgrind_all])
 
 EOF
-      return 1
+      exit 1
    fi
    shift
 done
@@ -118,7 +128,12 @@ elif [ $mode == 2 ] ; then
    fi
 else
    echo -e "\n   Error: unsupported platform '`uname -p`'\n"
-   return 1
+   exit 1
+fi
+
+if ! [ -a ${TOOL_EXEC} ] ; then
+   echo -e "\n   Error: failed to find binary '${TOOL_EXEC}'. Check installation.\n"
+   exit 1
 fi
 
 if [ $valgrind == 1 ] ; then
@@ -139,7 +154,13 @@ elif [ $gui == 1 ] ; then
    tcl="-tcl"
    script=""
    help=""
-   dir=""
+#    dir=""
+#   workspace=""
 fi
 
-$TOOL_EXEC $nodb $nolog $quiet $noinit $tcl $script $help $dir
+$TOOL_EXEC $nodb $nolog $quiet $noinit $tcl $script $help $dir $workspace
+if [ $? != 0 ] ; then
+# Q: tool should exit, if it does not receive response from GUI!?
+   echo "   Error: program terminated incorrectly, need to handle tool..."
+fi
+# TODO: for GUI mode, check [pid] is closed... need to get pid onGUI run
